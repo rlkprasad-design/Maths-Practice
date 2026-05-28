@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maths Practice — Home</title>
+<title>Maths Practice </title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -76,7 +76,7 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
   <div class="hero">
     <span class="hero-logo">🦘</span>
     <div class="hero-title">Maths Practice</div>
-    <div class="hero-sub">Känguru der Mathematik · Family Edition</div>
+    <div class="hero-sub"> Hi Pillulu... idi mee kosam </div>
   </div>
 
   <!-- PROFILES -->
@@ -85,12 +85,12 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
 
   <!-- DASHBOARD for selected profile -->
   <div id="dashSection" style="display:none">
-    <div class="section-title">Your Progress — <span id="dashName"></span></div>
+    <div class="section-title">Your Progress - <span id="dashName"></span></div>
     <div class="dash-grid" id="dashGrid"></div>
   </div>
 
   <!-- LEADERBOARD -->
-  <div class="section-title">Family Leaderboard — This Week</div>
+  <div class="section-title">Family Leaderboard - This Week</div>
   <div class="leaderboard" id="leaderboard"></div>
 
   <!-- LEVELS -->
@@ -224,8 +224,8 @@ function renderDash(p){
   const totalQsForTime = hist.reduce((a,h)=>a+h.total,0);
   const avgSecsPerQ = totalQsForTime > 0 ? Math.round(totalSecs / totalQsForTime) : 0;
 
-  // Speed label — gives context to the number
-  const speedLabel = avgSecsPerQ === 0 ? '—'
+  // Speed label - gives context to the number
+  const speedLabel = avgSecsPerQ === 0 ? '-'
     : avgSecsPerQ <= 15 ? avgSecsPerQ + 's ⚡'
     : avgSecsPerQ <= 35 ? avgSecsPerQ + 's 🎯'
     : avgSecsPerQ + 's 🐢';
@@ -236,7 +236,7 @@ function renderDash(p){
     <div class="dash-stat"><span class="dash-val">${totalQs}</span><span class="dash-lbl">Questions Done</span></div>
     <div class="dash-stat"><span class="dash-val">${bestScore}%</span><span class="dash-lbl">Best Score</span></div>
     <div class="dash-stat"><span class="dash-val">${speedLabel}</span><span class="dash-lbl">Avg Time / Question</span></div>
-    <div class="dash-stat"><span class="dash-val">${streak>0?'🔥'+streak:'—'}</span><span class="dash-lbl">Day Streak</span></div>
+    <div class="dash-stat"><span class="dash-val">${streak>0?'🔥'+streak:'-'}</span><span class="dash-lbl">Day Streak</span></div>
   `;
 }
 
@@ -246,7 +246,7 @@ function renderHistory(p){
   const table = document.getElementById('histTable');
   if(!hist.length){title.style.display='none';table.style.display='none';return;}
   title.style.display='block'; table.style.display='table';
-  title.textContent = `Recent Sessions — ${p.avatar} ${p.name}`;
+  title.textContent = `Recent Sessions - ${p.avatar} ${p.name}`;
   const tbody = document.getElementById('histBody');
   tbody.innerHTML = hist.map(h=>{
     const pct = Math.round(h.correct/h.total*100);
@@ -257,7 +257,7 @@ function renderHistory(p){
     const cls = pct>=80?'ok':'no';
     const m=Math.floor(h.secs/60),s=h.secs%60;
     const avgQ = h.total > 0 ? Math.round((h.secs||0)/h.total) : 0;
-    const avgQLabel = avgQ===0?'—':avgQ<=15?avgQ+'s ⚡':avgQ<=35?avgQ+'s 🎯':avgQ+'s 🐢';
+    const avgQLabel = avgQ===0?'-':avgQ<=15?avgQ+'s ⚡':avgQ<=35?avgQ+'s 🎯':avgQ+'s 🐢';
     return `<tr><td>${d}</td><td>${lvl}</td><td>${h.total}</td>
       <td class="${cls}">${h.correct}/${h.total} (${pct}%)</td>
       <td class="${cls}">${h.pts}/${h.max} pts</td>
@@ -298,7 +298,7 @@ function renderLeaderboard(){
 
 window.addEventListener('DOMContentLoaded',()=>{
   renderProfiles();
-  renderLeaderboard();  // now async — fetches from Supabase
+  renderLeaderboard();  // now async - fetches from Supabase
   // Auto-select first profile if exists
   const profs = loadProfiles();
   if(profs.length) selectProfile(profs[0]);
@@ -333,7 +333,7 @@ async function renderLeaderboard() {
   const sbSessions = await fetchSupabaseSessions();
 
   if(sbSessions && sbSessions.length > 0) {
-    // Use Supabase data — group by player
+    // Use Supabase data - group by player
     const now = new Date(); 
     const weekAgo = new Date(now - 7*24*3600*1000);
     const weekSessions = sbSessions.filter(s => new Date(s.created_at) > weekAgo);
@@ -362,7 +362,7 @@ async function renderLeaderboard() {
     }).sort((a,b)=>b.avgPct-a.avgPct||(b.totalQs-a.totalQs));
 
     if(!data.length) {
-      lb.innerHTML = '<div class="no-hist">No sessions this week yet — start practising!</div>';
+      lb.innerHTML = '<div class="no-hist">No sessions this week yet - start practising!</div>';
       return;
     }
 
