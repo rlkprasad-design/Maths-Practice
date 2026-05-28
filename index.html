@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maths Practice </title>
+<title>Maths Practice — Home</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -66,7 +66,53 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
 .lb-sub{font-size:.72rem;color:var(--muted);font-weight:600}
 .lb-score{font-size:.88rem;font-weight:900;color:var(--accent)}
 .no-hist{text-align:center;padding:32px;color:var(--muted);font-weight:700;font-size:.88rem}
+/* AVATAR PICKER MODAL */
+.avatar-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9000;
+  display:flex;align-items:center;justify-content:center;padding:16px}
+.avatar-box{background:#fff;border-radius:20px;padding:28px 24px;max-width:360px;
+  width:100%;box-shadow:0 8px 32px rgba(0,0,0,.18);text-align:center}
+.avatar-box h3{font-size:1.05rem;font-weight:900;color:var(--text);margin-bottom:6px}
+.avatar-box p{font-size:.8rem;color:var(--muted);font-weight:600;margin-bottom:16px}
+.avatar-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:18px}
+.av-opt{font-size:1.8rem;padding:6px;border-radius:10px;border:3px solid transparent;
+  cursor:pointer;transition:.15s;line-height:1}
+.av-opt:hover{background:var(--accent-l);transform:scale(1.15)}
+.av-opt.selected{border-color:var(--accent);background:var(--accent-l);transform:scale(1.1)}
+.avatar-name-row{display:flex;gap:8px;margin-bottom:14px}
+.avatar-name-input{flex:1;padding:9px 12px;border:2px solid var(--border);border-radius:8px;
+  font-family:var(--font);font-size:.95rem;font-weight:700;outline:none}
+.avatar-name-input:focus{border-color:var(--accent)}
+.btn-create{width:100%;padding:11px;background:var(--accent);color:#fff;border:none;
+  border-radius:50px;font-family:var(--font);font-size:.95rem;font-weight:900;
+  cursor:pointer;transition:.15s}
+.btn-create:hover{background:#3a5ccc}
+.btn-create:disabled{opacity:.4;pointer-events:none}
+.btn-cancel-av{width:100%;padding:8px;background:transparent;color:var(--muted);
+  border:none;font-family:var(--font);font-size:.82rem;font-weight:700;
+  cursor:pointer;margin-top:6px}
 @media(max-width:600px){.levels-grid{grid-template-columns:1fr}.dash-grid{grid-template-columns:1fr 1fr}.hero-title{font-size:1.8rem}}
+
+/* ADMIN RESET PANEL */
+.admin-trigger{cursor:pointer;user-select:none}
+.admin-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);
+  z-index:9999;align-items:center;justify-content:center;padding:16px}
+.admin-panel.open{display:flex}
+.admin-box{background:#fff;border-radius:20px;padding:32px 26px;max-width:360px;
+  width:100%;box-shadow:0 8px 32px rgba(0,0,0,.2);text-align:center}
+.admin-box h3{font-size:1.1rem;font-weight:900;color:#1e2a45;margin-bottom:6px}
+.admin-box p{font-size:.82rem;color:#6b7a99;font-weight:600;margin-bottom:22px;line-height:1.5}
+.btn-reset-all{width:100%;padding:12px;background:#ef4444;color:#fff;border:none;
+  border-radius:50px;font-family:var(--font,system-ui);font-size:.95rem;font-weight:900;
+  cursor:pointer;transition:.15s;margin-bottom:8px}
+.btn-reset-all:hover{background:#dc2626}
+.btn-reset-local{width:100%;padding:12px;background:#f59e0b;color:#fff;border:none;
+  border-radius:50px;font-family:var(--font,system-ui);font-size:.95rem;font-weight:900;
+  cursor:pointer;transition:.15s;margin-bottom:8px}
+.btn-reset-local:hover{background:#d97706}
+.btn-close-admin{width:100%;padding:10px;background:transparent;color:#6b7a99;
+  border:none;font-family:var(--font,system-ui);font-size:.85rem;font-weight:700;cursor:pointer}
+.admin-status{font-size:.8rem;font-weight:800;margin-top:12px;min-height:20px}
+.admin-status.ok{color:#16a34a}.admin-status.err{color:#ef4444}
 </style>
 </head>
 <body>
@@ -74,9 +120,9 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
 
   <!-- HERO -->
   <div class="hero">
-    <span class="hero-logo">🦘</span>
+    <span class="hero-logo admin-trigger" id="adminTrigger" title="">🦘</span>
     <div class="hero-title">Maths Practice</div>
-    <div class="hero-sub"> Hi Pillulu... idi mee kosam </div>
+    <div class="hero-sub">Känguru der Mathematik · Family Edition</div>
   </div>
 
   <!-- PROFILES -->
@@ -85,12 +131,12 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
 
   <!-- DASHBOARD for selected profile -->
   <div id="dashSection" style="display:none">
-    <div class="section-title">Your Progress - <span id="dashName"></span></div>
+    <div class="section-title">Your Progress — <span id="dashName"></span></div>
     <div class="dash-grid" id="dashGrid"></div>
   </div>
 
   <!-- LEADERBOARD -->
-  <div class="section-title">Family Leaderboard - This Week</div>
+  <div class="section-title">Family Leaderboard — This Week</div>
   <div class="leaderboard" id="leaderboard"></div>
 
   <!-- LEVELS -->
@@ -98,7 +144,7 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
   <div class="levels-grid">
 
     <a href="felix.html" class="level-card" style="border-color:#4f72e3">
-      <span class="lc-tag" style="background:#e8edfb;color:#4f72e3">Felix</span>
+      <span class="lc-tag" style="background:#e8edfb;color:#4f72e3">Känguru Felix</span>
       <span class="lc-icon">🐨</span>
       <div class="lc-name" style="color:#4f72e3">Felix</div>
       <div class="lc-grade">Grades 1 – 2</div>
@@ -106,7 +152,7 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
     </a>
 
     <a href="ecolier.html" class="level-card" style="border-color:#16a34a">
-      <span class="lc-tag" style="background:#dcfce7;color:#16a34a">Écolier</span>
+      <span class="lc-tag" style="background:#dcfce7;color:#16a34a">Känguru Écolier</span>
       <span class="lc-icon">🦘</span>
       <div class="lc-name" style="color:#16a34a">Écolier</div>
       <div class="lc-grade">Grades 3 – 4</div>
@@ -148,14 +194,81 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
 
 </div>
 
+<!-- AVATAR PICKER MODAL -->
+<div class="avatar-modal" id="avatarModal" style="display:none">
+  <div class="avatar-box">
+    <h3>Add a Kid 👋</h3>
+    <p>Pick an emoji and type a name</p>
+    <div class="avatar-grid" id="avatarGrid"></div>
+    <div class="avatar-name-row">
+      <input class="avatar-name-input" id="avatarNameInput" type="text"
+        placeholder="Kid's name..." maxlength="20"
+        oninput="checkCreateReady()"
+        onkeydown="if(event.key==='Enter')confirmAddProfile()">
+    </div>
+    <button class="btn-create" id="btnCreate" onclick="confirmAddProfile()" disabled>✓ Create Profile</button>
+    <button class="btn-cancel-av" onclick="closeAvatarModal()">Cancel</button>
+  </div>
+</div>
+
 <script>
 const PFX = 'mkp_';
 let activeProfile = null;
-const AVATARS = ['🦁','🐯','🐻','🦊','🐼','🐨','🐸','🦉','🐬','🦄'];
+let _selectedAvatar = null;
+
+const ALL_AVATARS = [
+  '🦁','🐯','🐻','🦊','🐼','🐨','🐸','🦉','🐬','🦄',
+  '🐶','🐱','🐭','🐹','🐰','🦋','🐧','🦜','🐙','🦕',
+  '🌟','⚡','🔥','🌈','🎯','🎸','🚀','🎩','🌺','🍀'
+];
 
 function loadProfiles(){ try{return JSON.parse(localStorage.getItem(PFX+'profiles')||'[]');}catch(e){return [];} }
 function saveProfiles(p){ localStorage.setItem(PFX+'profiles',JSON.stringify(p)); }
 function loadHistory(name){ try{return JSON.parse(localStorage.getItem(PFX+'hist_'+name)||'[]');}catch(e){return [];} }
+
+function addProfile() {
+  _selectedAvatar = null;
+  const grid = document.getElementById('avatarGrid');
+  grid.innerHTML = '';
+  ALL_AVATARS.forEach(em => {
+    const btn = document.createElement('div');
+    btn.className = 'av-opt';
+    btn.textContent = em;
+    btn.onclick = () => {
+      _selectedAvatar = em;
+      grid.querySelectorAll('.av-opt').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      checkCreateReady();
+      document.getElementById('avatarNameInput').focus();
+    };
+    grid.appendChild(btn);
+  });
+  document.getElementById('avatarNameInput').value = '';
+  document.getElementById('btnCreate').disabled = true;
+  document.getElementById('avatarModal').style.display = 'flex';
+}
+
+function checkCreateReady() {
+  const name = document.getElementById('avatarNameInput').value.trim();
+  document.getElementById('btnCreate').disabled = !(name && _selectedAvatar);
+}
+
+function closeAvatarModal() {
+  document.getElementById('avatarModal').style.display = 'none';
+  _selectedAvatar = null;
+}
+
+function confirmAddProfile() {
+  const name = document.getElementById('avatarNameInput').value.trim();
+  if(!name || !_selectedAvatar) return;
+  const profs = loadProfiles();
+  if(profs.find(p => p.name === name)) { alert('That name is already taken!'); return; }
+  profs.push({ name, avatar: _selectedAvatar });
+  saveProfiles(profs);
+  closeAvatarModal();
+  selectProfile({ name, avatar: _selectedAvatar });
+}
+
 
 function renderProfiles(){
   const profs = loadProfiles();
@@ -196,16 +309,7 @@ function selectProfile(p){
   renderLeaderboard();
 }
 
-function addProfile(){
-  const name = prompt("Kid's name?");
-  if(!name||!name.trim()) return;
-  const profs = loadProfiles();
-  if(profs.find(x=>x.name===name.trim())){alert('Name already exists!');return;}
-  const avatar = AVATARS[profs.length % AVATARS.length];
-  profs.push({name:name.trim(),avatar});
-  saveProfiles(profs);
-  selectProfile({name:name.trim(),avatar});
-}
+
 
 function renderDash(p){
   const hist = loadHistory(p.name);
@@ -224,8 +328,8 @@ function renderDash(p){
   const totalQsForTime = hist.reduce((a,h)=>a+h.total,0);
   const avgSecsPerQ = totalQsForTime > 0 ? Math.round(totalSecs / totalQsForTime) : 0;
 
-  // Speed label - gives context to the number
-  const speedLabel = avgSecsPerQ === 0 ? '-'
+  // Speed label — gives context to the number
+  const speedLabel = avgSecsPerQ === 0 ? '—'
     : avgSecsPerQ <= 15 ? avgSecsPerQ + 's ⚡'
     : avgSecsPerQ <= 35 ? avgSecsPerQ + 's 🎯'
     : avgSecsPerQ + 's 🐢';
@@ -236,7 +340,7 @@ function renderDash(p){
     <div class="dash-stat"><span class="dash-val">${totalQs}</span><span class="dash-lbl">Questions Done</span></div>
     <div class="dash-stat"><span class="dash-val">${bestScore}%</span><span class="dash-lbl">Best Score</span></div>
     <div class="dash-stat"><span class="dash-val">${speedLabel}</span><span class="dash-lbl">Avg Time / Question</span></div>
-    <div class="dash-stat"><span class="dash-val">${streak>0?'🔥'+streak:'-'}</span><span class="dash-lbl">Day Streak</span></div>
+    <div class="dash-stat"><span class="dash-val">${streak>0?'🔥'+streak:'—'}</span><span class="dash-lbl">Day Streak</span></div>
   `;
 }
 
@@ -246,7 +350,7 @@ function renderHistory(p){
   const table = document.getElementById('histTable');
   if(!hist.length){title.style.display='none';table.style.display='none';return;}
   title.style.display='block'; table.style.display='table';
-  title.textContent = `Recent Sessions - ${p.avatar} ${p.name}`;
+  title.textContent = `Recent Sessions — ${p.avatar} ${p.name}`;
   const tbody = document.getElementById('histBody');
   tbody.innerHTML = hist.map(h=>{
     const pct = Math.round(h.correct/h.total*100);
@@ -257,7 +361,7 @@ function renderHistory(p){
     const cls = pct>=80?'ok':'no';
     const m=Math.floor(h.secs/60),s=h.secs%60;
     const avgQ = h.total > 0 ? Math.round((h.secs||0)/h.total) : 0;
-    const avgQLabel = avgQ===0?'-':avgQ<=15?avgQ+'s ⚡':avgQ<=35?avgQ+'s 🎯':avgQ+'s 🐢';
+    const avgQLabel = avgQ===0?'—':avgQ<=15?avgQ+'s ⚡':avgQ<=35?avgQ+'s 🎯':avgQ+'s 🐢';
     return `<tr><td>${d}</td><td>${lvl}</td><td>${h.total}</td>
       <td class="${cls}">${h.correct}/${h.total} (${pct}%)</td>
       <td class="${cls}">${h.pts}/${h.max} pts</td>
@@ -298,7 +402,7 @@ function renderLeaderboard(){
 
 window.addEventListener('DOMContentLoaded',()=>{
   renderProfiles();
-  renderLeaderboard();  // now async - fetches from Supabase
+  renderLeaderboard();  // now async — fetches from Supabase
   // Auto-select first profile if exists
   const profs = loadProfiles();
   if(profs.length) selectProfile(profs[0]);
@@ -333,7 +437,7 @@ async function renderLeaderboard() {
   const sbSessions = await fetchSupabaseSessions();
 
   if(sbSessions && sbSessions.length > 0) {
-    // Use Supabase data - group by player
+    // Use Supabase data — group by player
     const now = new Date(); 
     const weekAgo = new Date(now - 7*24*3600*1000);
     const weekSessions = sbSessions.filter(s => new Date(s.created_at) > weekAgo);
@@ -362,7 +466,7 @@ async function renderLeaderboard() {
     }).sort((a,b)=>b.avgPct-a.avgPct||(b.totalQs-a.totalQs));
 
     if(!data.length) {
-      lb.innerHTML = '<div class="no-hist">No sessions this week yet - start practising!</div>';
+      lb.innerHTML = '<div class="no-hist">No sessions this week yet — start practising!</div>';
       return;
     }
 
@@ -413,6 +517,96 @@ async function renderLeaderboard() {
 }
 // ─────────────────────────────────────────────────────────────────────────
 
+
+// ── ADMIN RESET ───────────────────────────────────────────────────────────
+let _adminTaps = 0, _adminTimer = null;
+
+document.getElementById('adminTrigger').addEventListener('click', () => {
+  _adminTaps++;
+  if(_adminTimer) clearTimeout(_adminTimer);
+  // Reset tap count if no tap within 2 seconds
+  _adminTimer = setTimeout(() => { _adminTaps = 0; }, 2000);
+  if(_adminTaps >= 5) {
+    _adminTaps = 0;
+    document.getElementById('adminStatus').textContent = '';
+    document.getElementById('adminPanel').classList.add('open');
+  }
+});
+
+function closeAdmin() {
+  document.getElementById('adminPanel').classList.remove('open');
+}
+
+function setAdminStatus(msg, type) {
+  const el = document.getElementById('adminStatus');
+  el.textContent = msg;
+  el.className = 'admin-status ' + type;
+}
+
+function adminResetLocal() {
+  if(!confirm('Clear all profiles and scores on THIS device only?')) return;
+  Object.keys(localStorage)
+    .filter(k => k.startsWith('mkp_'))
+    .forEach(k => localStorage.removeItem(k));
+  setAdminStatus('✓ This device cleared!', 'ok');
+  activeProfile = null;
+  setTimeout(() => { closeAdmin(); renderProfiles(); renderLeaderboard(); }, 1200);
+}
+
+async function adminResetAll() {
+  if(!confirm('Delete ALL scores from ALL devices (Supabase + this device)?')) return;
+  if(!confirm('Are you absolutely sure? This cannot be undone.')) return;
+  
+  setAdminStatus('⏳ Clearing...', '');
+
+  // Clear Supabase
+  let sbOk = false;
+  try {
+    const res = await fetch('https://ewogowpkewtrzsslfysv.supabase.co/rest/v1/sessions?id=neq.00000000-0000-0000-0000-000000000000', {
+      method: 'DELETE',
+      headers: {
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3b2dvd3BrZXd0cnpzc2xmeXN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTIzNDEsImV4cCI6MjA5NTUyODM0MX0.KYsUwS2-9B0XZWDa9V3SOW6xJ3kwZGTDH2G0b_qsOvs',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3b2dvd3BrZXd0cnpzc2xmeXN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTIzNDEsImV4cCI6MjA5NTUyODM0MX0.KYsUwS2-9B0XZWDa9V3SOW6xJ3kwZGTDH2G0b_qsOvs',
+      }
+    });
+    sbOk = res.ok || res.status === 204;
+  } catch(e) {
+    console.warn('Supabase delete failed:', e);
+  }
+
+  // Clear localStorage on this device
+  Object.keys(localStorage)
+    .filter(k => k.startsWith('mkp_'))
+    .forEach(k => localStorage.removeItem(k));
+
+  if(sbOk) {
+    setAdminStatus('✓ All data cleared everywhere!', 'ok');
+  } else {
+    setAdminStatus('✓ Local cleared. Supabase: go to dashboard and run DELETE FROM sessions;', 'err');
+  }
+
+  activeProfile = null;
+  setTimeout(() => { closeAdmin(); renderProfiles(); renderLeaderboard(); }, 2000);
+}
+// ─────────────────────────────────────────────────────────────────────────
+
 </script>
+
+<!-- ADMIN RESET PANEL (tap logo 5 times to open) -->
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-box">
+    <h3>⚙️ Admin Reset</h3>
+    <p>This will permanently delete all profiles and scores.<br>Use with care — this cannot be undone.</p>
+    <button class="btn-reset-all" onclick="adminResetAll()">
+      🗑️ Reset Everything (all devices)
+    </button>
+    <button class="btn-reset-local" onclick="adminResetLocal()">
+      💻 Reset This Device Only
+    </button>
+    <button class="btn-close-admin" onclick="closeAdmin()">Cancel</button>
+    <div class="admin-status" id="adminStatus"></div>
+  </div>
+</div>
+
 </body>
 </html>
