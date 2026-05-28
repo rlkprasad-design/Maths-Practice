@@ -1051,6 +1051,53 @@ function buildReviewTable(){
   el.innerHTML=h;
 }
 
+
+// ── SUPABASE SYNC ─────────────────────────────────────────────────────────
+const SB_URL = 'https://ewogowpkewtrzsslfysv.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3b2dvd3BrZXd0cnpzc2xmeXN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTIzNDEsImV4cCI6MjA5NTUyODM0MX0.KYsUwS2-9B0XZWDa9V3SOW6xJ3kwZGTDH2G0b_qsOvs';
+
+async function saveToSupabase(result) {
+  try {
+    const response = await fetch(SB_URL + '/rest/v1/sessions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SB_KEY,
+        'Authorization': 'Bearer ' + SB_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        player_name: result.playerName,
+        player_avatar: result.playerAvatar,
+        level: result.level,
+        total_questions: result.total,
+        correct: result.correct,
+        pts: result.pts,
+        max_pts: result.max,
+        secs: result.secs,
+        session_date: result.date
+      })
+    });
+    if(!response.ok) console.warn('Supabase save failed:', response.status);
+  } catch(e) {
+    console.warn('Supabase offline, saved locally only:', e.message);
+  }
+}
+
+// Override saveToHistory to also sync to Supabase
+const _origSaveToHistory = saveToHistory;
+function saveToHistory(result) {
+  _origSaveToHistory(result);  // keep local save
+  if(S.profile) {
+    saveToSupabase({
+      ...result,
+      playerName: S.profile.name,
+      playerAvatar: S.profile.avatar
+    });
+  }
+}
+// ─────────────────────────────────────────────────────────────────────────
+
 </script>
 </body>
 </html>
