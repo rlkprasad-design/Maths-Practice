@@ -955,13 +955,23 @@ function checkAutoFinish(){
 }
 function finishSession(){
   stopTimer(); stopSpeech();
-  // Save to history
   const {pts,max}=calcPts();
-  saveToHistory({
-    date:new Date().toISOString(),level:LEVEL_ID,
-    total:S.sessionQs.length,correct:Object.values(S.answers).filter(a=>a.correct).length,
-    pts,max,secs:S.timerSecs
-  });
+  const result = {
+    date:new Date().toISOString(), level:LEVEL_ID,
+    total:S.sessionQs.length,
+    correct:Object.values(S.answers).filter(a=>a.correct).length,
+    pts, max, secs:S.timerSecs
+  };
+  // Save locally first (always works, even offline)
+  saveToHistory(result);
+  // Then sync to Supabase (async, non-blocking — won't delay the end screen)
+  if(S.profile) {
+    saveToSupabase({
+      ...result,
+      playerName: S.profile.name,
+      playerAvatar: S.profile.avatar
+    });
+  }
   saveSession(true); showScreen('endScreen'); renderEndScreen(S.timerSecs); launchConfetti();
 }
 function calcPts(){
@@ -1242,6 +1252,8 @@ window.addEventListener('DOMContentLoaded',()=>{
   if(!loadSession()){showScreen('lockScreen');}
 });
 
+
+
 // ── SUPABASE SYNC ─────────────────────────────────────────────────────────
 const SB_URL = 'https://ewogowpkewtrzsslfysv.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3b2dvd3BrZXd0cnpzc2xmeXN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTIzNDEsImV4cCI6MjA5NTUyODM0MX0.KYsUwS2-9B0XZWDa9V3SOW6xJ3kwZGTDH2G0b_qsOvs';
@@ -1269,21 +1281,9 @@ async function saveToSupabase(result) {
       })
     });
     if(!response.ok) console.warn('Supabase save failed:', response.status);
+    else console.log('Supabase: session saved for', result.playerName);
   } catch(e) {
     console.warn('Supabase offline, saved locally only:', e.message);
-  }
-}
-
-// Override saveToHistory to also sync to Supabase
-const _origSaveToHistory = saveToHistory;
-function saveToHistory(result) {
-  _origSaveToHistory(result);  // keep local save
-  if(S.profile) {
-    saveToSupabase({
-      ...result,
-      playerName: S.profile.name,
-      playerAvatar: S.profile.avatar
-    });
   }
 }
 // ─────────────────────────────────────────────────────────────────────────
