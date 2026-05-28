@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maths Practice — CBSE Class 3→4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0f4ff;--surface:#fff;--surface2:#f7f9ff;--border:#dde3f4;
+  --text:#1e2a45;--muted:#6b7a99;--accent:#4f72e3;--accent-l:#e8edfb;
+  --green:#22c55e;--green-l:#dcfce7;--orange:#f59e0b;--orange-l:#fef3c7;
+  --red:#ef4444;--red-l:#fee2e2;--purple:#8b5cf6;--purple-l:#ede9fe;
+  --r:14px;--rs:8px;--sh:0 2px 12px rgba(79,114,227,.10);
+  --shm:0 4px 24px rgba(79,114,227,.14);--tr:.18s cubic-bezier(.4,0,.2,1);
+  --font:'Nunito',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+.screen{display:none;min-height:100vh}.screen.active{display:flex;flex-direction:column}
+/* LOCK */
+#lockScreen{align-items:center;justify-content:center;padding:24px;
+  background:linear-gradient(135deg,#e8edfb,#f0f4ff,#e0f2fe)}
+.lock-card{background:var(--surface);border-radius:24px;padding:40px 36px;
+  max-width:520px;width:100%;box-shadow:var(--shm)}
+.lock-logo{font-size:54px;margin-bottom:8px;display:block;text-align:center}
+.lock-title{font-size:2rem;font-weight:900;color:var(--accent);margin-bottom:3px;
+  letter-spacing:-.5px;text-align:center}
+.lock-sub{color:var(--muted);font-size:.9rem;margin-bottom:22px;font-weight:600;text-align:center}
+.lock-sec{margin-bottom:18px}
+.lock-lbl{font-weight:800;font-size:.88rem;color:var(--text);margin-bottom:7px;display:block}
+/* PROFILE SELECTOR */
+.profile-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.profile-chip{display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:10px 14px;border-radius:var(--r);border:2.5px solid var(--border);
+  background:var(--surface2);cursor:pointer;transition:var(--tr);min-width:72px}
+.profile-chip:hover{border-color:var(--accent);background:var(--accent-l)}
+.profile-chip.active{border-color:var(--accent);background:var(--accent-l);
+  box-shadow:0 0 0 2px var(--accent)}
+.profile-chip .p-avatar{font-size:1.6rem}
+.profile-chip .p-name{font-size:.72rem;font-weight:800;color:var(--text)}
+.btn-add-profile{padding:8px 14px;border-radius:50px;border:2px dashed var(--border);
+  background:transparent;font-family:var(--font);font-size:.78rem;font-weight:800;
+  color:var(--muted);cursor:pointer;transition:var(--tr)}
+.btn-add-profile:hover{border-color:var(--accent);color:var(--accent)}
+/* NUM STEPPER */
+.num-wrap{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:6px}
+.num-btn{width:38px;height:38px;border-radius:50%;border:2.5px solid var(--border);
+  background:var(--surface2);font-family:var(--font);font-size:1.2rem;font-weight:900;
+  cursor:pointer;color:var(--accent);transition:var(--tr);display:flex;align-items:center;justify-content:center}
+.num-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.num-disp{font-size:1.9rem;font-weight:900;color:var(--accent);min-width:54px;
+  text-align:center;padding:6px 12px;background:var(--accent-l);border-radius:var(--rs)}
+.qp-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.qp{padding:4px 11px;border-radius:50px;border:2px solid var(--border);background:var(--surface2);
+  font-family:var(--font);font-size:.76rem;font-weight:800;cursor:pointer;color:var(--muted);transition:var(--tr)}
+.qp:hover{border-color:var(--accent);color:var(--accent)}.qp.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+/* CAT FILTER */
+.cat-wrap{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.cf{padding:4px 10px;border-radius:50px;border:2px solid var(--border);background:var(--surface2);
+  font-family:var(--font);font-size:.74rem;font-weight:800;cursor:pointer;color:var(--muted);transition:var(--tr)}
+.cf:hover{border-color:var(--accent);color:var(--accent)}.cf.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.pool-info{font-size:.76rem;color:var(--muted);font-weight:700;text-align:center;
+  margin-bottom:14px;padding:6px;background:var(--surface2);border-radius:var(--rs)}
+.pool-info span{color:var(--accent);font-weight:900}
+.btn-start{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;
+  border-radius:50px;font-family:var(--font);font-size:1.05rem;font-weight:900;
+  cursor:pointer;transition:var(--tr);box-shadow:0 4px 16px rgba(79,114,227,.30)}
+.btn-start:hover{background:#3a5ccc;transform:translateY(-1px)}
+.btn-start:disabled{opacity:.4;pointer-events:none}
+/* HEADER */
+.hdr{background:var(--surface);border-bottom:2px solid var(--border);padding:9px 18px;
+  display:flex;align-items:center;gap:11px;position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.hdr-logo{font-size:22px}
+.hdr-title{font-size:.92rem;font-weight:900;color:var(--accent);flex:1}
+.hdr-profile{display:flex;align-items:center;gap:5px;background:var(--surface2);
+  border:1.5px solid var(--border);border-radius:50px;padding:4px 10px;font-size:.76rem;font-weight:800}
+.timer{display:flex;align-items:center;gap:4px;background:var(--accent-l);color:var(--accent);
+  padding:4px 11px;border-radius:50px;font-weight:800;font-size:.9rem;font-variant-numeric:tabular-nums}
+.btn-rst{padding:6px 11px;background:var(--red-l);color:var(--red);border:none;border-radius:50px;
+  font-family:var(--font);font-weight:800;font-size:.76rem;cursor:pointer;transition:var(--tr)}
+.btn-rst:hover{background:var(--red);color:#fff}
+/* SCORE BAR */
+.sbar{background:var(--surface);padding:6px 18px;display:flex;align-items:center;gap:11px;
+  border-bottom:1px solid var(--border);flex-wrap:wrap}
+.sp{display:flex;align-items:center;gap:3px;font-weight:800;font-size:.82rem}
+.sp .dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block}
+.sp .dot.a{background:var(--accent)}
+.prog-wrap{flex:1;min-width:60px;height:7px;background:var(--border);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:99px;transition:width .4s}
+/* LAYOUT */
+.layout{display:flex;flex:1;max-width:1120px;margin:0 auto;width:100%;padding:14px 10px;gap:13px}
+/* SIDEBAR */
+.sidebar{width:195px;flex-shrink:0}
+.sb-sec{margin-bottom:13px}
+.sb-hd{font-size:.65rem;font-weight:900;letter-spacing:1.1px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:5px;padding-left:3px}
+.cat-btn{display:block;width:100%;text-align:left;padding:6px 9px;border-radius:var(--rs);
+  border:2px solid transparent;font-family:var(--font);font-size:.78rem;font-weight:700;
+  cursor:pointer;background:var(--surface);color:var(--muted);margin-bottom:2px;transition:var(--tr)}
+.cat-btn:hover{background:var(--accent-l);color:var(--accent)}
+.cat-btn.on{background:var(--accent-l);color:var(--accent);border-color:var(--accent)}
+.cat-btn .cc{float:right;background:var(--border);border-radius:99px;padding:1px 5px;
+  font-size:.66rem;font-weight:800}
+.cat-btn.on .cc{background:var(--accent);color:#fff}
+.pills{display:flex;flex-wrap:wrap;gap:3px}
+.pill{width:28px;height:28px;border-radius:50%;border:2.5px solid var(--border);
+  background:var(--surface);font-family:var(--font);font-weight:800;font-size:.7rem;
+  cursor:pointer;color:var(--muted);transition:var(--tr);display:flex;align-items:center;justify-content:center}
+.pill:hover{border-color:var(--accent);color:var(--accent)}
+.pill.cur{background:var(--accent);border-color:var(--accent);color:#fff;
+  box-shadow:0 2px 8px rgba(79,114,227,.35)}
+.pill.ok{background:var(--green);border-color:var(--green);color:#fff}
+.pill.tried:not(.ok){background:var(--orange-l);border-color:var(--orange);color:var(--orange)}
+.pill.tried.cur:not(.ok){background:var(--orange);color:#fff}
+.pill.locked:not(.ok):not(.tried){opacity:.5}
+/* Q CARD */
+.content{flex:1;min-width:0}
+.qcard{background:var(--surface);border-radius:16px;overflow:hidden;
+  box-shadow:var(--sh);margin-bottom:11px;transition:box-shadow .12s}
+.qcard-hdr{padding:11px 17px;display:flex;align-items:center;gap:7px;
+  border-bottom:2px solid var(--border);flex-wrap:wrap}
+.qnum{font-size:.72rem;font-weight:900;color:var(--muted)}
+.qbadge{padding:2px 8px;border-radius:50px;font-size:.68rem;font-weight:800}
+.qtopic{font-size:.74rem;color:var(--muted);font-weight:600}
+.qyear{font-size:.66rem;color:var(--muted);font-weight:700;margin-left:auto;opacity:.6}
+.qsts{font-size:1rem;margin-left:4px}
+.pts-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;
+  border-radius:50px;font-size:.68rem;font-weight:900}
+.pts-badge.full{background:#dcfce7;color:#15803d;border:1.5px solid #86efac}
+.pts-badge.part{background:#fef3c7;color:#b45309;border:1.5px solid #fde68a}
+.pts-badge.min{background:#fee2e2;color:#b91c1c;border:1.5px solid #fca5a5}
+/* TABS */
+.tabs{display:flex;border-bottom:2px solid var(--border);padding:0 17px;gap:2px}
+.tab{padding:9px 12px;border:none;background:none;font-family:var(--font);font-size:.8rem;
+  font-weight:800;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;
+  margin-bottom:-2px;transition:var(--tr);border-radius:var(--rs) var(--rs) 0 0}
+.tab:hover{color:var(--accent);background:var(--accent-l)}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent);background:var(--accent-l)}
+.tab-pts{font-size:.6rem;font-weight:900;margin-left:3px;padding:1px 4px;border-radius:50px}
+.tab-pts.full{background:#dcfce7;color:#15803d}.tab-pts.part{background:#fef3c7;color:#b45309}
+.tab-pts.min{background:#fee2e2;color:#b91c1c}
+.panel{display:none}.panel.on{display:block}
+.sc{padding:18px 17px}
+/* HINT */
+.hint{display:flex;align-items:center;gap:6px;background:var(--surface2);
+  border:1.5px solid var(--border);border-radius:var(--rs);padding:6px 10px;
+  margin-bottom:11px;font-size:.76rem;font-weight:700;color:var(--muted)}
+/* IMAGE */
+.qimg{margin-bottom:13px;text-align:center;background:var(--surface2);
+  border:2px solid var(--border);border-radius:var(--r);padding:8px;overflow:hidden}
+.qimg img{max-width:100%;height:auto;border-radius:5px;display:block;margin:0 auto}
+.qimg.sm img{max-height:170px;width:auto}
+.qimg-cap{font-size:.68rem;color:var(--muted);font-weight:700;margin-top:4px;font-style:italic}
+/* WORD */
+.word{font-size:1rem;font-weight:700;line-height:1.7;color:var(--text);
+  background:linear-gradient(135deg,#fffbeb,#fef3c7);border:2px solid #fde68a;
+  border-radius:var(--r);padding:15px;margin-bottom:12px}
+.btn-tts{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;
+  background:var(--orange-l);color:#b45309;border:2px solid var(--orange);border-radius:50px;
+  font-family:var(--font);font-weight:800;font-size:.8rem;cursor:pointer;transition:var(--tr);margin-bottom:13px}
+.btn-tts:hover{background:var(--orange);color:#fff}
+.btn-tts.sp{animation:pulse 1s infinite}
+/* MCQ */
+.mcq-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.mcq-opt{display:flex;align-items:center;gap:8px;padding:10px 12px;
+  border-radius:var(--rs);border:2.5px solid var(--border);background:var(--surface2);
+  cursor:pointer;transition:var(--tr);font-family:var(--font);font-size:.9rem;font-weight:700;
+  color:var(--text);user-select:none}
+.mcq-opt:hover:not(.locked){border-color:var(--accent);background:var(--accent-l)}
+.mcq-opt.selected{border-color:var(--accent);background:var(--accent-l)}
+.mcq-opt.correct{border-color:var(--green)!important;background:var(--green-l)!important;color:#15803d}
+.mcq-opt.wrong{border-color:var(--red)!important;background:var(--red-l)!important;color:#b91c1c}
+.mcq-opt.reveal{border-color:var(--green)!important;background:#f0fdf4!important;color:#15803d}
+.mcq-opt.locked{pointer-events:none;opacity:.75}
+.mcq-key{font-size:.82rem;font-weight:900;width:22px;height:22px;border-radius:50%;
+  background:var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mcq-opt.selected .mcq-key{background:var(--accent);color:#fff}
+.mcq-opt.correct .mcq-key{background:var(--green);color:#fff}
+.mcq-opt.wrong .mcq-key{background:var(--red);color:#fff}
+.mcq-opt.reveal .mcq-key{background:var(--green);color:#fff}
+.mcq-note{font-size:.74rem;color:var(--muted);font-weight:700;margin-bottom:10px;
+  padding:5px 9px;background:var(--surface2);border-radius:var(--rs);display:inline-block}
+.feedback{margin-top:8px;padding:7px 11px;border-radius:var(--rs);font-weight:800;
+  font-size:.83rem;display:none}
+.feedback.on{display:block}
+.feedback.ok{background:var(--green-l);color:#15803d}
+.feedback.no{background:var(--red-l);color:#b91c1c}
+/* STEPS */
+.steps-list{list-style:none;margin-bottom:15px}
+.steps-list li{display:flex;align-items:flex-start;gap:9px;padding:9px 11px;
+  border-radius:var(--rs);background:var(--surface2);border:1.5px solid var(--border);
+  margin-bottom:7px;font-size:.91rem;font-weight:700;color:var(--text);line-height:1.5}
+.sn{min-width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;
+  font-size:.68rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.blank{display:inline-block;min-width:32px;border-bottom:2.5px solid var(--accent);
+  font-weight:900;color:var(--accent);text-align:center}
+/* EQ */
+.eq{font-size:1.7rem;font-weight:900;color:var(--text);text-align:center;
+  padding:20px 12px;background:linear-gradient(135deg,var(--accent-l),var(--surface2));
+  border-radius:var(--r);margin-bottom:16px;line-height:1.3}
+/* NAV */
+.qnav{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.btn-nav{padding:7px 13px;border-radius:50px;border:2.5px solid var(--border);
+  background:var(--surface);font-family:var(--font);font-weight:800;font-size:.82rem;
+  color:var(--muted);cursor:pointer;transition:var(--tr)}
+.btn-nav:hover{border-color:var(--accent);color:var(--accent)}
+.btn-nav:disabled{opacity:.3;pointer-events:none}
+.btn-fin{padding:7px 13px;background:var(--green);color:#fff;border:none;border-radius:50px;
+  font-family:var(--font);font-weight:900;font-size:.82rem;cursor:pointer;transition:var(--tr)}
+.btn-fin:hover{background:#16a34a}
+/* END SCREEN */
+#endScreen{align-items:center;justify-content:center;padding:20px;
+  background:linear-gradient(135deg,#e8edfb,#f0f4ff,#dcfce7);min-height:100vh}
+.end-card{background:var(--surface);border-radius:22px;padding:36px 30px;
+  max-width:680px;width:100%;box-shadow:var(--shm)}
+.end-top{text-align:center;margin-bottom:22px}
+.end-trophy{font-size:54px;display:block;margin-bottom:7px}
+.end-title{font-size:1.55rem;font-weight:900;color:var(--text);margin-bottom:5px}
+.end-msg{font-size:.88rem;color:var(--muted);font-weight:700;line-height:1.55;margin-bottom:16px}
+.end-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:20px}
+.end-stat{background:var(--surface2);border:2px solid var(--border);border-radius:var(--r);padding:12px 8px;text-align:center}
+.end-val{font-size:1.5rem;font-weight:900;color:var(--accent);display:block;margin-bottom:2px}
+.end-lbl{font-size:.66rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.end-bar-wrap{height:11px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:20px}
+.end-bar{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--green));transition:width 1s}
+/* REVIEW TABLE */
+.review-hd{font-size:.82rem;font-weight:900;color:var(--text);margin-bottom:10px;
+  display:flex;align-items:center;gap:8px}
+.review-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-bottom:20px}
+.review-table th{background:var(--surface2);padding:7px 9px;text-align:left;
+  font-weight:800;color:var(--muted);border-bottom:2px solid var(--border)}
+.review-table td{padding:7px 9px;border-bottom:1px solid var(--border);vertical-align:middle}
+.review-table tr:hover td{background:var(--surface2)}
+.r-thumb{width:60px;height:40px;object-fit:cover;border-radius:4px;cursor:pointer;
+  border:1.5px solid var(--border)}
+.r-ans{font-weight:900;font-size:.85rem}
+.r-ans.ok{color:#15803d}.r-ans.no{color:#b91c1c}
+.r-icon{font-size:.95rem}
+/* SEE HOW button — appears after wrong answer on word tab */
+.btn-see-how{display:inline-flex;align-items:center;gap:6px;margin-top:10px;
+  padding:9px 18px;background:linear-gradient(135deg,#ede9fe,#e8edfb);
+  color:#5b21b6;border:2px solid #c4b5fd;border-radius:50px;
+  font-family:var(--font);font-size:.85rem;font-weight:900;cursor:pointer;
+  transition:.18s;animation:pulseBtn 1.8s ease-in-out infinite}
+.btn-see-how:hover{background:#8b5cf6;color:#fff;border-color:#8b5cf6;animation:none;transform:translateY(-1px)}
+@keyframes pulseBtn{0%,100%{box-shadow:0 0 0 0 rgba(139,92,246,.4)}50%{box-shadow:0 0 0 6px rgba(139,92,246,0)}}
+/* EXPLANATION BANNER — top of Steps tab after wrong answer */
+.expl-banner{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;
+  background:linear-gradient(135deg,#fef3c7,#fffbeb);border:2px solid #f59e0b;
+  border-radius:var(--rs);margin-bottom:14px;animation:slideIn .3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.expl-icon{font-size:1.4rem;flex-shrink:0;margin-top:1px}
+.expl-title{font-size:.88rem;font-weight:800;color:#92400e;margin-bottom:2px}
+.expl-title strong{color:#b45309}
+.expl-sub{font-size:.76rem;font-weight:700;color:#b45309}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9000;
+  display:none;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.on{display:flex}
+.modal-box{background:var(--surface);border-radius:16px;padding:16px;max-width:700px;
+  width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shm)}
+.modal-img{width:100%;border-radius:8px}
+.modal-close{float:right;background:var(--red-l);color:var(--red);border:none;
+  border-radius:50px;padding:5px 12px;font-family:var(--font);font-weight:800;
+  font-size:.78rem;cursor:pointer;margin-bottom:10px}
+.end-btns{display:flex;gap:8px}
+.btn-again{flex:1;padding:12px;background:var(--accent);color:#fff;border:none;
+  border-radius:50px;font-family:var(--font);font-size:.95rem;font-weight:900;
+  cursor:pointer;transition:var(--tr);box-shadow:0 4px 14px rgba(79,114,227,.28)}
+.btn-again:hover{background:#3a5ccc;transform:translateY(-1px)}
+.btn-home{padding:12px 18px;background:var(--surface2);color:var(--muted);
+  border:2px solid var(--border);border-radius:50px;font-family:var(--font);
+  font-size:.88rem;font-weight:800;cursor:pointer;transition:var(--tr)}
+.btn-home:hover{border-color:var(--accent);color:var(--accent)}
+/* CONFETTI + EMOJI */
+.confetti-wrap{position:fixed;top:0;left:0;right:0;pointer-events:none;z-index:9999;
+  display:flex;justify-content:space-around}
+.cp{width:10px;height:14px;border-radius:2px;animation:cfFall 2.5s ease forwards}
+@keyframes cfFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}
+  100%{transform:translateY(110vh) rotate(540deg);opacity:0}}
+@keyframes eBurst{0%{transform:translate(-50%,-50%) scale(.3);opacity:1}
+  60%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.2);opacity:1}
+  100%{transform:translate(calc(-50% + var(--dx)*1.3),calc(-50% + var(--dy)*1.3)) scale(.8);opacity:0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.empty{text-align:center;padding:40px 14px;color:var(--muted);font-weight:700;font-size:.9rem}
+.empty .ei{font-size:38px;display:block;margin-bottom:8px}
+@media(max-width:700px){
+  .layout{flex-direction:column;padding:7px}.sidebar{width:100%}
+  .eq{font-size:1.3rem}.end-stats{grid-template-columns:1fr 1fr}
+  .mcq-grid{grid-template-columns:1fr}.hdr{padding:7px 11px;gap:8px}
+  .lock-card{padding:24px 14px}.end-card{padding:24px 16px}
+}
+
+/* CBSE-specific: no images, richer text layout */
+.cbse-tag{display:inline-block;padding:2px 9px;border-radius:50px;font-size:.68rem;
+  font-weight:900;background:#fff7ed;color:#ea580c;border:1.5px solid #fed7aa;margin-bottom:8px}
+.subj-badge{display:inline-block;padding:2px 8px;border-radius:50px;font-size:.68rem;font-weight:800;margin-left:6px}
+.subj-maths{background:#e8edfb;color:#4f72e3}
+.subj-science{background:#dcfce7;color:#16a34a}
+.subj-english{background:#fce7f3;color:#ec4899}
+.subj-social{background:#fef3c7;color:#d97706}
+.word{font-size:1.02rem;font-weight:700;line-height:1.75;color:var(--text);
+  background:linear-gradient(135deg,#fffbeb,#fef3c7);border:2px solid #fde68a;
+  border-radius:var(--r);padding:16px;margin-bottom:12px}
+.chapter-ref{font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:10px;
+  padding:4px 10px;background:var(--surface2);border-radius:var(--rs);display:inline-block}
+</style>
+</head>
+<body>
+
+<script>
+const LEVEL_ID = 'cbse_34';
+const QUESTION_BANK = [
+  {id:1,year:0,qnum:1,cat:'Maths — Numbers',topic:'Place value of 4-digit numbers',chapter:'Numbers up to 10,000',word:'The number 4,738 is written in words as four thousand seven hundred and thirty-eight. What is the place value of the digit 7 in this number?',opts:{'A':'7','B':'70','C':'700','D':'7,000','E':'0.7'},steps:['The number is 4,738','Identify each digit position: 4=thousands, 7=hundreds, 3=tens, 8=ones','The digit 7 is in the hundreds place','Place value of 7 = 7 × 100 = ___'],eq:'7 × 100 = ___',answer:'C'},
+  {id:2,year:0,qnum:2,cat:'Maths — Numbers',topic:'Comparing 4-digit numbers',chapter:'Numbers up to 10,000',word:'Which of these numbers is the LARGEST?',opts:{'A':'3,892','B':'3,928','C':'3,289','D':'3,982','E':'3,829'},steps:['All numbers start with 3 so compare hundreds digit next','3,892 → hundreds=8, 3,928 → hundreds=9, 3,289 → hundreds=2, 3,982 → hundreds=9, 3,829 → hundreds=8','3,928 and 3,982 both have 9 in hundreds — compare tens: 928 vs 982 → 982 is larger','Largest: ___'],eq:'Compare digit by digit: 3,982 vs 3,928 → ___',answer:'D'},
+  {id:3,year:0,qnum:3,cat:'Maths — Operations',topic:'Multiplication by 2-digit number',chapter:'Multiplication',word:'A box contains 24 crayons. A school orders 35 such boxes. How many crayons in total?',opts:{'A':'740','B':'820','C':'840','D':'860','E':'880'},steps:['We need: 24 × 35','Split: 24 × 30 = ___ and 24 × 5 = ___','Add: ___ + ___ = ___'],eq:'24 × 35 = 24×30 + 24×5 = ___ + ___ = ___',answer:'C'},
+  {id:4,year:0,qnum:4,cat:'Maths — Operations',topic:'Division with remainder',chapter:'Division',word:'Priya has 97 stickers to put equally into 9 albums. How many stickers go in each album, and how many are left over?',opts:{'A':'10 remainder 7','B':'10 remainder 8','C':'11 remainder 8','D':'10 remainder 9','E':'11 remainder 7'},steps:['Divide: 97 ÷ 9','9 × 10 = 90, so quotient = 10','Remainder = 97 - 90 = ___','Answer: 10 remainder ___'],eq:'97 ÷ 9 = 10 remainder ___',answer:'A'},
+  {id:5,year:0,qnum:5,cat:'Maths — Fractions',topic:'Comparing fractions',chapter:'Fractions',word:'Which fraction is the SMALLEST?',opts:{'A':'3/4','B':'1/2','C':'2/3','D':'1/4','E':'3/8'},steps:['To compare fractions, find a common denominator OR convert to decimals','1/4 = 0.25, 1/2 = 0.50, 2/3 ≈ 0.67, 3/8 = 0.375, 3/4 = 0.75','Smallest decimal: ___','Smallest fraction: ___'],eq:'Convert to decimals and compare → smallest = ___',answer:'D'},
+  {id:6,year:0,qnum:6,cat:'Maths — Fractions',topic:'Adding fractions same denominator',chapter:'Fractions',word:'Riya ate 2/8 of a pizza and her brother ate 3/8. What fraction of the pizza did they eat altogether?',opts:{'A':'5/16','B':'5/8','C':'6/8','D':'1/2','E':'1/4'},steps:['Same denominator: just add the numerators','2/8 + 3/8 = (2+3)/8 = ___/8','Can this be simplified? 5 and 8 share no common factor','Answer: ___'],eq:'2/8 + 3/8 = ___/8',answer:'B'},
+  {id:7,year:0,qnum:7,cat:'Maths — Measurement',topic:'Converting km and m',chapter:'Measurement',word:'A road is 3 km and 450 m long. What is its length in metres?',opts:{'A':'3,045 m','B':'3,405 m','C':'3,450 m','D':'345 m','E':'34,500 m'},steps:['1 km = 1,000 m','3 km = 3 × 1,000 = ___ m','Total = ___ + 450 = ___ m'],eq:'3 × 1000 + 450 = ___',answer:'C'},
+  {id:8,year:0,qnum:8,cat:'Maths — Measurement',topic:'Mass in grams and kg',chapter:'Measurement',word:'A watermelon weighs 2 kg 350 g. A pineapple weighs 1 kg 800 g. How much do they weigh together?',opts:{'A':'3 kg 150 g','B':'4 kg 50 g','C':'4 kg 150 g','D':'3 kg 950 g','E':'4 kg 250 g'},steps:['Convert both to grams: watermelon = 2000+350 = ___ g, pineapple = 1000+800 = ___ g','Total = ___ + ___ = ___ g','Convert back: ___ g = ___ kg ___ g'],eq:'2350 + 1800 = ___ g = ___ kg ___ g',answer:'C'},
+  {id:9,year:0,qnum:9,cat:'Maths — Geometry',topic:'Perimeter of a rectangle',chapter:'Geometry',word:'A rectangular garden is 12 m long and 8 m wide. What is its perimeter?',opts:{'A':'20 m','B':'40 m','C':'96 m','D':'96 sq.m','E':'48 m'},steps:['Perimeter of rectangle = 2 × (length + width)','= 2 × (12 + 8)','= 2 × ___ = ___ m'],eq:'2 × (12 + 8) = 2 × ___ = ___',answer:'B'},
+  {id:10,year:0,qnum:10,cat:'Maths — Geometry',topic:'Area of a rectangle',chapter:'Geometry',word:'A classroom floor is 9 m long and 6 m wide. What is the area of the floor?',opts:{'A':'30 sq.m','B':'54 sq.m','C':'54 m','D':'15 sq.m','E':'45 sq.m'},steps:['Area of rectangle = length × width','= 9 × 6 = ___ sq.m','Note: area is always in square units'],eq:'9 × 6 = ___ sq.m',answer:'B'},
+  {id:11,year:0,qnum:11,cat:'Maths — Time',topic:'Reading time and duration',chapter:'Time',word:'A train leaves at 9:45 am and arrives at 1:15 pm. How long is the journey?',opts:{'A':'2 hr 30 min','B':'3 hr 30 min','C':'3 hr 15 min','D':'4 hr 30 min','E':'3 hr 45 min'},steps:['From 9:45 am to 10:00 am = 15 min','From 10:00 am to 1:00 pm = 3 hours','From 1:00 pm to 1:15 pm = 15 min','Total = 3 hr + 15 + 15 min = 3 hr ___ min'],eq:'(1:15 pm) − (9:45 am) = ___ hr ___ min',answer:'B'},
+  {id:12,year:0,qnum:12,cat:'Maths — Money',topic:'Making change',chapter:'Money',word:'Arjun buys a book for ₹67 and gives ₹100. How much change does he get?',opts:{'A':'₹27','B':'₹33','C':'₹37','D':'₹43','E':'₹23'},steps:['Change = Amount given − Amount spent','= ₹100 − ₹67','= ₹___'],eq:'100 − 67 = ___',answer:'B'},
+  {id:13,year:0,qnum:13,cat:'Maths — Patterns',topic:'Number patterns',chapter:'Patterns',word:'What is the next number in the pattern? 5, 10, 20, 40, ___',opts:{'A':'60','B':'70','C':'80','D':'75','E':'100'},steps:['Find the rule: 5→10 (×2), 10→20 (×2), 20→40 (×2)','Rule: multiply by ___ each time','Next: 40 × ___ = ___'],eq:'40 × 2 = ___',answer:'C'},
+  {id:14,year:0,qnum:14,cat:'Maths — Patterns',topic:'Odd and even numbers',chapter:'Patterns',word:'Which of these is the sum of two ODD numbers?',opts:{'A':'Odd','B':'Even','C':'Sometimes odd sometimes even','D':'Zero','E':'Cannot say'},steps:['Odd + Odd = ?','Try: 3 + 5 = ___ (even), 7 + 9 = ___ (even), 1 + 3 = ___ (even)','The sum of two odd numbers is ALWAYS ___'],eq:'Odd + Odd = ___',answer:'B'},
+  {id:15,year:0,qnum:15,cat:'Maths — Data',topic:'Reading a bar graph',chapter:'Data Handling',word:'In a bar graph, the "Mango" bar reaches 35 and the "Apple" bar reaches 20. How many MORE mangoes were sold than apples?',opts:{'A':'10','B':'15','C':'20','D':'55','E':'5'},steps:['Mangoes sold: ___','Apples sold: ___','Difference = ___ − ___ = ___'],eq:'35 − 20 = ___',answer:'B'},
+  {id:16,year:0,qnum:16,cat:'Maths — Numbers',topic:'Roman numerals',chapter:'Numbers',word:'What is the Roman numeral for 49?',opts:{'A':'XXXXIX','B':'XLIX','C':'IL','D':'XLXI','E':'VIXXXXIX'},steps:['40 in Roman numerals = XL (10 before 50 = 50−10)','9 in Roman numerals = IX (1 before 10 = 10−1)','49 = 40 + 9 = XL + IX = ___'],eq:'49 = 40 + 9 = XL + IX = ___',answer:'B'},
+  {id:17,year:0,qnum:17,cat:'Maths — Fractions',topic:'Fractions of a collection',chapter:'Fractions',word:'There are 20 students in a class. 1/4 of them wear glasses. How many students wear glasses?',opts:{'A':'4','B':'5','C':'10','D':'8','E':'6'},steps:['1/4 of 20 = 20 ÷ 4 = ___','Answer: ___ students wear glasses'],eq:'20 ÷ 4 = ___',answer:'B'},
+  {id:18,year:0,qnum:18,cat:'Maths — Operations',topic:'Word problem — multiplication',chapter:'Multiplication',word:'A spider has 8 legs. There are 6 spiders in a jar. How many legs are there altogether?',opts:{'A':'14','B':'42','C':'46','D':'48','E':'56'},steps:['Number of spiders: ___','Legs per spider: ___','Total legs = ___ × ___ = ___'],eq:'6 × 8 = ___',answer:'D'},
+  {id:19,year:0,qnum:19,cat:'Maths — Geometry',topic:'Types of angles',chapter:'Geometry',word:'An angle that measures exactly 90 degrees is called:',opts:{'A':'Acute angle','B':'Obtuse angle','C':'Right angle','D':'Straight angle','E':'Reflex angle'},steps:['Acute angle: less than 90°','Right angle: exactly 90°','Obtuse angle: more than 90° but less than 180°','A 90° angle is a ___ angle'],eq:'Angle = 90° → ___ angle',answer:'C'},
+  {id:20,year:0,qnum:20,cat:'Maths — Measurement',topic:'Converting units of length',chapter:'Measurement',word:'How many centimetres are there in 2 metres and 35 centimetres?',opts:{'A':'235 cm','B':'253 cm','C':'352 cm','D':'2035 cm','E':'2350 cm'},steps:['1 metre = 100 cm','2 metres = 2 × 100 = ___ cm','Total = ___ + 35 = ___ cm'],eq:'2 × 100 + 35 = ___',answer:'A'},
+  {id:21,year:0,qnum:21,cat:'Science — Living World',topic:'Plants: parts and functions',chapter:'Plants',word:'Which part of the plant prepares food using sunlight?',opts:{'A':'Root','B':'Stem','C':'Flower','D':'Leaf','E':'Fruit'},steps:['Roots: absorb water and minerals from soil','Stem: carries water and food between roots and leaves','Leaves: contain chlorophyll and use sunlight to make food (photosynthesis)','The part that makes food = ___'],eq:'Food is made in the ___ using chlorophyll + sunlight',answer:'D'},
+  {id:22,year:0,qnum:22,cat:'Science — Living World',topic:'Animals: adaptation',chapter:'Animals',word:'A duck can walk on land and swim in water. What feature helps it swim?',opts:{'A':'Long beak','B':'Webbed feet','C':'Waterproof feathers','D':'Hollow bones','E':'Both B and C'},steps:['Webbed feet: act like paddles — help push through water','Waterproof feathers: prevent the duck from getting waterlogged','Both these features help ducks swim','Answer: ___'],eq:'Duck swims using ___ and ___',answer:'E'},
+  {id:23,year:0,qnum:23,cat:'Science — Living World',topic:'Food chain',chapter:'Food Chain',word:'In the food chain: Grass → Grasshopper → Frog → Snake, who is the PRODUCER?',opts:{'A':'Grasshopper','B':'Frog','C':'Snake','D':'Grass','E':'Sun'},steps:['Producers make their own food using sunlight (they are plants)','Consumers eat other organisms','In this chain: Grass makes its own food','Producer = ___'],eq:'Producer = the organism that makes its own food = ___',answer:'D'},
+  {id:24,year:0,qnum:24,cat:'Science — Living World',topic:'Germination conditions',chapter:'Plants',word:'Ravi put seeds in three jars: one with soil and water, one with only soil, one with only water. Which seeds will germinate FIRST?',opts:{'A':'Soil only','B':'Water only','C':'Soil and water','D':'All will germinate equally','E':'None will germinate'},steps:['Seeds need water, warmth, air and soil to germinate','Soil provides minerals and support; water is essential to activate growth','Best conditions = soil + water','Answer: ___'],eq:'Germination needs: water + soil + air + warmth → ___',answer:'C'},
+  {id:25,year:0,qnum:25,cat:'Science — Materials',topic:'States of matter',chapter:'Matter',word:'Ice cream melts on a hot day. This change is called:',opts:{'A':'Evaporation','B':'Condensation','C':'Melting','D':'Freezing','E':'Sublimation'},steps:['Solid → Liquid = Melting (heat is added)','Liquid → Gas = Evaporation','Gas → Liquid = Condensation','Liquid → Solid = Freezing','Ice cream solid → liquid = ___'],eq:'Solid + heat → Liquid = ___',answer:'C'},
+  {id:26,year:0,qnum:26,cat:'Science — Materials',topic:'Properties of materials',chapter:'Materials',word:'Which of the following is the BEST conductor of electricity?',opts:{'A':'Wood','B':'Plastic','C':'Rubber','D':'Copper','E':'Glass'},steps:['Conductors allow electricity to pass through them','Metals are generally good conductors','Copper is one of the best electrical conductors','Insulators (wood, plastic, rubber, glass) do NOT conduct electricity','Best conductor: ___'],eq:'Metals conduct electricity → best conductor here = ___',answer:'D'},
+  {id:27,year:0,qnum:27,cat:'Science — Environment',topic:'Sources of water',chapter:'Water',word:'Which of the following is a natural source of FRESH water?',opts:{'A':'Ocean','B':'Sea','C':'River','D':'Saltwater lake','E':'All of these'},steps:['Oceans and seas contain SALT water','Rivers, lakes, ponds, glaciers, groundwater contain fresh water','Rain fills rivers and lakes with fresh water','Natural fresh water source: ___'],eq:'Fresh water sources = rivers, lakes, glaciers → ___',answer:'C'},
+  {id:28,year:0,qnum:28,cat:'Science — Environment',topic:'Air and weather',chapter:'Air',word:'The instrument used to measure rainfall is called:',opts:{'A':'Thermometer','B':'Barometer','C':'Rain gauge','D':'Anemometer','E':'Hygrometer'},steps:['Thermometer: measures temperature','Barometer: measures air pressure','Rain gauge: collects and measures rainfall','Anemometer: measures wind speed','Rainfall is measured using a ___'],eq:'Rainfall measurement instrument = ___',answer:'C'},
+  {id:29,year:0,qnum:29,cat:'Science — Human Body',topic:'Sense organs',chapter:'Human Body',word:'Mia closes her eyes and can still tell if something is hot or cold. Which sense organ is she using?',opts:{'A':'Eyes','B':'Ears','C':'Nose','D':'Tongue','E':'Skin'},steps:['Eyes: sight','Ears: hearing','Nose: smell','Tongue: taste','Skin: touch, heat, cold, pain','Hot/cold sensation = felt through ___'],eq:'Sense of touch and temperature = ___',answer:'E'},
+  {id:30,year:0,qnum:30,cat:'Science — Human Body',topic:'Skeleton and muscles',chapter:'Human Body',word:'Which of the following is NOT a function of bones?',opts:{'A':'Support the body','B':'Protect internal organs','C':'Help in movement','D':'Produce blood cells','E':'Digest food'},steps:['Bones: provide support, protect organs (skull protects brain), work with muscles for movement','Bone marrow produces blood cells','Digestion happens in the digestive system, not bones','NOT a function of bones: ___'],eq:'Bones do NOT perform: ___',answer:'E'},
+  {id:31,year:0,qnum:31,cat:'Science — Environment',topic:'Conservation',chapter:'Environment',word:'Which of the following is the BEST way to save water at home?',opts:{'A':'Take long showers','B':'Leave the tap running while brushing teeth','C':'Turn off the tap when not in use','D':'Water plants in the afternoon','E':'Wash each item separately'},steps:['Long showers waste water','Running tap while brushing wastes 6-8 litres per minute','Turning off tap when not in use saves water immediately','Best conservation habit: ___'],eq:'Best water-saving habit = ___',answer:'C'},
+  {id:32,year:0,qnum:32,cat:'Science — Materials',topic:'Soluble and insoluble',chapter:'Materials',word:'Which of the following will DISSOLVE in water?',opts:{'A':'Sand','B':'Sugar','C':'Chalk powder','D':'Sawdust','E':'Pebbles'},steps:['Soluble = dissolves in water (forms a clear solution)','Insoluble = does not dissolve (sinks or stays as particles)','Sugar dissolves completely in water → it is ___','Sand, chalk, sawdust, pebbles are ___'],eq:'Dissolves in water (soluble) = ___',answer:'B'},
+  {id:33,year:0,qnum:33,cat:'Science — Living World',topic:'Habitats',chapter:'Animals',word:'A camel can survive in the desert for days without water because it stores energy in its:',opts:{'A':'Legs','B':'Ears','C':'Hump','D':'Nose','E':'Thick skin'},steps:['Camels live in hot, dry deserts with little food and water','The hump stores FAT (not water — common misconception!)','Fat can be broken down to release energy and water','Camels store fat in their ___'],eq:'Energy storage in a camel = ___',answer:'C'},
+  {id:34,year:0,qnum:34,cat:'Science — Environment',topic:'Pollution',chapter:'Environment',word:'The smoke from factories and vehicles is an example of:',opts:{'A':'Water pollution','B':'Soil pollution','C':'Air pollution','D':'Noise pollution','E':'Light pollution'},steps:['Water pollution: harmful substances in water','Air pollution: harmful gases and particles in air','Smoke from factories/vehicles releases harmful gases into the air','This is ___ pollution'],eq:'Smoke in the air = ___ pollution',answer:'C'},
+  {id:35,year:0,qnum:35,cat:'Science — Living World',topic:'Photosynthesis',chapter:'Plants',word:'During photosynthesis, plants take in carbon dioxide and release:',opts:{'A':'Nitrogen','B':'Hydrogen','C':'Oxygen','D':'Carbon monoxide','E':'Water vapour only'},steps:['Photosynthesis equation: CO₂ + Water + Sunlight → Glucose + Oxygen','Plants absorb CO₂ through stomata','Plants release ___ as a by-product','This is why plants are vital for life on Earth'],eq:'Photosynthesis: CO₂ + H₂O + sunlight → glucose + ___',answer:'C'},
+  {id:36,year:0,qnum:36,cat:'Science — Human Body',topic:'Nutrition',chapter:'Health',word:'Which nutrient gives our body the most energy for quick activities?',opts:{'A':'Proteins','B':'Fats','C':'Carbohydrates','D':'Vitamins','E':'Minerals'},steps:['Carbohydrates = quick energy source (bread, rice, sugar)','Proteins = body building (growth and repair)','Fats = stored energy (long-term)','Vitamins and minerals = protection and regulation','Quick energy nutrient = ___'],eq:'Quick energy → ___',answer:'C'},
+  {id:37,year:0,qnum:37,cat:'Science — Materials',topic:'Magnetic materials',chapter:'Materials',word:'Which of the following objects will be ATTRACTED to a magnet?',opts:{'A':'A wooden pencil','B':'A glass marble','C':'An iron nail','D':'A plastic ruler','E':'An eraser'},steps:['Magnets attract materials that contain iron, nickel or cobalt','Wood, glass, plastic and rubber are NOT magnetic','An iron nail contains iron → it will be ___','Attracted to magnet: ___'],eq:'Magnetic materials contain iron/nickel/cobalt → ___',answer:'C'},
+  {id:38,year:0,qnum:38,cat:'Science — Environment',topic:'Soil',chapter:'Environment',word:'Which type of soil is BEST for growing crops?',opts:{'A':'Sandy soil','B':'Clayey soil','C':'Loamy soil','D':'Rocky soil','E':'Desert soil'},steps:['Sandy soil: drains water too fast, few nutrients','Clayey soil: holds too much water, gets waterlogged','Loamy soil: mixture of sand, clay and silt — retains moisture and has nutrients','Best for crops: ___'],eq:'Best crop soil = mixture of sand + clay + silt = ___',answer:'C'},
+  {id:39,year:0,qnum:39,cat:'English — Grammar',topic:'Nouns — proper and common',chapter:'Nouns',word:'Which of the following is a PROPER noun?',opts:{'A':'city','B':'river','C':'Ganga','D':'mountain','E':'school'},steps:['Common nouns name general people, places or things: city, river, mountain','Proper nouns name SPECIFIC people, places or things and begin with a capital letter','Ganga is a specific river → it is a ___ noun'],eq:'Specific named person/place/thing = ___ noun',answer:'C'},
+  {id:40,year:0,qnum:40,cat:'English — Grammar',topic:'Pronouns',chapter:'Pronouns',word:'Choose the correct pronoun: "_____ and I went to the market." (Rahul)',opts:{'A':'Him','B':'He','C':'His','D':'Them','E':'They'},steps:['Subject pronouns (used as the subject): I, he, she, we, they','Object pronouns (used as the object): me, him, her, us, them','The blank is the SUBJECT of the sentence','Rahul → subject pronoun = ___'],eq:'Subject pronoun for Rahul = ___',answer:'B'},
+  {id:41,year:0,qnum:41,cat:'English — Grammar',topic:'Tenses — simple past',chapter:'Tenses',word:'Fill in the blank with the correct past tense: "Yesterday, she ___ a beautiful painting."',opts:{'A':'paint','B':'paints','C':'is painting','D':'painted','E':'will paint'},steps:['"Yesterday" signals past tense','Simple past tense of "paint" = ___','Regular verbs: add -ed to form past tense','paint → painted'],eq:'Past tense of "paint" = ___',answer:'D'},
+  {id:42,year:0,qnum:42,cat:'English — Grammar',topic:'Adjectives',chapter:'Adjectives',word:'Identify the adjective in this sentence: "The tall boy climbed the old tree."',opts:{'A':'boy','B':'climbed','C':'tall','D':'tree','E':'the'},steps:['Adjectives describe nouns (people, places, things)','In the sentence: "tall" describes the boy, "old" describes the tree','The question asks for THE adjective — "tall" is the first one','Adjective: ___'],eq:'Adjective = word that describes a noun → ___',answer:'C'},
+  {id:43,year:0,qnum:43,cat:'English — Grammar',topic:'Prepositions',chapter:'Prepositions',word:'Choose the correct preposition: "The cat is sitting ___ the mat."',opts:{'A':'above','B':'behind','C':'on','D':'below','E':'beside'},steps:['Prepositions show the relationship/position between things','"On" means directly on top of a surface — e.g., book on the table','"Sitting on the mat" means the cat is on top of the mat','Correct preposition: ___'],eq:'Position directly on a surface = ___',answer:'C'},
+  {id:44,year:0,qnum:44,cat:'English — Vocabulary',topic:'Antonyms',chapter:'Vocabulary',word:'What is the ANTONYM (opposite) of "ancient"?',opts:{'A':'Old','B':'Historic','C':'Modern','D':'Aged','E':'Vintage'},steps:['Ancient = very old, belonging to the distant past','Antonym = opposite meaning','Opposite of ancient = ___ (new, current, up to date)'],eq:'Antonym of ancient = ___',answer:'C'},
+  {id:45,year:0,qnum:45,cat:'English — Vocabulary',topic:'Synonyms',chapter:'Vocabulary',word:'Which word is a SYNONYM for "happy"?',opts:{'A':'Sad','B':'Angry','C':'Tired','D':'Joyful','E':'Bored'},steps:['Synonym = word with the same or similar meaning','Happy means feeling pleasure or contentment','Joyful also means feeling great happiness','Synonym of happy = ___'],eq:'Synonym of happy = ___',answer:'D'},
+  {id:46,year:0,qnum:46,cat:'English — Grammar',topic:'Singular and plural',chapter:'Nouns',word:'What is the plural of "child"?',opts:{'A':'Childs','B':'Childes','C':'Children','D':'Childer','E':'Childrens'},steps:['Some nouns have IRREGULAR plurals (they do not follow the normal -s rule)','child → children (irregular)','Other irregular examples: man→men, mouse→mice, tooth→teeth','Plural of child = ___'],eq:'child → ___ (irregular plural)',answer:'C'},
+  {id:47,year:0,qnum:47,cat:'English — Comprehension',topic:'Reading comprehension — main idea',chapter:'Reading',word:'Read: "Bees visit flowers to collect nectar. In doing so, they carry pollen from flower to flower. This helps plants produce fruits and seeds." What is the MAIN idea?',opts:{'A':'Bees eat nectar','B':'Bees help in pollination of plants','C':'Plants grow fruits and seeds','D':'Flowers attract bees','E':'Bees live in flowers'},steps:['The passage mentions three things: bees collect nectar, they carry pollen, plants produce fruits','The CENTRAL idea connecting all three = bees help plants through pollination','Main idea: ___'],eq:'Central message of the passage = ___',answer:'B'},
+  {id:48,year:0,qnum:48,cat:'English — Grammar',topic:'Conjunctions',chapter:'Conjunctions',word:'Choose the correct conjunction: "She was tired ___ she kept working."',opts:{'A':'and','B':'so','C':'because','D':'but','E':'or'},steps:['Conjunctions join two ideas','"And" adds similar ideas; "but" shows contrast; "because" shows reason; "so" shows result','Here: being tired and kept working are CONTRASTING ideas','Correct conjunction: ___'],eq:'Contrast conjunction = ___',answer:'D'},
+  {id:49,year:0,qnum:49,cat:'English — Grammar',topic:'Articles',chapter:'Articles',word:'Fill in: "___ honest person always tells the truth."',opts:{'A':'A','B':'An','C':'The','D':'No article needed','E':'Some'},steps:['"A" is used before consonant sounds','"An" is used before VOWEL SOUNDS','"Honest" starts with H but the H is SILENT — the word sounds like "onest"','It starts with a vowel sound, so use ___'],eq:'"Honest" sounds like it starts with a vowel → use ___',answer:'B'},
+  {id:50,year:0,qnum:50,cat:'English — Vocabulary',topic:'Homophones',chapter:'Vocabulary',word:'Which pair are HOMOPHONES (sound the same but different meaning)?',opts:{'A':'Big / Large','B':'Their / There','C':'Happy / Glad','D':'Run / Walk','E':'Hot / Cold'},steps:['Homophones: words that sound the same but have different spellings and meanings','"Their" (belonging to them) and "There" (a place) sound exactly the same','"Big/Large" are synonyms (same meaning)','Homophones: ___'],eq:'Same sound, different meaning = ___',answer:'B'},
+  {id:51,year:0,qnum:51,cat:'English — Writing',topic:'Punctuation — apostrophe',chapter:'Punctuation',word:'Which sentence uses the apostrophe CORRECTLY?',opts:{'A':'The dogs bone is big.','B':'The dog\'s bone is big.','C':'The dogs\' bone is big.','D':'The\'dogs bone is big.','E':'The dog bone\'s is big.'},steps:['Apostrophe shows possession (ownership)','"The dog\'s bone" = the bone belonging to one dog','"The dogs\' bone" = the bone belonging to multiple dogs','One dog owns the bone → ___'],eq:'Singular possession: dog + apostrophe + s = ___',answer:'B'},
+  {id:52,year:0,qnum:52,cat:'English — Grammar',topic:'Sentence types',chapter:'Sentences',word:'Which of these is an EXCLAMATORY sentence?',opts:{'A':'Are you ready?','B':'Please sit down.','C':'What a lovely day it is!','D':'She went to school.','E':'Close the door.'},steps:['Declarative: makes a statement (She went to school)','Interrogative: asks a question (Are you ready?)','Imperative: gives a command (Close the door)','Exclamatory: expresses strong feeling with ! (What a lovely day!)','Exclamatory sentence: ___'],eq:'Strong feeling + ! = ___ sentence',answer:'C'},
+  {id:53,year:0,qnum:53,cat:'Social Science — Geography',topic:'Maps and directions',chapter:'Maps',word:'On a standard map, which direction does the arrow usually point to show NORTH?',opts:{'A':'Down','B':'Left','C':'Right','D':'Up','E':'Diagonal'},steps:['Maps use cardinal directions: North, South, East, West','Conventionally on maps: North is at the TOP','A compass rose on a map shows North pointing ___'],eq:'On a map, North points ___',answer:'D'},
+  {id:54,year:0,qnum:54,cat:'Social Science — Geography',topic:'Landforms',chapter:'Landforms',word:'Which landform is formed by rivers depositing sand and silt at the mouth of a river?',opts:{'A':'Mountain','B':'Plateau','C':'Delta','D':'Valley','E':'Plains'},steps:['Rivers carry sediment (sand and silt)','When a river meets the sea, it slows down and deposits sediment','This builds up over time to form a triangular landform called a ___','Example: Ganga-Brahmaputra delta in India'],eq:'River deposits at mouth = ___',answer:'C'},
+  {id:55,year:0,qnum:55,cat:'Social Science — Geography',topic:'Climate of India',chapter:'Climate',word:'Which season brings heavy rainfall to most of India?',opts:{'A':'Winter','B':'Summer','C':'Monsoon','D':'Autumn','E':'Spring'},steps:['India has three main seasons: Summer (March-June), Monsoon (June-September), Winter (October-February)','Monsoon winds blow from the ocean and carry heavy moisture','Most of India receives 70-80% of its annual rainfall during ___'],eq:'Heavy rainfall season in India = ___',answer:'C'},
+  {id:56,year:0,qnum:56,cat:'Social Science — History',topic:'Ancient civilisations of India',chapter:'History',word:'The Indus Valley Civilisation was famous for its:',opts:{'A':'Large armies','B':'Well-planned cities with drainage systems','C':'Pyramids','D':'Horse chariots','E':'Cotton textile exports'},steps:['Indus Valley (3000-1500 BCE) cities like Harappa and Mohenjo-daro','Famous for: planned grid-like streets, advanced drainage, granaries, standardised weights','This civilisation was remarkable for its ___'],eq:'Indus Valley was known for ___',answer:'B'},
+  {id:57,year:0,qnum:57,cat:'Social Science — Civics',topic:'Our government',chapter:'Government',word:'Who is the HEAD OF THE STATE of India (the constitutional head)?',opts:{'A':'Prime Minister','B':'Chief Justice','C':'President','D':'Speaker of Lok Sabha','E':'Vice President'},steps:['India is a Republic — it has a President as constitutional head','The President is the ceremonial/constitutional head of state','The Prime Minister is the head of government (real executive power)','Constitutional head of India = ___'],eq:'Head of State (constitutional) = ___',answer:'C'},
+  {id:58,year:0,qnum:58,cat:'Social Science — Civics',topic:'Fundamental Rights',chapter:'Civics',word:'The RIGHT TO EDUCATION under the Indian Constitution makes free education compulsory for children aged:',opts:{'A':'3-12 years','B':'6-14 years','C':'5-15 years','D':'6-18 years','E':'4-14 years'},steps:['Article 21A of the Indian Constitution','The Right to Education Act (2009) makes free and compulsory education a fundamental right','Age range: 6 to ___ years'],eq:'Free education is a right for children aged ___',answer:'B'},
+  {id:59,year:0,qnum:59,cat:'Social Science — Geography',topic:'Natural vegetation',chapter:'Environment',word:'Trees that shed their leaves during a particular season are called:',opts:{'A':'Evergreen trees','B':'Deciduous trees','C':'Coniferous trees','D':'Mangrove trees','E':'Thorn trees'},steps:['Evergreen: keep leaves throughout the year','Deciduous: shed leaves in autumn/dry season to conserve water','Coniferous: cone-bearing, needle leaves (pine, cedar)','Trees shedding leaves seasonally = ___ trees'],eq:'Seasonal leaf-shedding trees = ___',answer:'B'},
+  {id:60,year:0,qnum:60,cat:'Social Science — History',topic:'Freedom struggle',chapter:'History',word:'Mahatma Gandhi launched the Salt March (Dandi March) in 1930 to protest against:',opts:{'A':'Land tax','B':'Salt tax imposed by the British','C':'Cloth tax','D':'Forced labour','E':'Water tax'},steps:['The British imposed high taxes on salt production and made it illegal for Indians to make their own salt','Gandhi walked 241 miles to Dandi to make salt from seawater','This was civil disobedience against the ___'],eq:'Dandi March = protest against ___',answer:'B'},
+  {id:61,year:0,qnum:61,cat:'Social Science — Geography',topic:'Resources',chapter:'Resources',word:'Which of the following is a NON-RENEWABLE resource?',opts:{'A':'Solar energy','B':'Wind energy','C':'Water','D':'Coal','E':'Trees'},steps:['Renewable: can be replenished naturally (solar, wind, water, forests if managed)','Non-renewable: forms over millions of years and cannot be replaced in a human lifetime','Coal, petroleum, natural gas = ___','Non-renewable resource here: ___'],eq:'Takes millions of years to form → ___',answer:'D'},
+  {id:62,year:0,qnum:62,cat:'Social Science — Civics',topic:'Local government',chapter:'Government',word:'The local government body that manages affairs of a VILLAGE is called:',opts:{'A':'Municipal Corporation','B':'Gram Panchayat','C':'Town Council','D':'Nagar Palika','E':'Zila Parishad'},steps:['Municipal Corporation: large cities','Nagar Palika: towns','Gram Panchayat: villages (gram = village, panchayat = council of five)','Village governance = ___'],eq:'Village local government = ___',answer:'B'},
+  {id:63,year:0,qnum:63,cat:'Social Science — Geography',topic:'Indian states',chapter:'Maps',word:'Which is the LARGEST state in India by area?',opts:{'A':'Maharashtra','B':'Uttar Pradesh','C':'Madhya Pradesh','D':'Rajasthan','E':'Karnataka'},steps:['Rajasthan covers about 342,239 sq km — the largest state by area','Uttar Pradesh is the most populous state','Maharashtra is the third largest by area','Largest state by area = ___'],eq:'Largest Indian state by area = ___',answer:'D'},
+  {id:64,year:0,qnum:64,cat:'Social Science — History',topic:'Monuments of India',chapter:'Heritage',word:'The Taj Mahal was built by Mughal Emperor Shah Jahan in memory of:',opts:{'A':'His mother','B':'His daughter','C':'His wife Mumtaz Mahal','D':'A great victory','E':'His teacher'},steps:['The Taj Mahal was built between 1632-1653','Shah Jahan built it as a tomb for his beloved wife','Her name was ___ Mahal','Built in memory of ___'],eq:'Taj Mahal was built for ___',answer:'C'},
+  {id:65,year:0,qnum:65,cat:'Social Science — Civics',topic:'National symbols',chapter:'Civics',word:'What is the NATIONAL ANIMAL of India?',opts:{'A':'Lion','B':'Elephant','C':'Bengal Tiger','D':'Leopard','E':'One-horned Rhinoceros'},steps:['India\'s national symbols: flower=lotus, animal=Bengal Tiger, bird=peacock, river=Ganga','The Bengal Tiger was declared National Animal in 1973 under Project Tiger','National animal = ___'],eq:'National animal of India = ___',answer:'C'},
+];
+function getImgSrc(year,qnum){ return null; }  // no images for CBSE
+</script>
+
+<div id="lockScreen" class="screen active">
+  <div class="lock-card">
+    <span class="lock-logo">📚</span>
+    <div class="lock-title">CBSE Practice</div>
+    <div class="lock-sub">CBSE Class 3→4 — Class 3 to Class 4 Transition</div>
+    <div class="lock-sec">
+      <span class="lock-lbl">Who is practising today?</span>
+      <div class="profile-row" id="profileRow"></div>
+    </div>
+    <div class="lock-sec">
+      <span class="lock-lbl">How many questions?</span>
+      <div class="num-wrap">
+        <button class="num-btn" onclick="changeNum(-1)">−</button>
+        <span class="num-disp" id="numDisp">10</span>
+        <button class="num-btn" onclick="changeNum(1)">+</button>
+      </div>
+      <div class="qp-row" id="qpRow"></div>
+    </div>
+    <div class="lock-sec">
+      <span class="lock-lbl">Filter by subject / category</span>
+      <div class="cat-wrap" id="catFilt"></div>
+    </div>
+    <div class="pool-info" id="poolInfo"></div>
+    <button class="btn-start" id="btnStart" onclick="startSession()">▶ Start Session</button>
+    <div style="text-align:center;margin-top:12px">
+      <a href="index.html" style="font-size:.78rem;font-weight:700;color:var(--muted);text-decoration:none">← Back to Home</a>
+    </div>
+  </div>
+</div>
+
+<div id="mainScreen" class="screen">
+  <header class="hdr">
+    <span class="hdr-logo">📚</span>
+    <div class="hdr-title">CBSE Class 3→4</div>
+    <div class="hdr-profile" id="hdrProfile"></div>
+    <div class="timer">⏱ <span id="timerDisp">00:00</span></div>
+    <button class="btn-rst" onclick="confirmReset()">↺ Reset</button>
+  </header>
+  <div class="sbar">
+    <div class="sp"><span class="dot"></span><span id="scoreDisp">0</span></div>
+    <div class="sp"><span class="dot a"></span><span id="attDisp">0</span> attempted</div>
+    <div class="prog-wrap"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <span id="progPct" style="font-weight:800;font-size:.78rem;color:var(--muted);white-space:nowrap">0%</span>
+  </div>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sb-sec"><div class="sb-hd">Subjects</div><div id="catBtns"></div></div>
+      <div class="sb-sec"><div class="sb-hd">Questions</div><div class="pills" id="pillsWrap"></div></div>
+    </aside>
+    <main class="content">
+      <div id="qArea"></div>
+      <div class="qnav">
+        <button class="btn-nav" id="btnPrev" onclick="navigate(-1)">← Prev</button>
+        <button class="btn-fin" onclick="finishSession()">Finish ✓</button>
+        <button class="btn-nav" id="btnNext" onclick="navigate(1)">Next →</button>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div id="endScreen" class="screen">
+  <div class="end-card">
+    <div class="end-top">
+      <span class="end-trophy" id="endTrophy">🏆</span>
+      <div class="end-title" id="endTitle">Session Complete!</div>
+      <div style="font-size:.8rem;font-weight:800;color:var(--muted);margin-bottom:6px" id="endName"></div>
+      <div class="end-msg" id="endMsg"></div>
+    </div>
+    <div class="end-bar-wrap"><div class="end-bar" id="endBar" style="width:0%"></div></div>
+    <div class="end-stats">
+      <div class="end-stat"><span class="end-val" id="endScore">-</span><span class="end-lbl">Correct</span></div>
+      <div class="end-stat"><span class="end-val" id="endPts">-</span><span class="end-lbl">Points</span></div>
+      <div class="end-stat"><span class="end-val" id="endTime">-</span><span class="end-lbl">Time</span></div>
+      <div class="end-stat"><span class="end-val" id="endAvg">-</span><span class="end-lbl">Avg/Q</span></div>
+    </div>
+    <div class="review-hd">📋 Question Review</div>
+    <table class="review-table">
+      <thead><tr><th>#</th><th>Topic</th><th>Subject</th><th>Your Ans</th><th>Correct</th><th></th></tr></thead>
+      <tbody id="reviewBody"></tbody>
+    </table>
+    <div class="end-btns">
+      <button class="btn-again" onclick="confirmReset()">🔄 Try Again</button>
+      <a href="index.html" class="btn-home">🏠 Home</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕ Close</button>
+    <img class="modal-img" id="modalImg" alt="Question">
+  </div>
+</div>
+
+<script>
+
+const LS_KEY_PFX = 'mkp_';
+const CAT_COLORS = [
+  {bg:'#e8edfb',fg:'#4f72e3'},{bg:'#dcfce7',fg:'#22c55e'},{bg:'#fef3c7',fg:'#d97706'},
+  {bg:'#ede9fe',fg:'#8b5cf6'},{bg:'#ccfbf1',fg:'#14b8a6'},{bg:'#fce7f3',fg:'#ec4899'},
+  {bg:'#fee2e2',fg:'#ef4444'},{bg:'#e0f2fe',fg:'#0ea5e9'},{bg:'#f0fdf4',fg:'#16a34a'},
+  {bg:'#fff7ed',fg:'#ea580c'}
+];
+const POINTS = {0:3,1:2,2:1};
+const POINTS_CLASS = {0:'full',1:'part',2:'min'};
+
+// ── STATE ────────────────────────────────────────────────────────
+let S = {
+  profile: null,        // {name, avatar}
+  sessionQs: [],        // array of {year,qnum,answer,steps,eq,word,cat,topic}
+  currentIdx: 0,
+  currentTab: 0,        // 0=word/MCQ, 1=steps, 2=equation
+  answers: {},          // {`${year}_${qnum}`: {chosen, correct, stageFirstCorrect}}
+  timerSecs: 0,
+  timerInterval: null,
+  sessionSize: 10,
+  activeCat: 'All',
+  catMap: {},
+  lockCats: [],
+  locked: false,        // true when session in progress (answers locked after submission)
+};
+let _sessNum = 10;
+let _ttsKA = null;
+
+const lsKey = () => LS_KEY_PFX + (S.profile ? S.profile.name : 'anon');
+
+// ── PROFILES ─────────────────────────────────────────────────────
+function loadProfiles() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY_PFX+'profiles')||'[]'); } catch(e) { return []; }
+}
+function saveProfiles(profs) {
+  localStorage.setItem(LS_KEY_PFX+'profiles', JSON.stringify(profs));
+}
+function renderProfileChips() {
+  const profs = loadProfiles();
+  const wrap = document.getElementById('profileRow');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  profs.forEach(p => {
+    const d = document.createElement('div');
+    d.className = 'profile-chip' + (S.profile && S.profile.name===p.name ? ' active':'');
+    d.innerHTML = `<span class="p-avatar">${p.avatar}</span><span class="p-name">${p.name}</span>`;
+    d.onclick = () => selectProfile(p);
+    wrap.appendChild(d);
+  });
+  const add = document.createElement('button');
+  add.className = 'btn-add-profile'; add.textContent = '+ Add Kid';
+  add.onclick = addProfile;
+  wrap.appendChild(add);
+}
+function selectProfile(p) {
+  S.profile = p;
+  renderProfileChips();
+  updatePoolInfo();
+}
+function addProfile() {
+  const avatars = ['🦁','🐯','🐻','🦊','🐼','🐨','🐸','🦉','🐬','🦄'];
+  const name = prompt('Kid\'s name?');
+  if(!name || !name.trim()) return;
+  const profs = loadProfiles();
+  if(profs.find(p=>p.name===name.trim())) { alert('Name already exists!'); return; }
+  const avatar = avatars[profs.length % avatars.length];
+  profs.push({name:name.trim(), avatar});
+  saveProfiles(profs);
+  selectProfile({name:name.trim(), avatar});
+}
+
+// ── SESSION PERSISTENCE ───────────────────────────────────────────
+function saveSession(finished) {
+  try {
+    localStorage.setItem(lsKey(), JSON.stringify({
+      sessionQs:S.sessionQs, answers:S.answers, timerSecs:S.timerSecs,
+      sessionSize:S.sessionSize, currentIdx:S.currentIdx, currentTab:S.currentTab,
+      catMap:S.catMap, lockCats:S.lockCats, profile:S.profile, finished:!!finished
+    }));
+  } catch(e){}
+}
+function loadSession() {
+  try {
+    const d = JSON.parse(localStorage.getItem(lsKey())||'null');
+    if(!d||!d.sessionQs||!d.sessionQs.length) return false;
+    Object.assign(S,{sessionQs:d.sessionQs,answers:d.answers||{},timerSecs:d.timerSecs||0,
+      sessionSize:d.sessionSize||10,currentIdx:d.currentIdx||0,currentTab:d.currentTab||0,
+      catMap:d.catMap||{},lockCats:d.lockCats||[],profile:d.profile||null});
+    if(d.finished){ showScreen('endScreen'); renderEndScreen(S.timerSecs); return true; }
+    showScreen('mainScreen'); startTimer(); renderAll(); return true;
+  } catch(e){ return false; }
+}
+
+// ── HISTORY (for dashboard) ───────────────────────────────────────
+function saveToHistory(result) {
+  if(!S.profile) return;
+  const key = LS_KEY_PFX + 'hist_' + S.profile.name;
+  try {
+    const hist = JSON.parse(localStorage.getItem(key)||'[]');
+    hist.push(result);
+    localStorage.setItem(key, JSON.stringify(hist.slice(-50))); // keep last 50
+  } catch(e){}
+}
+function loadHistory(name) {
+  try { return JSON.parse(localStorage.getItem(LS_KEY_PFX+'hist_'+name)||'[]'); } catch(e){ return []; }
+}
+
+// ── POOL & FILTERING ──────────────────────────────────────────────
+function getPool() {
+  if(!S.lockCats||!S.lockCats.length) return QUESTION_BANK;
+  return QUESTION_BANK.filter(q=>S.lockCats.includes(q.cat));
+}
+function filteredQs() {
+  if(S.activeCat==='All') return S.sessionQs;
+  return S.sessionQs.filter(q=>q.cat===S.activeCat);
+}
+function currentQ() { return S.sessionQs[S.currentIdx]; }
+function qKey(q) { return `${q.year}_${q.qnum}`; }
+
+function setNum(n) {
+  const a=getPool().length; n=Math.max(1,Math.min(n,a)); _sessNum=n;
+  const el=document.getElementById('numDisp'); if(el) el.textContent=n;
+  updatePoolInfo();
+}
+function changeNum(d) {
+  setNum(_sessNum+d);
+  document.querySelectorAll('.qp').forEach(x=>x.classList.remove('on'));
+}
+function updatePoolInfo() {
+  const a=getPool().length; const n=Math.min(_sessNum,a);
+  if(n!==_sessNum) setNum(n);
+  const el=document.getElementById('poolInfo');
+  if(el) el.innerHTML='Selecting <span>'+_sessNum+'</span> from <span>'+a+'</span> available';
+  const btn=document.getElementById('btnStart');
+  if(btn) btn.disabled=(a===0||!S.profile);
+}
+
+// ── START SESSION ─────────────────────────────────────────────────
+function startSession() {
+  if(!S.profile) { alert('Please select or add a kid first!'); return; }
+  const pool=getPool(); const size=Math.min(_sessNum,pool.length);
+  const sh=[...pool]; for(let i=sh.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[sh[i],sh[j]]=[sh[j],sh[i]];}
+  S.sessionQs=sh.slice(0,size); S.answers={}; S.timerSecs=0;
+  S.currentIdx=0; S.currentTab=0; S.sessionSize=size; S.activeCat='All';
+  const cats=[...new Set(S.sessionQs.map(q=>q.cat))];
+  S.catMap={}; cats.forEach((c,i)=>{S.catMap[c]=i%CAT_COLORS.length;});
+  showScreen('mainScreen'); startTimer(); renderAll(); saveSession(false);
+}
+
+// ── TIMER ─────────────────────────────────────────────────────────
+function startTimer() {
+  if(S.timerInterval)clearInterval(S.timerInterval);
+  S.timerInterval=setInterval(()=>{S.timerSecs++;updateTimerDisp();if(S.timerSecs%10===0)saveSession(false);},1000);
+  updateTimerDisp();
+}
+function stopTimer(){if(S.timerInterval){clearInterval(S.timerInterval);S.timerInterval=null;}}
+function updateTimerDisp(){
+  const m=Math.floor(S.timerSecs/60).toString().padStart(2,'0'),s=(S.timerSecs%60).toString().padStart(2,'0');
+  const el=document.getElementById('timerDisp');if(el)el.textContent=m+':'+s;
+}
+function fmtTime(sec){return Math.floor(sec/60).toString().padStart(2,'0')+':'+(sec%60).toString().padStart(2,'0');}
+
+// ── ANSWER SUBMISSION (one attempt only) ──────────────────────────
+function chooseOption(letter) {
+  const q=currentQ(); if(!q) return;
+  const k=qKey(q);
+  if(S.answers[k]&&S.answers[k].chosen) return; // already answered — locked
+  const correct=(letter===q.answer);
+  S.answers[k]={chosen:letter, correct, stageFirstCorrect:S.currentTab};
+  if(correct) celebrate(S.currentTab);
+  renderQuestion(); renderPills(); renderScoreBar(); saveSession(false);
+  checkAutoFinish();
+}
+
+function checkAutoFinish(){
+  if(Object.keys(S.answers).length>=S.sessionQs.length)
+    setTimeout(()=>{if(confirm('All questions answered! View your results?'))finishSession();},600);
+}
+function finishSession(){
+  stopTimer(); stopSpeech();
+  // Save to history
+  const {pts,max}=calcPts();
+  saveToHistory({
+    date:new Date().toISOString(),level:LEVEL_ID,
+    total:S.sessionQs.length,correct:Object.values(S.answers).filter(a=>a.correct).length,
+    pts,max,secs:S.timerSecs
+  });
+  saveSession(true); showScreen('endScreen'); renderEndScreen(S.timerSecs); launchConfetti();
+}
+function calcPts(){
+  let pts=0,max=0;
+  S.sessionQs.forEach(q=>{max+=3;const a=S.answers[qKey(q)];if(a&&a.correct)pts+=POINTS[a.stageFirstCorrect]||3;});
+  return {pts,max};
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────
+function navigate(d){
+  const f=filteredQs(),p=f.findIndex(q=>q.year===currentQ().year&&q.qnum===currentQ().qnum),np=p+d;
+  if(np<0||np>=f.length)return;
+  S.currentIdx=S.sessionQs.findIndex(q=>q.year===f[np].year&&q.qnum===f[np].qnum);
+  S.currentTab=0; renderQuestion();renderPills();renderNavBtns();
+}
+function goToQ(idx){S.currentIdx=idx;S.currentTab=0;renderQuestion();renderPills();renderNavBtns();}
+function selectCat(cat){
+  S.activeCat=cat; const f=filteredQs();
+  if(f.length)S.currentIdx=S.sessionQs.findIndex(q=>q.year===f[0].year&&q.qnum===f[0].qnum);
+  S.currentTab=0;renderCatBtns();renderPills();renderQuestion();renderNavBtns();
+}
+function switchTab(t){if(t!==0)stopSpeech();S.currentTab=t;renderQuestion();}
+
+// ── RENDER ────────────────────────────────────────────────────────
+function renderAll(){renderCatBtns();renderPills();renderScoreBar();renderQuestion();renderNavBtns();}
+
+function renderCatBtns(){
+  const el=document.getElementById('catBtns');if(!el)return;
+  let h=`<button class="cat-btn ${S.activeCat==='All'?'on':''}" onclick="selectCat('All')">All <span class="cc">${S.sessionQs.length}</span></button>`;
+  Object.keys(S.catMap).forEach(cat=>{
+    const cnt=S.sessionQs.filter(q=>q.cat===cat).length;
+    const on=S.activeCat===cat; const ci=S.catMap[cat];
+    const st=on?`background:${CAT_COLORS[ci].bg};color:${CAT_COLORS[ci].fg};border-color:${CAT_COLORS[ci].fg};`:'';
+    h+=`<button class="cat-btn ${on?'on':''}" style="${st}" onclick="selectCat('${esc(cat)}')">${esc(cat)} <span class="cc">${cnt}</span></button>`;
+  });
+  el.innerHTML=h;
+}
+
+function renderPills(){
+  const el=document.getElementById('pillsWrap');if(!el)return;
+  const qs=filteredQs();if(!qs.length){el.innerHTML='<em style="font-size:.72rem;color:var(--muted)">None</em>';return;}
+  let h='';
+  qs.forEach((q,i)=>{
+    const k=qKey(q); const a=S.answers[k]; const cur=q.year===currentQ().year&&q.qnum===currentQ().qnum;
+    const ok=a&&a.correct; const tried=!!a;
+    let cl='pill'; if(cur)cl+=' cur'; if(ok)cl+=' ok'; else if(tried)cl+=' tried';
+    const gi=S.sessionQs.findIndex(sq=>sq.year===q.year&&sq.qnum===q.qnum);
+    h+=`<button class="${cl}" onclick="goToQ(${gi})" title="${esc(q.topic||'')}">${i+1}</button>`;
+  });
+  el.innerHTML=h;
+}
+
+function renderScoreBar(){
+  const total=S.sessionQs.length,attempted=Object.keys(S.answers).length;
+  const correct=Object.values(S.answers).filter(a=>a.correct).length;
+  const {pts,max}=calcPts(); const pct=total>0?Math.round(attempted/total*100):0;
+  document.getElementById('scoreDisp').textContent=correct+' correct ('+pts+'/'+max+' pts)';
+  document.getElementById('attDisp').textContent=attempted;
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progPct').textContent=pct+'%';
+  // Profile in header
+  const ph=document.getElementById('hdrProfile');
+  if(ph&&S.profile)ph.textContent=S.profile.avatar+' '+S.profile.name;
+}
+
+function renderNavBtns(){
+  const f=filteredQs(),p=f.findIndex(q=>q.year===currentQ().year&&q.qnum===currentQ().qnum);
+  document.getElementById('btnPrev').disabled=p<=0;
+  document.getElementById('btnNext').disabled=p>=f.length-1;
+}
+
+function renderQuestion(){
+  const q=currentQ(); const area=document.getElementById('qArea');
+  if(!q){area.innerHTML='<div class="empty"><span class="ei">🔍</span>No questions here.</div>';return;}
+  const k=qKey(q); const ans=S.answers[k]; const done=!!(ans&&ans.chosen);
+  const ci=S.catMap[q.cat]; const catSt=ci!==undefined?`background:${CAT_COLORS[ci].bg};color:${CAT_COLORS[ci].fg};`:'';
+  const t=S.currentTab;
+  const imgSrc=getImgSrc(q.year,q.qnum);
+
+  // Tab labels with points
+  const tabsH=['📖 Word Problem','📋 Steps','🔢 Equation'].map((lbl,ti)=>{
+    const solvedHere=done&&ans.correct&&ans.stageFirstCorrect===ti;
+    const ptsBadge=done?(solvedHere?`<span class="tab-pts ${POINTS_CLASS[ti]}">✓ here</span>`:'')
+      :`<span class="tab-pts ${POINTS_CLASS[ti]}">${POINTS[ti]}pt</span>`;
+    return `<button class="tab ${t===ti?'on':''}" onclick="switchTab(${ti})">${lbl}${ptsBadge}</button>`;
+  }).join('');
+
+  // MCQ options (always A-E)
+  function mcqPanel(tabIdx) {
+    const opts=['A','B','C','D','E'];
+    let optsH='';
+    opts.forEach(letter=>{
+      let cl='mcq-opt';
+      if(done){
+        cl+=' locked';
+        if(letter===q.answer) cl+=' correct';
+        else if(ans.chosen===letter&&letter!==q.answer) cl+=' wrong';
+      } else {
+        // not yet answered
+      }
+      optsH+=`<div class="${cl}" onclick="chooseOption('${letter}')"><span class="mcq-key">${letter}</span><span>${letter}</span></div>`;
+    });
+    const isWrong = done && !ans.correct;
+    const fbMsg = done
+      ? (ans.correct
+          ? `✓ Correct! Answer is ${q.answer}. (${POINTS[ans.stageFirstCorrect]} pts)`
+          : `✗ Wrong — you chose ${ans.chosen}, correct answer is ${q.answer}.`)
+      : '';
+    const fbCl = done ? (ans.correct ? 'ok' : 'no') : '';
+    const seeHow = isWrong
+      ? `<button class="btn-see-how" onclick="switchTab(1)">📋 See how to work it out →</button>`
+      : '';
+    return `<div class="mcq-grid">${optsH}</div>
+      <div class="feedback ${done?'on':''} ${fbCl}">${fbMsg}</div>
+      ${seeHow}`;
+  }
+
+  // Explanation banner — shown on Steps/Equation tabs after a wrong answer
+  const wrongAns = done && !ans.correct;
+  const explBanner = wrongAns
+    ? `<div class="expl-banner">
+        <span class="expl-icon">💡</span>
+        <div>
+          <div class="expl-title">You chose <strong>${ans.chosen}</strong> — the correct answer is <strong>${q.answer}</strong></div>
+          <div class="expl-sub">Work through the steps below to understand why.</div>
+        </div>
+      </div>`
+    : '';
+
+  // Image block
+  const imgFull=imgSrc?`<div class="qimg"><img src="${imgSrc}" alt="Q${q.qnum} ${q.year}" loading="lazy"><div class="qimg-cap">Känguru ${q.year} — Q${q.qnum}</div></div>`:'';
+  const imgSm=imgSrc?`<div class="qimg sm" style="margin-bottom:10px"><img src="${imgSrc}" alt="Q${q.qnum}" loading="lazy"></div>`:'';
+
+  // Hint box
+  const hints=['Try from just the story — 3 full points!','Use the steps as a guide — 2 points','The equation sets it up — 1 point'];
+  const hintBox=done?'': `<div class="hint"><span>⭐</span><span>${hints[t]}</span></div>`;
+
+  // Panel 0 — Word + MCQ
+  const p0=`<div class="panel ${t===0?'on':''}" id="p0"><div class="sc">
+    ${imgFull}${hintBox}
+    <div class="word">${esc(q.word||'Look at the image and choose the correct answer.')}</div>
+    <button class="btn-tts" id="ttsBtn" onclick="toggleTTS()">🔊 Read Aloud</button>
+    <div class="mcq-note">Select the correct option (A–E). <strong>One attempt only.</strong></div>
+    ${mcqPanel(0)}
+  </div></div>`;
+
+  // Panel 1 — Steps + MCQ
+  const stepsH=(q.steps||[]).map((s,i)=>`<li><span class="sn">${i+1}</span><span>${esc(s).replace(/___/g,'<span class="blank">___</span>')}</span></li>`).join('');
+  const p1=`<div class="panel ${t===1?'on':''}" id="p1"><div class="sc">
+    ${explBanner}${imgSm}${hintBox}
+    <ul class="steps-list">${stepsH||'<li><span class="sn">1</span><span>Study the image carefully and work through the logic step by step.</span></li>'}</ul>
+    ${mcqPanel(1)}
+  </div></div>`;
+
+  // Panel 2 — Equation + MCQ
+  const p2=`<div class="panel ${t===2?'on':''}" id="p2"><div class="sc">
+    <div class="eq">${esc(q.eq||q.equation||'...')}</div>
+    ${mcqPanel(2)}
+  </div></div>`;
+
+  const status=done?(ans.correct?'✅':'❌'):'⬜';
+  const ptsBadge=done?`<span class="pts-badge ${POINTS_CLASS[ans.stageFirstCorrect]}">+${POINTS[ans.stageFirstCorrect]}pt</span>`:'';
+
+  area.innerHTML=`<div class="qcard">
+    <div class="qcard-hdr">
+      <span class="qnum">Q${S.currentIdx+1}/${S.sessionQs.length}</span>
+      <span class="qbadge" style="${catSt}">${esc(q.cat||'')}</span>
+      <span class="qtopic">${esc(q.topic||'')}</span>
+      ${ptsBadge}<span class="qyear">${q.year||''}</span>
+      <span class="qsts">${status}</span>
+    </div>
+    <div class="tabs">${tabsH}</div>
+    ${p0}${p1}${p2}
+  </div>`;
+}
+
+// ── END SCREEN ────────────────────────────────────────────────────
+function renderEndScreen(secs) {
+  const total=S.sessionQs.length;
+  const correct=Object.values(S.answers).filter(a=>a.correct).length;
+  const {pts,max}=calcPts(); const pct=total>0?Math.round(correct/total*100):0;
+  const ptsPct=max>0?Math.round(pts/max*100):0; const avg=total>0?Math.round(secs/total):0;
+  document.getElementById('endScore').textContent=correct+'/'+total;
+  document.getElementById('endPts').textContent=pts+'/'+max;
+  document.getElementById('endTime').textContent=fmtTime(secs);
+  document.getElementById('endAvg').textContent=avg+'s';
+  setTimeout(()=>{document.getElementById('endBar').style.width=ptsPct+'%';},120);
+  const name=S.profile?S.profile.avatar+' '+S.profile.name:'Student';
+  document.getElementById('endName').textContent=name;
+  let trophy,title,msg;
+  if(ptsPct===100){trophy='🏆';title='Perfect!';msg='Every question solved from the word problem alone. Outstanding work!';}
+  else if(ptsPct>=80){trophy='🥇';title='Excellent!';msg='Brilliant effort! Try to solve more from the word problem to earn full marks.';}
+  else if(ptsPct>=60){trophy='🥈';title='Good Job!';msg='Solid performance. Review the ones you missed and try again!';}
+  else if(ptsPct>=40){trophy='🥉';title='Keep Going!';msg='Good try! Use the Steps tab to understand the method, then challenge yourself again.';}
+  else{trophy='💪';title='Keep Practising!';msg='Every expert was once a beginner. Practise regularly and you will improve fast!';}
+  document.getElementById('endTrophy').textContent=trophy;
+  document.getElementById('endTitle').textContent=title;
+  document.getElementById('endMsg').textContent=msg;
+  // Review table
+  buildReviewTable();
+}
+
+function buildReviewTable(){
+  const el=document.getElementById('reviewBody'); if(!el)return;
+  let h='';
+  S.sessionQs.forEach((q,i)=>{
+    const k=qKey(q); const a=S.answers[k];
+    const chosen=a?a.chosen:'—'; const ok=a&&a.correct;
+    const imgSrc=getImgSrc(q.year,q.qnum);
+    const thumb=imgSrc?`<img class="r-thumb" src="${imgSrc}" onclick="showModal('${k}')" title="Click to enlarge">`:'<span style="font-size:.7rem;color:var(--muted)">—</span>';
+    h+=`<tr>
+      <td>${i+1}</td>
+      <td>${thumb}</td>
+      <td style="max-width:120px;font-size:.74rem">${esc(q.topic||'')}</td>
+      <td>${q.year}</td>
+      <td class="r-ans ${ok?'ok':'no'}">${chosen}</td>
+      <td class="r-ans ok">${q.answer}</td>
+      <td class="r-icon">${ok?'✅':'❌'}</td>
+    </tr>`;
+  });
+  el.innerHTML=h;
+}
+
+function showModal(k){
+  const q=S.sessionQs.find(q=>qKey(q)===k); if(!q)return;
+  const imgSrc=getImgSrc(q.year,q.qnum); if(!imgSrc)return;
+  document.getElementById('modalImg').src=imgSrc;
+  document.getElementById('modalOverlay').classList.add('on');
+}
+function closeModal(){ document.getElementById('modalOverlay').classList.remove('on'); }
+
+// ── TTS ───────────────────────────────────────────────────────────
+function voicesReady(){return new Promise(resolve=>{const v=window.speechSynthesis.getVoices();if(v.length){resolve(v);return;}let done=false;window.speechSynthesis.onvoiceschanged=()=>{if(done)return;done=true;resolve(window.speechSynthesis.getVoices());};setTimeout(()=>{if(!done){done=true;resolve(window.speechSynthesis.getVoices());}},800);});}
+function toggleTTS(){window.speechSynthesis.speaking?stopSpeech():startSpeech();}
+async function startSpeech(){const q=currentQ();if(!q)return;stopSpeech();const voices=await voicesReady();const voice=voices.find(v=>v.lang&&v.lang.startsWith('en-IN'))||voices.find(v=>v.lang&&v.lang.startsWith('en-'));const u=new SpeechSynthesisUtterance(q.word||'Look at the image carefully.');u.rate=0.88;u.pitch=1.05;u.lang='en-IN';if(voice)u.voice=voice;const done=()=>{clearInterval(_ttsKA);_ttsKA=null;const b=document.getElementById('ttsBtn');if(b){b.textContent='🔊 Read Aloud';b.classList.remove('sp');}};u.onend=done;u.onerror=done;window.speechSynthesis.speak(u);_ttsKA=setInterval(()=>{if(!window.speechSynthesis.speaking){clearInterval(_ttsKA);_ttsKA=null;return;}window.speechSynthesis.pause();window.speechSynthesis.resume();},10000);const b=document.getElementById('ttsBtn');if(b){b.textContent='⏹ Stop';b.classList.add('sp');}}
+function stopSpeech(){clearInterval(_ttsKA);_ttsKA=null;window.speechSynthesis.cancel();const b=document.getElementById('ttsBtn');if(b){b.textContent='🔊 Read Aloud';b.classList.remove('sp');}}
+
+// ── CELEBRATION ───────────────────────────────────────────────────
+function celebrate(si){
+  const inp=document.querySelector('.mcq-opt.correct');
+  if(inp){const r=inp.getBoundingClientRect();burstEmojis(r.left+r.width/2,r.top+r.height/2,si);}
+  const card=document.querySelector('.qcard');
+  if(card){card.style.transition='box-shadow .12s';card.style.boxShadow='0 0 0 4px #22c55e,0 4px 32px rgba(34,197,94,.45)';setTimeout(()=>{card.style.boxShadow='';card.style.transition='';},750);}
+  playChime(si);
+}
+function burstEmojis(cx,cy,si){const sets=[['🌟','⭐','🎉','✨','🏆','🎊','💯','🥇'],['👍','✨','🎯','💡','⭐','🙌'],['✅','👌','💪','✨','🎯']];const emojis=sets[Math.min(si,2)];const count=si===0?12:8;for(let i=0;i<count;i++){const el=document.createElement('div');el.textContent=emojis[i%emojis.length];const angle=(360/count)*i*(Math.PI/180);const dist=65+Math.random()*55;el.style.cssText=['position:fixed',`left:${cx}px`,`top:${cy}px`,`font-size:${si===0?'1.6':'1.3'}rem`,'pointer-events:none','z-index:10000','transform:translate(-50%,-50%)',`--dx:${Math.cos(angle)*dist}px`,`--dy:${Math.sin(angle)*dist}px`,'animation:eBurst .9s ease forwards'].join(';');document.body.appendChild(el);setTimeout(()=>el.remove(),960);}}
+function playChime(si){try{const ctx=new(window.AudioContext||window.webkitAudioContext)();const freqs=[[523.25,659.25,783.99,1046.5],[523.25,659.25,783.99],[523.25,659.25]];freqs[Math.min(si,2)].forEach((freq,i)=>{const osc=ctx.createOscillator(),gain=ctx.createGain();osc.connect(gain);gain.connect(ctx.destination);osc.type='sine';osc.frequency.value=freq;const t=ctx.currentTime+i*.13;gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(.20,t+.04);gain.gain.exponentialRampToValueAtTime(.001,t+.55);osc.start(t);osc.stop(t+.6);});setTimeout(()=>ctx.close(),2500);}catch(e){}}
+function launchConfetti(){const w=document.createElement('div');w.className='confetti-wrap';const cols=['#4f72e3','#22c55e','#f59e0b','#ec4899','#8b5cf6','#14b8a6'];for(let i=0;i<30;i++){const p=document.createElement('div');p.className='cp';p.style.cssText=`background:${cols[i%cols.length]};animation-delay:${(Math.random()*.8).toFixed(2)}s;animation-duration:${(2+Math.random()).toFixed(2)}s;transform:rotate(${Math.random()*360}deg);`;w.appendChild(p);}document.body.appendChild(w);setTimeout(()=>w.remove(),4000);}
+
+// ── RESET ─────────────────────────────────────────────────────────
+function confirmReset(){
+  if(!confirm('Reset session? All progress will be cleared.'))return;
+  stopSpeech();stopTimer();
+  S.sessionQs=[];S.answers={};S.timerSecs=0;S.currentIdx=0;S.currentTab=0;
+  S.activeCat='All';S.catMap={};S.lockCats=[];
+  localStorage.removeItem(lsKey());
+  showScreen('lockScreen');
+  renderProfileChips();
+  buildQuickPicks();buildCatFilter();setNum(10);updatePoolInfo();
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function buildQuickPicks(){
+  const pool=QUESTION_BANK.length;
+  const picks=[5,10,15,20,30,pool].filter((v,i,a)=>v<=pool&&a.indexOf(v)===i);
+  const el=document.getElementById('qpRow');if(!el)return;el.innerHTML='';
+  picks.forEach(n=>{const b=document.createElement('button');b.className='qp'+(n===10?' on':'');b.textContent=(n===pool?'All '+n:n+' Qs');b.onclick=()=>{setNum(n);el.querySelectorAll('.qp').forEach(x=>x.classList.remove('on'));b.classList.add('on');};el.appendChild(b);});
+}
+function buildCatFilter(){
+  const cats=[...new Set(QUESTION_BANK.map(q=>q.cat))].sort();
+  const el=document.getElementById('catFilt');if(!el)return;el.innerHTML='';
+  cats.forEach(cat=>{const b=document.createElement('button');b.className='cf';b.textContent=cat;b.onclick=()=>{b.classList.toggle('on');S.lockCats=Array.from(el.querySelectorAll('.cf.on')).map(x=>x.textContent);updatePoolInfo();};el.appendChild(b);});
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  renderProfileChips();buildQuickPicks();buildCatFilter();setNum(10);updatePoolInfo();
+  if(!loadSession()){showScreen('lockScreen');}
+});
+
+
+// CBSE override: show actual option text in MCQ
+function renderQuestion(){
+  const q=currentQ(); const area=document.getElementById('qArea');
+  if(!q){area.innerHTML='<div class="empty"><span class="ei">🔍</span>No questions here.</div>';return;}
+  const k=qKey(q); const ans=S.answers[k]; const done=!!(ans&&ans.chosen);
+  const ci=S.catMap[q.cat]; const catSt=ci!==undefined?`background:${CAT_COLORS[ci].bg};color:${CAT_COLORS[ci].fg};`:'';
+  const t=S.currentTab;
+
+  const tabsH=['📖 Word Problem','📋 Steps','🔢 Equation'].map((lbl,ti)=>{
+    const solvedHere=done&&ans.correct&&ans.stageFirstCorrect===ti;
+    const ptsBadge=done?(solvedHere?`<span class="tab-pts ${POINTS_CLASS[ti]}">✓ here</span>`:''): `<span class="tab-pts ${POINTS_CLASS[ti]}">${POINTS[ti]}pt</span>`;
+    return `<button class="tab ${t===ti?'on':''}" onclick="switchTab(${ti})">${lbl}${ptsBadge}</button>`;
+  }).join('');
+
+  function mcqPanel(tabIdx){
+    const opts = q.opts || {A:'A',B:'B',C:'C',D:'D',E:'E'};
+    let optsH='';
+    Object.entries(opts).forEach(([letter,text])=>{
+      let cl='mcq-opt';
+      if(done){
+        cl+=' locked';
+        if(letter===q.answer) cl+=' correct';
+        else if(ans.chosen===letter&&letter!==q.answer) cl+=' wrong';
+      }
+      optsH+=`<div class="${cl}" onclick="chooseOption('${letter}')"><span class="mcq-key">${letter}</span><span>${text}</span></div>`;
+    });
+    const isWrong=done&&!ans.correct;
+    const fbMsg=done?(ans.correct?`✓ Correct! (${POINTS[ans.stageFirstCorrect]} pts)`:`✗ Wrong — you chose ${ans.chosen}, correct answer is ${q.answer}.`):'';
+    const fbCl=done?(ans.correct?'ok':'no'):'';
+    const seeHow=isWrong?`<button class="btn-see-how" onclick="switchTab(1)">📋 See how to work it out →</button>`:'';
+    return `<div class="mcq-grid">${optsH}</div><div class="feedback ${done?'on':''} ${fbCl}">${fbMsg}</div>${seeHow}`;
+  }
+
+  const wrongAns=done&&!ans.correct;
+  const explBanner=wrongAns?`<div class="expl-banner"><span class="expl-icon">💡</span><div><div class="expl-title">You chose <strong>${ans.chosen}</strong> — correct answer is <strong>${q.answer}</strong></div><div class="expl-sub">Work through the steps below to understand why.</div></div></div>`:'';
+
+  const imgSrc=getImgSrc(q.year,q.qnum);
+  const imgFull=imgSrc?`<div class="qimg"><img src="${imgSrc}" alt="Q" loading="lazy"></div>`:'';
+  const imgSm=imgSrc?`<div class="qimg sm" style="margin-bottom:10px"><img src="${imgSrc}" loading="lazy"></div>`:'';
+  const hints=['Try from just the story — 3 full points!','Use the steps as a guide — 2 points','The equation sets it up — 1 point'];
+  const hintBox=done?'':`<div class="hint"><span>⭐</span><span>${hints[t]}</span></div>`;
+
+  const chapterRef=q.chapter?`<div class="chapter-ref">📖 ${q.chapter}</div>`:'';
+  const subjClass=q.cat.toLowerCase().includes('maths')?'subj-maths':q.cat.toLowerCase().includes('science')?'subj-science':q.cat.toLowerCase().includes('english')?'subj-english':'subj-social';
+  const subjBadge=`<span class="subj-badge ${subjClass}">${q.cat.split('—')[0].trim()}</span>`;
+
+  const p0=`<div class="panel ${t===0?'on':''}" id="p0"><div class="sc">
+    ${imgFull}${chapterRef}${hintBox}
+    <div class="word">${esc(q.word||'')}</div>
+    <button class="btn-tts" id="ttsBtn" onclick="toggleTTS()">🔊 Read Aloud</button>
+    <div class="mcq-note">Select the correct option. <strong>One attempt only.</strong></div>
+    ${mcqPanel(0)}
+  </div></div>`;
+
+  const stepsH=(q.steps||[]).map((s,i)=>`<li><span class="sn">${i+1}</span><span>${esc(s).replace(/___/g,'<span class="blank">___</span>')}</span></li>`).join('');
+  const p1=`<div class="panel ${t===1?'on':''}" id="p1"><div class="sc">
+    ${explBanner}${imgSm}${hintBox}
+    <ul class="steps-list">${stepsH}</ul>
+    ${mcqPanel(1)}
+  </div></div>`;
+
+  const p2=`<div class="panel ${t===2?'on':''}" id="p2"><div class="sc">
+    <div class="eq">${esc(q.eq||'')}</div>
+    ${mcqPanel(2)}
+  </div></div>`;
+
+  const status=done?(ans.correct?'✅':'❌'):'⬜';
+  const ptsBadge=done?`<span class="pts-badge ${POINTS_CLASS[ans.stageFirstCorrect]}">+${POINTS[ans.stageFirstCorrect]}pt</span>`:'';
+
+  area.innerHTML=`<div class="qcard">
+    <div class="qcard-hdr">
+      <span class="qnum">Q${S.currentIdx+1}/${S.sessionQs.length}</span>
+      <span class="qbadge" style="${catSt}">${esc(q.cat||'')}</span>
+      ${subjBadge}
+      ${ptsBadge}<span class="qyear">${q.chapter||''}</span>
+      <span class="qsts">${status}</span>
+    </div>
+    <div class="tabs">${tabsH}</div>
+    ${p0}${p1}${p2}
+  </div>`;
+}
+
+// CBSE review table override (no image thumbnails)
+function buildReviewTable(){
+  const el=document.getElementById('reviewBody'); if(!el)return;
+  let h='';
+  S.sessionQs.forEach((q,i)=>{
+    const k=qKey(q); const a=S.answers[k];
+    const chosen=a?a.chosen:'—'; const ok=a&&a.correct;
+    const opts=q.opts||{};
+    const correctText=opts[q.answer]||q.answer;
+    const chosenText=a?(opts[a.chosen]||a.chosen):'—';
+    h+=`<tr>
+      <td>${i+1}</td>
+      <td style="font-size:.74rem;max-width:180px">${esc(q.topic||'')}</td>
+      <td style="font-size:.72rem">${esc(q.cat.split('—')[0].trim())}</td>
+      <td class="r-ans ${ok?'ok':'no'}">${chosen}: ${esc(chosenText.slice?chosenText.slice(0,30):chosenText)}</td>
+      <td class="r-ans ok">${q.answer}: ${esc(correctText.slice?correctText.slice(0,30):correctText)}</td>
+      <td class="r-icon">${ok?'✅':'❌'}</td>
+    </tr>`;
+  });
+  el.innerHTML=h;
+}
+
+</script>
+</body>
+</html>

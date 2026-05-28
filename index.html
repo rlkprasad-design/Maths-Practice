@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maths Practice — Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f0f4ff;--surface:#fff;--surface2:#f7f9ff;--border:#dde3f4;--text:#1e2a45;--muted:#6b7a99;--accent:#4f72e3;--accent-l:#e8edfb;--green:#22c55e;--green-l:#dcfce7;--font:'Nunito',system-ui,sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+.page{max-width:860px;margin:0 auto;padding:32px 16px}
+.hero{text-align:center;margin-bottom:36px}
+.hero-logo{font-size:64px;display:block;margin-bottom:10px}
+.hero-title{font-size:2.4rem;font-weight:900;color:var(--accent);letter-spacing:-.5px;margin-bottom:6px}
+.hero-sub{font-size:1rem;color:var(--muted);font-weight:600;margin-bottom:0}
+/* PROFILE SECTION */
+.section-title{font-size:.78rem;font-weight:900;letter-spacing:1.1px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.profile-strip{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px;align-items:center}
+.p-card{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 16px;
+  border-radius:14px;border:2.5px solid var(--border);background:var(--surface);
+  cursor:pointer;transition:.18s;min-width:80px;position:relative}
+.p-card:hover{border-color:var(--accent);background:var(--accent-l)}
+.p-card.active{border-color:var(--accent);background:var(--accent-l);box-shadow:0 0 0 2px var(--accent)}
+.p-card .av{font-size:2rem}
+.p-card .nm{font-size:.75rem;font-weight:800;color:var(--text)}
+.p-card .streak{font-size:.65rem;font-weight:700;color:var(--muted)}
+.btn-add{padding:9px 16px;border-radius:50px;border:2px dashed var(--border);background:transparent;
+  font-family:var(--font);font-size:.8rem;font-weight:800;color:var(--muted);cursor:pointer;transition:.18s}
+.btn-add:hover{border-color:var(--accent);color:var(--accent)}
+/* LEVEL CARDS */
+.levels-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-bottom:32px}
+.level-card{background:var(--surface);border-radius:18px;padding:22px 20px;
+  border:2.5px solid var(--border);cursor:pointer;transition:.18s;text-decoration:none;
+  display:block;position:relative;overflow:hidden}
+.level-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(79,114,227,.15)}
+.level-card.coming-soon{opacity:.65;cursor:default;pointer-events:none}
+.level-card .lc-tag{display:inline-block;padding:3px 10px;border-radius:50px;
+  font-size:.68rem;font-weight:900;margin-bottom:10px;letter-spacing:.3px}
+.level-card .lc-icon{font-size:2.6rem;display:block;margin-bottom:8px}
+.level-card .lc-name{font-size:1.2rem;font-weight:900;margin-bottom:3px}
+.level-card .lc-grade{font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:8px}
+.level-card .lc-stats{font-size:.74rem;font-weight:700;color:var(--muted)}
+.level-card .lc-stats span{color:var(--accent);font-weight:900}
+.badge-soon{position:absolute;top:14px;right:14px;background:#f59e0b;color:#fff;
+  font-size:.62rem;font-weight:900;padding:2px 8px;border-radius:50px;letter-spacing:.5px}
+/* DASHBOARD */
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:32px}
+.dash-stat{background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:16px 14px}
+.dash-val{font-size:1.8rem;font-weight:900;color:var(--accent);display:block;margin-bottom:3px}
+.dash-lbl{font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+/* HISTORY */
+.hist-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-bottom:24px}
+.hist-table th{background:var(--surface2);padding:7px 10px;text-align:left;font-weight:800;color:var(--muted);border-bottom:2px solid var(--border)}
+.hist-table td{padding:7px 10px;border-bottom:1px solid var(--border)}
+.hist-table tr:hover td{background:var(--surface2)}
+.ok{color:#15803d;font-weight:800}.no{color:#b91c1c;font-weight:800}
+.leaderboard{background:var(--surface);border-radius:16px;border:2px solid var(--border);overflow:hidden;margin-bottom:32px}
+.lb-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border)}
+.lb-row:last-child{border-bottom:none}
+.lb-rank{font-size:1.2rem;font-weight:900;min-width:28px}
+.lb-av{font-size:1.5rem}
+.lb-info{flex:1}
+.lb-name{font-size:.88rem;font-weight:800}
+.lb-sub{font-size:.72rem;color:var(--muted);font-weight:600}
+.lb-score{font-size:.88rem;font-weight:900;color:var(--accent)}
+.no-hist{text-align:center;padding:32px;color:var(--muted);font-weight:700;font-size:.88rem}
+@media(max-width:600px){.levels-grid{grid-template-columns:1fr}.dash-grid{grid-template-columns:1fr 1fr}.hero-title{font-size:1.8rem}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="hero-logo">🦘</span>
+    <div class="hero-title">Maths Cheddamaa?</div>
+    <div class="hero-sub">Hello pillalu ... idi mana Family kosam</div>
+  </div>
+
+  <!-- PROFILES -->
+  <div class="section-title">Who is practising today?</div>
+  <div class="profile-strip" id="profileStrip"></div>
+
+  <!-- DASHBOARD for selected profile -->
+  <div id="dashSection" style="display:none">
+    <div class="section-title">Your Progress — <span id="dashName"></span></div>
+    <div class="dash-grid" id="dashGrid"></div>
+  </div>
+
+  <!-- LEADERBOARD -->
+  <div class="section-title">Family Leaderboard — This Week</div>
+  <div class="leaderboard" id="leaderboard"></div>
+
+  <!-- LEVELS -->
+  <div class="section-title">Choose a Level</div>
+  <div class="levels-grid">
+
+    <a href="felix.html" class="level-card" style="border-color:#4f72e3">
+      <span class="lc-tag" style="background:#e8edfb;color:#4f72e3">Känguru Felix</span>
+      <span class="lc-icon">🐨</span>
+      <div class="lc-name" style="color:#4f72e3">Felix</div>
+      <div class="lc-grade">Grades 1 – 2</div>
+      <div class="lc-stats"><span id="felixCount">138</span> questions · 2013–2025</div>
+    </a>
+
+    <a href="ecolier.html" class="level-card" style="border-color:#16a34a">
+      <span class="lc-tag" style="background:#dcfce7;color:#16a34a">Känguru Écolier</span>
+      <span class="lc-icon">🦘</span>
+      <div class="lc-name" style="color:#16a34a">Écolier</div>
+      <div class="lc-grade">Grades 3 – 4</div>
+      <div class="lc-stats"><span id="ecolierCount">326</span> questions · 2009–2025</div>
+    </a>
+
+    <a href="cbse_grade34.html" class="level-card" style="border-color:#d97706">
+      <span class="lc-tag" style="background:#fef3c7;color:#d97706">CBSE</span>
+      <span class="lc-icon">📚</span>
+      <div class="lc-name" style="color:#d97706">Class 3 → 4</div>
+      <div class="lc-grade">Class 3 to Class 4 Transition</div>
+      <div class="lc-stats"><span>65</span> questions · Maths, Science, English, SSt</div>
+    </a>
+
+    <a href="cbse_grade67.html" class="level-card" style="border-color:#8b5cf6">
+      <span class="lc-tag" style="background:#ede9fe;color:#8b5cf6">CBSE</span>
+      <span class="lc-icon">📐</span>
+      <div class="lc-name" style="color:#8b5cf6">Class 6 → 7</div>
+      <div class="lc-grade">Class 6 to Class 7 Transition</div>
+      <div class="lc-stats"><span>65</span> questions · Maths, Science, English, SSt</div>
+    </a>
+
+    <a href="cbse_grade78.html" class="level-card" style="border-color:#ec4899">
+      <span class="lc-tag" style="background:#fce7f3;color:#ec4899">CBSE</span>
+      <span class="lc-icon">🔬</span>
+      <div class="lc-name" style="color:#ec4899">Class 7 → 8</div>
+      <div class="lc-grade">Class 7 to Class 8 Transition</div>
+      <div class="lc-stats"><span>65</span> questions · Maths, Science, English, SSt</div>
+    </a>
+
+  </div>
+
+  <!-- RECENT HISTORY -->
+  <div class="section-title" id="histTitle" style="display:none">Recent Sessions</div>
+  <table class="hist-table" id="histTable" style="display:none">
+    <thead><tr><th>Date</th><th>Level</th><th>Questions</th><th>Correct</th><th>Points</th><th>Total Time</th><th>Avg/Q</th></tr></thead>
+    <tbody id="histBody"></tbody>
+  </table>
+
+</div>
+
+<script>
+const PFX = 'mkp_';
+let activeProfile = null;
+const AVATARS = ['🦁','🐯','🐻','🦊','🐼','🐨','🐸','🦉','🐬','🦄'];
+
+function loadProfiles(){ try{return JSON.parse(localStorage.getItem(PFX+'profiles')||'[]');}catch(e){return [];} }
+function saveProfiles(p){ localStorage.setItem(PFX+'profiles',JSON.stringify(p)); }
+function loadHistory(name){ try{return JSON.parse(localStorage.getItem(PFX+'hist_'+name)||'[]');}catch(e){return [];} }
+
+function renderProfiles(){
+  const profs = loadProfiles();
+  const wrap = document.getElementById('profileStrip');
+  wrap.innerHTML = '';
+  profs.forEach(p => {
+    const hist = loadHistory(p.name);
+    const streak = calcStreak(hist);
+    const d = document.createElement('div');
+    d.className = 'p-card' + (activeProfile&&activeProfile.name===p.name?' active':'');
+    d.innerHTML = `<span class="av">${p.avatar}</span><span class="nm">${p.name}</span><span class="streak">${streak>0?'🔥'+streak+' day streak':''}</span>`;
+    d.onclick = () => selectProfile(p);
+    wrap.appendChild(d);
+  });
+  const add = document.createElement('button');
+  add.className = 'btn-add'; add.textContent = '+ Add Kid';
+  add.onclick = addProfile;
+  wrap.appendChild(add);
+}
+
+function calcStreak(hist){
+  if(!hist.length) return 0;
+  const days = [...new Set(hist.map(h=>h.date.slice(0,10)))].sort().reverse();
+  const today = new Date().toISOString().slice(0,10);
+  let streak=0, check=today;
+  for(const d of days){
+    if(d===check){streak++;const dt=new Date(check);dt.setDate(dt.getDate()-1);check=dt.toISOString().slice(0,10);}
+    else break;
+  }
+  return streak;
+}
+
+function selectProfile(p){
+  activeProfile = p;
+  renderProfiles();
+  renderDash(p);
+  renderHistory(p);
+  renderLeaderboard();
+}
+
+function addProfile(){
+  const name = prompt("Kid's name?");
+  if(!name||!name.trim()) return;
+  const profs = loadProfiles();
+  if(profs.find(x=>x.name===name.trim())){alert('Name already exists!');return;}
+  const avatar = AVATARS[profs.length % AVATARS.length];
+  profs.push({name:name.trim(),avatar});
+  saveProfiles(profs);
+  selectProfile({name:name.trim(),avatar});
+}
+
+function renderDash(p){
+  const hist = loadHistory(p.name);
+  const sec = document.getElementById('dashSection');
+  if(!hist.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  document.getElementById('dashName').textContent = p.avatar+' '+p.name;
+  const total = hist.length;
+  const avgScore = hist.length ? Math.round(hist.reduce((a,h)=>a+(h.correct/h.total*100),0)/hist.length) : 0;
+  const totalQs = hist.reduce((a,h)=>a+h.total,0);
+  const bestScore = hist.length ? Math.max(...hist.map(h=>Math.round(h.correct/h.total*100))) : 0;
+  const streak = calcStreak(hist);
+
+  // Avg time per question across all sessions
+  const totalSecs = hist.reduce((a,h)=>a+(h.secs||0),0);
+  const totalQsForTime = hist.reduce((a,h)=>a+h.total,0);
+  const avgSecsPerQ = totalQsForTime > 0 ? Math.round(totalSecs / totalQsForTime) : 0;
+
+  // Speed label — gives context to the number
+  const speedLabel = avgSecsPerQ === 0 ? '—'
+    : avgSecsPerQ <= 15 ? avgSecsPerQ + 's ⚡'
+    : avgSecsPerQ <= 35 ? avgSecsPerQ + 's 🎯'
+    : avgSecsPerQ + 's 🐢';
+
+  document.getElementById('dashGrid').innerHTML = `
+    <div class="dash-stat"><span class="dash-val">${total}</span><span class="dash-lbl">Sessions Done</span></div>
+    <div class="dash-stat"><span class="dash-val">${avgScore}%</span><span class="dash-lbl">Avg Score</span></div>
+    <div class="dash-stat"><span class="dash-val">${totalQs}</span><span class="dash-lbl">Questions Done</span></div>
+    <div class="dash-stat"><span class="dash-val">${bestScore}%</span><span class="dash-lbl">Best Score</span></div>
+    <div class="dash-stat"><span class="dash-val">${speedLabel}</span><span class="dash-lbl">Avg Time / Question</span></div>
+    <div class="dash-stat"><span class="dash-val">${streak>0?'🔥'+streak:'—'}</span><span class="dash-lbl">Day Streak</span></div>
+  `;
+}
+
+function renderHistory(p){
+  const hist = loadHistory(p.name).slice(-10).reverse();
+  const title = document.getElementById('histTitle');
+  const table = document.getElementById('histTable');
+  if(!hist.length){title.style.display='none';table.style.display='none';return;}
+  title.style.display='block'; table.style.display='table';
+  title.textContent = `Recent Sessions — ${p.avatar} ${p.name}`;
+  const tbody = document.getElementById('histBody');
+  tbody.innerHTML = hist.map(h=>{
+    const pct = Math.round(h.correct/h.total*100);
+    const d = new Date(h.date).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+    const lvlMap = {'felix':'🐨 Felix','ecolier':'🦘 Écolier','cbse_34':'📚 CBSE 3→4','cbse_67':'📐 CBSE 6→7','cbse_78':'🔬 CBSE 7→8'};
+    const lvl = lvlMap[h.level] || h.level;
+    const ptsPct = h.max>0?Math.round(h.pts/h.max*100):0;
+    const cls = pct>=80?'ok':'no';
+    const m=Math.floor(h.secs/60),s=h.secs%60;
+    const avgQ = h.total > 0 ? Math.round((h.secs||0)/h.total) : 0;
+    const avgQLabel = avgQ===0?'—':avgQ<=15?avgQ+'s ⚡':avgQ<=35?avgQ+'s 🎯':avgQ+'s 🐢';
+    return `<tr><td>${d}</td><td>${lvl}</td><td>${h.total}</td>
+      <td class="${cls}">${h.correct}/${h.total} (${pct}%)</td>
+      <td class="${cls}">${h.pts}/${h.max} pts</td>
+      <td>${m}:${s.toString().padStart(2,'0')}</td>
+      <td style="font-weight:800;color:var(--accent)">${avgQLabel}</td></tr>`;
+  }).join('');
+}
+
+function renderLeaderboard(){
+  const profs = loadProfiles();
+  const lb = document.getElementById('leaderboard');
+  if(!profs.length){lb.innerHTML='<div class="no-hist">Add kids above to see the leaderboard!</div>';return;}
+  const now = new Date(); const weekAgo = new Date(now - 7*24*3600*1000);
+  const data = profs.map(p=>{
+    const hist = loadHistory(p.name).filter(h=>new Date(h.date)>weekAgo);
+    const avgPct = hist.length?Math.round(hist.reduce((a,h)=>a+(h.correct/h.total*100),0)/hist.length):0;
+    const sessions = hist.length;
+    const totalQs = hist.reduce((a,h)=>a+h.total,0);
+    const totalSecs = hist.reduce((a,h)=>a+(h.secs||0),0);
+    const avgSecsPerQ = totalQs > 0 ? Math.round(totalSecs/totalQs) : 0;
+    return {p,avgPct,sessions,totalQs,avgSecsPerQ};
+  }).sort((a,b)=>b.avgPct-a.avgPct||(b.totalQs-a.totalQs));
+  const medals = ['🥇','🥈','🥉'];
+  lb.innerHTML = data.map((d,i)=>{
+    const speedTxt = d.avgSecsPerQ > 0 ? ` · ⏱ ${d.avgSecsPerQ}s/Q` : '';
+    return `
+    <div class="lb-row">
+      <div class="lb-rank">${medals[i]||'#'+(i+1)}</div>
+      <div class="lb-av">${d.p.avatar}</div>
+      <div class="lb-info">
+        <div class="lb-name">${d.p.name}</div>
+        <div class="lb-sub">${d.sessions} sessions · ${d.totalQs} questions${speedTxt}</div>
+      </div>
+      <div class="lb-score">${d.avgPct>0?d.avgPct+'%':'No sessions yet'}</div>
+    </div>`;
+  }).join('');
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  renderProfiles();
+  renderLeaderboard();
+  // Auto-select first profile if exists
+  const profs = loadProfiles();
+  if(profs.length) selectProfile(profs[0]);
+});
+</script>
+</body>
+</html>
