@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maths Practice - Home</title>
+<title>Maths Practice — Home</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -131,12 +131,12 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
 
   <!-- DASHBOARD for selected profile -->
   <div id="dashSection" style="display:none">
-    <div class="section-title">Your Progress - <span id="dashName"></span></div>
+    <div class="section-title">Your Progress — <span id="dashName"></span></div>
     <div class="dash-grid" id="dashGrid"></div>
   </div>
 
   <!-- LEADERBOARD -->
-  <div class="section-title">Family Leaderboard - This Week</div>
+  <div class="section-title">Family Leaderboard — This Week</div>
   <div class="leaderboard" id="leaderboard"></div>
 
   <!-- LEVELS -->
@@ -192,6 +192,11 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
     <tbody id="histBody"></tbody>
   </table>
 
+</div>
+
+<!-- ADMIN LINK -->
+<div style="text-align:center;margin-top:40px;padding-bottom:20px">
+  <button onclick="document.getElementById('adminPanel').classList.add('open')" style="background:none;border:none;color:#dde3f4;font-size:.72rem;font-weight:700;cursor:pointer;font-family:var(--font)">⚙ admin</button>
 </div>
 
 <!-- AVATAR PICKER MODAL -->
@@ -328,7 +333,7 @@ function renderDash(p){
   const totalQsForTime = hist.reduce((a,h)=>a+h.total,0);
   const avgSecsPerQ = totalQsForTime > 0 ? Math.round(totalSecs / totalQsForTime) : 0;
 
-  // Speed label - gives context to the number
+  // Speed label — gives context to the number
   const speedLabel = avgSecsPerQ === 0 ? '—'
     : avgSecsPerQ <= 15 ? avgSecsPerQ + 's ⚡'
     : avgSecsPerQ <= 35 ? avgSecsPerQ + 's 🎯'
@@ -350,7 +355,7 @@ function renderHistory(p){
   const table = document.getElementById('histTable');
   if(!hist.length){title.style.display='none';table.style.display='none';return;}
   title.style.display='block'; table.style.display='table';
-  title.textContent = `Recent Sessions - ${p.avatar} ${p.name}`;
+  title.textContent = `Recent Sessions — ${p.avatar} ${p.name}`;
   const tbody = document.getElementById('histBody');
   tbody.innerHTML = hist.map(h=>{
     const pct = Math.round(h.correct/h.total*100);
@@ -402,7 +407,7 @@ function renderLeaderboard(){
 
 window.addEventListener('DOMContentLoaded',()=>{
   renderProfiles();
-  renderLeaderboard();  // now async - fetches from Supabase
+  renderLeaderboard();  // now async — fetches from Supabase
   // Auto-select first profile if exists
   const profs = loadProfiles();
   if(profs.length) selectProfile(profs[0]);
@@ -437,7 +442,7 @@ async function renderLeaderboard() {
   const sbSessions = await fetchSupabaseSessions();
 
   if(sbSessions && sbSessions.length > 0) {
-    // Use Supabase data - group by player
+    // Use Supabase data — group by player
     const now = new Date(); 
     const weekAgo = new Date(now - 7*24*3600*1000);
     const weekSessions = sbSessions.filter(s => new Date(s.created_at) > weekAgo);
@@ -466,7 +471,7 @@ async function renderLeaderboard() {
     }).sort((a,b)=>b.avgPct-a.avgPct||(b.totalQs-a.totalQs));
 
     if(!data.length) {
-      lb.innerHTML = '<div class="no-hist">No sessions this week yet - start practising!</div>';
+      lb.innerHTML = '<div class="no-hist">No sessions this week yet — start practising!</div>';
       return;
     }
 
@@ -596,7 +601,7 @@ async function adminResetAll() {
 <div class="admin-panel" id="adminPanel">
   <div class="admin-box">
     <h3>⚙️ Admin Reset</h3>
-    <p>This will permanently delete all profiles and scores.<br>Use with care - this cannot be undone.</p>
+    <p>This will permanently delete all profiles and scores.<br>Use with care — this cannot be undone.</p>
     <button class="btn-reset-all" onclick="adminResetAll()">
       🗑️ Reset Everything (all devices)
     </button>
