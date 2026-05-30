@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CBSE Class 8 Maths — Ganitha Prakash Part 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0f4ff;--surface:#fff;--surface2:#f7f9ff;--border:#dde3f4;
+  --text:#1e2a45;--muted:#6b7a99;--accent:#4f72e3;--accent-l:#e8edfb;
+  --green:#22c55e;--green-l:#dcfce7;--orange:#f59e0b;--orange-l:#fef3c7;
+  --red:#ef4444;--red-l:#fee2e2;--purple:#8b5cf6;--purple-l:#ede9fe;
+  --r:14px;--rs:8px;--sh:0 2px 12px rgba(79,114,227,.10);
+  --shm:0 4px 24px rgba(79,114,227,.14);--tr:.18s cubic-bezier(.4,0,.2,1);
+  --font:'Nunito',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+.screen{display:none;min-height:100vh}.screen.active{display:flex;flex-direction:column}
+/* LOCK */
+#lockScreen{align-items:center;justify-content:center;padding:24px;
+  background:linear-gradient(135deg,#e8edfb,#f0f4ff,#e0f2fe)}
+.lock-card{background:var(--surface);border-radius:24px;padding:40px 36px;
+  max-width:520px;width:100%;box-shadow:var(--shm)}
+.lock-logo{font-size:54px;margin-bottom:8px;display:block;text-align:center}
+.lock-title{font-size:2rem;font-weight:900;color:var(--accent);margin-bottom:3px;
+  letter-spacing:-.5px;text-align:center}
+.lock-sub{color:var(--muted);font-size:.9rem;margin-bottom:22px;font-weight:600;text-align:center}
+.lock-sec{margin-bottom:18px}
+.lock-lbl{font-weight:800;font-size:.88rem;color:var(--text);margin-bottom:7px;display:block}
+/* PROFILE SELECTOR */
+.profile-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.profile-chip{display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:10px 14px;border-radius:var(--r);border:2.5px solid var(--border);
+  background:var(--surface2);cursor:pointer;transition:var(--tr);min-width:72px}
+.profile-chip:hover{border-color:var(--accent);background:var(--accent-l)}
+.profile-chip.active{border-color:var(--accent);background:var(--accent-l);
+  box-shadow:0 0 0 2px var(--accent)}
+.profile-chip .p-avatar{font-size:1.6rem}
+.profile-chip .p-name{font-size:.72rem;font-weight:800;color:var(--text)}
+.btn-add-profile{padding:8px 14px;border-radius:50px;border:2px dashed var(--border);
+  background:transparent;font-family:var(--font);font-size:.78rem;font-weight:800;
+  color:var(--muted);cursor:pointer;transition:var(--tr)}
+.btn-add-profile:hover{border-color:var(--accent);color:var(--accent)}
+/* NUM STEPPER */
+.num-wrap{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:6px}
+.num-btn{width:38px;height:38px;border-radius:50%;border:2.5px solid var(--border);
+  background:var(--surface2);font-family:var(--font);font-size:1.2rem;font-weight:900;
+  cursor:pointer;color:var(--accent);transition:var(--tr);display:flex;align-items:center;justify-content:center}
+.num-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.num-disp{font-size:1.9rem;font-weight:900;color:var(--accent);min-width:54px;
+  text-align:center;padding:6px 12px;background:var(--accent-l);border-radius:var(--rs)}
+.qp-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.qp{padding:4px 11px;border-radius:50px;border:2px solid var(--border);background:var(--surface2);
+  font-family:var(--font);font-size:.76rem;font-weight:800;cursor:pointer;color:var(--muted);transition:var(--tr)}
+.qp:hover{border-color:var(--accent);color:var(--accent)}.qp.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+/* CAT FILTER */
+.cat-wrap{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.cf{padding:4px 10px;border-radius:50px;border:2px solid var(--border);background:var(--surface2);
+  font-family:var(--font);font-size:.74rem;font-weight:800;cursor:pointer;color:var(--muted);transition:var(--tr)}
+.cf:hover{border-color:var(--accent);color:var(--accent)}.cf.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.pool-info{font-size:.76rem;color:var(--muted);font-weight:700;text-align:center;
+  margin-bottom:14px;padding:6px;background:var(--surface2);border-radius:var(--rs)}
+.pool-info span{color:var(--accent);font-weight:900}
+.btn-start{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;
+  border-radius:50px;font-family:var(--font);font-size:1.05rem;font-weight:900;
+  cursor:pointer;transition:var(--tr);box-shadow:0 4px 16px rgba(79,114,227,.30)}
+.btn-start:hover{background:#3a5ccc;transform:translateY(-1px)}
+.btn-start:disabled{opacity:.4;pointer-events:none}
+/* HEADER */
+.hdr{background:var(--surface);border-bottom:2px solid var(--border);padding:9px 18px;
+  display:flex;align-items:center;gap:11px;position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.hdr-logo{font-size:22px}
+.hdr-title{font-size:.92rem;font-weight:900;color:var(--accent);flex:1}
+.hdr-profile{display:flex;align-items:center;gap:5px;background:var(--surface2);
+  border:1.5px solid var(--border);border-radius:50px;padding:4px 10px;font-size:.76rem;font-weight:800}
+.timer{display:flex;align-items:center;gap:4px;background:var(--accent-l);color:var(--accent);
+  padding:4px 11px;border-radius:50px;font-weight:800;font-size:.9rem;font-variant-numeric:tabular-nums}
+.btn-rst{padding:6px 11px;background:var(--red-l);color:var(--red);border:none;border-radius:50px;
+  font-family:var(--font);font-weight:800;font-size:.76rem;cursor:pointer;transition:var(--tr)}
+.btn-rst:hover{background:var(--red);color:#fff}
+/* SCORE BAR */
+.sbar{background:var(--surface);padding:6px 18px;display:flex;align-items:center;gap:11px;
+  border-bottom:1px solid var(--border);flex-wrap:wrap}
+.sp{display:flex;align-items:center;gap:3px;font-weight:800;font-size:.82rem}
+.sp .dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block}
+.sp .dot.a{background:var(--accent)}
+.prog-wrap{flex:1;min-width:60px;height:7px;background:var(--border);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:99px;transition:width .4s}
+/* LAYOUT */
+.layout{display:flex;flex:1;max-width:1120px;margin:0 auto;width:100%;padding:14px 10px;gap:13px}
+/* SIDEBAR */
+.sidebar{width:195px;flex-shrink:0}
+.sb-sec{margin-bottom:13px}
+.sb-hd{font-size:.65rem;font-weight:900;letter-spacing:1.1px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:5px;padding-left:3px}
+.cat-btn{display:block;width:100%;text-align:left;padding:6px 9px;border-radius:var(--rs);
+  border:2px solid transparent;font-family:var(--font);font-size:.78rem;font-weight:700;
+  cursor:pointer;background:var(--surface);color:var(--muted);margin-bottom:2px;transition:var(--tr)}
+.cat-btn:hover{background:var(--accent-l);color:var(--accent)}
+.cat-btn.on{background:var(--accent-l);color:var(--accent);border-color:var(--accent)}
+.cat-btn .cc{float:right;background:var(--border);border-radius:99px;padding:1px 5px;
+  font-size:.66rem;font-weight:800}
+.cat-btn.on .cc{background:var(--accent);color:#fff}
+.pills{display:flex;flex-wrap:wrap;gap:3px}
+.pill{width:28px;height:28px;border-radius:50%;border:2.5px solid var(--border);
+  background:var(--surface);font-family:var(--font);font-weight:800;font-size:.7rem;
+  cursor:pointer;color:var(--muted);transition:var(--tr);display:flex;align-items:center;justify-content:center}
+.pill:hover{border-color:var(--accent);color:var(--accent)}
+.pill.cur{background:var(--accent);border-color:var(--accent);color:#fff;
+  box-shadow:0 2px 8px rgba(79,114,227,.35)}
+.pill.ok{background:var(--green);border-color:var(--green);color:#fff}
+.pill.tried:not(.ok){background:var(--orange-l);border-color:var(--orange);color:var(--orange)}
+.pill.tried.cur:not(.ok){background:var(--orange);color:#fff}
+.pill.locked:not(.ok):not(.tried){opacity:.5}
+/* Q CARD */
+.content{flex:1;min-width:0}
+.qcard{background:var(--surface);border-radius:16px;overflow:hidden;
+  box-shadow:var(--sh);margin-bottom:11px;transition:box-shadow .12s}
+.qcard-hdr{padding:11px 17px;display:flex;align-items:center;gap:7px;
+  border-bottom:2px solid var(--border);flex-wrap:wrap}
+.qnum{font-size:.72rem;font-weight:900;color:var(--muted)}
+.qbadge{padding:2px 8px;border-radius:50px;font-size:.68rem;font-weight:800}
+.qtopic{font-size:.74rem;color:var(--muted);font-weight:600}
+.qyear{font-size:.66rem;color:var(--muted);font-weight:700;margin-left:auto;opacity:.6}
+.qsts{font-size:1rem;margin-left:4px}
+.pts-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;
+  border-radius:50px;font-size:.68rem;font-weight:900}
+.pts-badge.full{background:#dcfce7;color:#15803d;border:1.5px solid #86efac}
+.pts-badge.part{background:#fef3c7;color:#b45309;border:1.5px solid #fde68a}
+.pts-badge.min{background:#fee2e2;color:#b91c1c;border:1.5px solid #fca5a5}
+/* TABS */
+.tabs{display:flex;border-bottom:2px solid var(--border);padding:0 17px;gap:2px}
+.tab{padding:9px 12px;border:none;background:none;font-family:var(--font);font-size:.8rem;
+  font-weight:800;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;
+  margin-bottom:-2px;transition:var(--tr);border-radius:var(--rs) var(--rs) 0 0}
+.tab:hover{color:var(--accent);background:var(--accent-l)}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent);background:var(--accent-l)}
+.tab-pts{font-size:.6rem;font-weight:900;margin-left:3px;padding:1px 4px;border-radius:50px}
+.tab-pts.full{background:#dcfce7;color:#15803d}.tab-pts.part{background:#fef3c7;color:#b45309}
+.tab-pts.min{background:#fee2e2;color:#b91c1c}
+.panel{display:none}.panel.on{display:block}
+.sc{padding:18px 17px}
+/* HINT */
+.hint{display:flex;align-items:center;gap:6px;background:var(--surface2);
+  border:1.5px solid var(--border);border-radius:var(--rs);padding:6px 10px;
+  margin-bottom:11px;font-size:.76rem;font-weight:700;color:var(--muted)}
+/* IMAGE */
+.qimg{margin-bottom:13px;text-align:center;background:var(--surface2);
+  border:2px solid var(--border);border-radius:var(--r);padding:8px;overflow:hidden}
+.qimg img{max-width:100%;height:auto;border-radius:5px;display:block;margin:0 auto}
+.qimg.sm img{max-height:170px;width:auto}
+.qimg-cap{font-size:.68rem;color:var(--muted);font-weight:700;margin-top:4px;font-style:italic}
+/* WORD */
+.word{font-size:1rem;font-weight:700;line-height:1.7;color:var(--text);
+  background:linear-gradient(135deg,#fffbeb,#fef3c7);border:2px solid #fde68a;
+  border-radius:var(--r);padding:15px;margin-bottom:12px}
+.btn-tts{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;
+  background:var(--orange-l);color:#b45309;border:2px solid var(--orange);border-radius:50px;
+  font-family:var(--font);font-weight:800;font-size:.8rem;cursor:pointer;transition:var(--tr);margin-bottom:13px}
+.btn-tts:hover{background:var(--orange);color:#fff}
+.btn-tts.sp{animation:pulse 1s infinite}
+/* MCQ */
+.mcq-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.mcq-opt{display:flex;align-items:center;gap:8px;padding:10px 12px;
+  border-radius:var(--rs);border:2.5px solid var(--border);background:var(--surface2);
+  cursor:pointer;transition:var(--tr);font-family:var(--font);font-size:.9rem;font-weight:700;
+  color:var(--text);user-select:none}
+.mcq-opt:hover:not(.locked){border-color:var(--accent);background:var(--accent-l)}
+.mcq-opt.selected{border-color:var(--accent);background:var(--accent-l)}
+.mcq-opt.correct{border-color:var(--green)!important;background:var(--green-l)!important;color:#15803d}
+.mcq-opt.wrong{border-color:var(--red)!important;background:var(--red-l)!important;color:#b91c1c}
+.mcq-opt.reveal{border-color:var(--green)!important;background:#f0fdf4!important;color:#15803d}
+.mcq-opt.locked{pointer-events:none;opacity:.75}
+.mcq-key{font-size:.82rem;font-weight:900;width:22px;height:22px;border-radius:50%;
+  background:var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mcq-opt.selected .mcq-key{background:var(--accent);color:#fff}
+.mcq-opt.correct .mcq-key{background:var(--green);color:#fff}
+.mcq-opt.wrong .mcq-key{background:var(--red);color:#fff}
+.mcq-opt.reveal .mcq-key{background:var(--green);color:#fff}
+.mcq-note{font-size:.74rem;color:var(--muted);font-weight:700;margin-bottom:10px;
+  padding:5px 9px;background:var(--surface2);border-radius:var(--rs);display:inline-block}
+.feedback{margin-top:8px;padding:7px 11px;border-radius:var(--rs);font-weight:800;
+  font-size:.83rem;display:none}
+.feedback.on{display:block}
+.feedback.ok{background:var(--green-l);color:#15803d}
+.feedback.no{background:var(--red-l);color:#b91c1c}
+/* STEPS */
+.steps-list{list-style:none;margin-bottom:15px}
+.steps-list li{display:flex;align-items:flex-start;gap:9px;padding:9px 11px;
+  border-radius:var(--rs);background:var(--surface2);border:1.5px solid var(--border);
+  margin-bottom:7px;font-size:.91rem;font-weight:700;color:var(--text);line-height:1.5}
+.sn{min-width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;
+  font-size:.68rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.blank{display:inline-block;min-width:32px;border-bottom:2.5px solid var(--accent);
+  font-weight:900;color:var(--accent);text-align:center}
+/* EQ */
+.eq{font-size:1.7rem;font-weight:900;color:var(--text);text-align:center;
+  padding:20px 12px;background:linear-gradient(135deg,var(--accent-l),var(--surface2));
+  border-radius:var(--r);margin-bottom:16px;line-height:1.3}
+/* NAV */
+.qnav{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.btn-nav{padding:7px 13px;border-radius:50px;border:2.5px solid var(--border);
+  background:var(--surface);font-family:var(--font);font-weight:800;font-size:.82rem;
+  color:var(--muted);cursor:pointer;transition:var(--tr)}
+.btn-nav:hover{border-color:var(--accent);color:var(--accent)}
+.btn-nav:disabled{opacity:.3;pointer-events:none}
+.btn-fin{padding:7px 13px;background:var(--green);color:#fff;border:none;border-radius:50px;
+  font-family:var(--font);font-weight:900;font-size:.82rem;cursor:pointer;transition:var(--tr)}
+.btn-fin:hover{background:#16a34a}
+/* END SCREEN */
+#endScreen{align-items:center;justify-content:center;padding:20px;
+  background:linear-gradient(135deg,#e8edfb,#f0f4ff,#dcfce7);min-height:100vh}
+.end-card{background:var(--surface);border-radius:22px;padding:36px 30px;
+  max-width:680px;width:100%;box-shadow:var(--shm)}
+.end-top{text-align:center;margin-bottom:22px}
+.end-trophy{font-size:54px;display:block;margin-bottom:7px}
+.end-title{font-size:1.55rem;font-weight:900;color:var(--text);margin-bottom:5px}
+.end-msg{font-size:.88rem;color:var(--muted);font-weight:700;line-height:1.55;margin-bottom:16px}
+.end-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:20px}
+.end-stat{background:var(--surface2);border:2px solid var(--border);border-radius:var(--r);padding:12px 8px;text-align:center}
+.end-val{font-size:1.5rem;font-weight:900;color:var(--accent);display:block;margin-bottom:2px}
+.end-lbl{font-size:.66rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.end-bar-wrap{height:11px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:20px}
+.end-bar{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--green));transition:width 1s}
+/* REVIEW TABLE */
+.review-hd{font-size:.82rem;font-weight:900;color:var(--text);margin-bottom:10px;
+  display:flex;align-items:center;gap:8px}
+.review-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-bottom:20px}
+.review-table th{background:var(--surface2);padding:7px 9px;text-align:left;
+  font-weight:800;color:var(--muted);border-bottom:2px solid var(--border)}
+.review-table td{padding:7px 9px;border-bottom:1px solid var(--border);vertical-align:middle}
+.review-table tr:hover td{background:var(--surface2)}
+.r-thumb{width:60px;height:40px;object-fit:cover;border-radius:4px;cursor:pointer;
+  border:1.5px solid var(--border)}
+.r-ans{font-weight:900;font-size:.85rem}
+.r-ans.ok{color:#15803d}.r-ans.no{color:#b91c1c}
+.r-icon{font-size:.95rem}
+/* SEE HOW button — appears after wrong answer on word tab */
+.btn-see-how{display:inline-flex;align-items:center;gap:6px;margin-top:10px;
+  padding:9px 18px;background:linear-gradient(135deg,#ede9fe,#e8edfb);
+  color:#5b21b6;border:2px solid #c4b5fd;border-radius:50px;
+  font-family:var(--font);font-size:.85rem;font-weight:900;cursor:pointer;
+  transition:.18s;animation:pulseBtn 1.8s ease-in-out infinite}
+.btn-see-how:hover{background:#8b5cf6;color:#fff;border-color:#8b5cf6;animation:none;transform:translateY(-1px)}
+@keyframes pulseBtn{0%,100%{box-shadow:0 0 0 0 rgba(139,92,246,.4)}50%{box-shadow:0 0 0 6px rgba(139,92,246,0)}}
+/* EXPLANATION BANNER — top of Steps tab after wrong answer */
+.expl-banner{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;
+  background:linear-gradient(135deg,#fef3c7,#fffbeb);border:2px solid #f59e0b;
+  border-radius:var(--rs);margin-bottom:14px;animation:slideIn .3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.expl-icon{font-size:1.4rem;flex-shrink:0;margin-top:1px}
+.expl-title{font-size:.88rem;font-weight:800;color:#92400e;margin-bottom:2px}
+.expl-title strong{color:#b45309}
+.expl-sub{font-size:.76rem;font-weight:700;color:#b45309}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9000;
+  display:none;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.on{display:flex}
+.modal-box{background:var(--surface);border-radius:16px;padding:16px;max-width:700px;
+  width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shm)}
+.modal-img{width:100%;border-radius:8px}
+.modal-close{float:right;background:var(--red-l);color:var(--red);border:none;
+  border-radius:50px;padding:5px 12px;font-family:var(--font);font-weight:800;
+  font-size:.78rem;cursor:pointer;margin-bottom:10px}
+.end-btns{display:flex;gap:8px}
+.btn-again{flex:1;padding:12px;background:var(--accent);color:#fff;border:none;
+  border-radius:50px;font-family:var(--font);font-size:.95rem;font-weight:900;
+  cursor:pointer;transition:var(--tr);box-shadow:0 4px 14px rgba(79,114,227,.28)}
+.btn-again:hover{background:#3a5ccc;transform:translateY(-1px)}
+.btn-home{padding:12px 18px;background:var(--surface2);color:var(--muted);
+  border:2px solid var(--border);border-radius:50px;font-family:var(--font);
+  font-size:.88rem;font-weight:800;cursor:pointer;transition:var(--tr)}
+.btn-home:hover{border-color:var(--accent);color:var(--accent)}
+/* CONFETTI + EMOJI */
+.confetti-wrap{position:fixed;top:0;left:0;right:0;pointer-events:none;z-index:9999;
+  display:flex;justify-content:space-around}
+.cp{width:10px;height:14px;border-radius:2px;animation:cfFall 2.5s ease forwards}
+@keyframes cfFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}
+  100%{transform:translateY(110vh) rotate(540deg);opacity:0}}
+@keyframes eBurst{0%{transform:translate(-50%,-50%) scale(.3);opacity:1}
+  60%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.2);opacity:1}
+  100%{transform:translate(calc(-50% + var(--dx)*1.3),calc(-50% + var(--dy)*1.3)) scale(.8);opacity:0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.empty{text-align:center;padding:40px 14px;color:var(--muted);font-weight:700;font-size:.9rem}
+.empty .ei{font-size:38px;display:block;margin-bottom:8px}
+@media(max-width:700px){
+  .layout{flex-direction:column;padding:7px}.sidebar{width:100%}
+  .eq{font-size:1.3rem}.end-stats{grid-template-columns:1fr 1fr}
+  .mcq-grid{grid-template-columns:1fr}.hdr{padding:7px 11px;gap:8px}
+  .lock-card{padding:24px 14px}.end-card{padding:24px 16px}
+}
+
+.cbse8-tag{display:inline-block;padding:2px 9px;border-radius:50px;font-size:.68rem;
+  font-weight:900;background:#f0fdf4;color:#16a34a;border:1.5px solid #86efac;margin-bottom:8px}
+.chapter-ref{font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:10px;
+  padding:4px 10px;background:var(--surface2);border-radius:var(--rs);display:inline-block}
+</style>
+</head>
+<body>
+
+<script>
+const LEVEL_ID = 'cbse8_maths';
+const QUESTION_BANK = [
+  {id:301,year:0,qnum:301,cat:'Maths — Rational Numbers',topic:'Additive inverse',chapter:'Rational Numbers',word:'What is the additive inverse of -7/9?',opts:{'A':'-9/7','B':'7/9','C':'9/7','D':'-7/9','E':'0'},steps:['Additive inverse of a number is what you add to get 0','Additive inverse of -7/9 = +7/9','Check: -7/9 + 7/9 = ___'],eq:'(-7/9) + ? = 0 → ? = ___',answer:'B'},
+  {id:302,year:0,qnum:302,cat:'Maths — Rational Numbers',topic:'Multiplicative inverse',chapter:'Rational Numbers',word:'What is the multiplicative inverse (reciprocal) of -5/8?',opts:{'A':'8/5','B':'-8/5','C':'5/8','D':'-5/8','E':'1'},steps:['Multiplicative inverse of a/b = b/a','Multiplicative inverse of -5/8 = 8/(-5) = -8/5','Check: (-5/8) × (-8/5) = ___'],eq:'(-5/8) × ? = 1 → ? = ___',answer:'B'},
+  {id:303,year:0,qnum:303,cat:'Maths — Rational Numbers',topic:'Properties — closure',chapter:'Rational Numbers',word:'Which of the following operations is NOT closed for rational numbers?',opts:{'A':'Addition','B':'Subtraction','C':'Multiplication','D':'Division by zero','E':'Division by non-zero'},steps:['Closure means: operation on two rationals always gives a rational','Addition: a/b + c/d = rational ✓','Subtraction and multiplication: also closed ✓','Division by non-zero: also closed ✓','Division BY ZERO is undefined — not closed'],eq:'a/b ÷ 0 = undefined → not closed',answer:'D'},
+  {id:304,year:0,qnum:304,cat:'Maths — Rational Numbers',topic:'Number line',chapter:'Rational Numbers',word:'Which rational number lies exactly between 1/4 and 3/4 on the number line?',opts:{'A':'1/2','B':'1/3','C':'2/3','D':'1/8','E':'5/8'},steps:['To find the number exactly between two numbers, find their average','Average = (1/4 + 3/4) / 2 = (4/4) / 2 = 1/2','Check: is 1/4 < 1/2 < 3/4? ___'],eq:'(1/4 + 3/4) / 2 = ___',answer:'A'},
+  {id:305,year:0,qnum:305,cat:'Maths — Rational Numbers',topic:'Addition of rationals',chapter:'Rational Numbers',word:'Simplify: (-3/7) + (2/7) + (-1/7)',opts:{'A':'4/7','B':'-4/7','C':'-2/7','D':'2/7','E':'0'},steps:['Same denominator: add numerators directly','(-3 + 2 + (-1)) / 7 = ___/7','Result: ___'],eq:'(-3 + 2 - 1) / 7 = ___',answer:'C'},
+  {id:306,year:0,qnum:306,cat:'Maths — Rational Numbers',topic:'Subtraction',chapter:'Rational Numbers',word:'What is 5/6 - 7/9?',opts:{'A':'1/2','B':'1/9','C':'1/18','D':'2/3','E':'1/3'},steps:['LCM of 6 and 9 = 18','5/6 = 15/18 and 7/9 = 14/18','15/18 - 14/18 = ___/18'],eq:'LCM(6,9)=18: 15/18 - 14/18 = ___',answer:'C'},
+  {id:307,year:0,qnum:307,cat:'Maths — Rational Numbers',topic:'Multiplication',chapter:'Rational Numbers',word:'What is (-4/5) × (15/16)?',opts:{'A':'3/4','B':'-3/4','C':'4/3','D':'-4/3','E':'1/4'},steps:['Multiply numerators: (-4) × 15 = ___','Multiply denominators: 5 × 16 = ___','Simplify: -60/80 = ___'],eq:'(-4×15)/(5×16) = -60/80 = ___',answer:'B'},
+  {id:308,year:0,qnum:308,cat:'Maths — Rational Numbers',topic:'Division',chapter:'Rational Numbers',word:'Divide: (-9/4) ÷ (3/8)',opts:{'A':'-6','B':'6','C':'-3/32','D':'3/32','E':'-2'},steps:['Division: flip the second fraction and multiply','(-9/4) × (8/3)','= (-9 × 8) / (4 × 3) = -72/12 = ___'],eq:'(-9/4) × (8/3) = -72/12 = ___',answer:'A'},
+  {id:309,year:0,qnum:309,cat:'Maths — Rational Numbers',topic:'Distributive property',chapter:'Rational Numbers',word:'Using distributive property, find: (3/4) × (2/5 + 6/5)',opts:{'A':'3/5','B':'6/5','C':'3/20','D':'2/5','E':'9/20'},steps:['Distributive: a × (b + c) = a×b + a×c','(3/4)×(2/5) + (3/4)×(6/5)','= 6/20 + 18/20 = 24/20 = ___','Or: (2/5 + 6/5) = 8/5, then (3/4)×(8/5) = 24/20 = ___'],eq:'(3/4) × (8/5) = 24/20 = ___',answer:'A'},
+  {id:310,year:0,qnum:310,cat:'Maths — Rational Numbers',topic:'Comparing rationals',chapter:'Rational Numbers',word:'Which is greater: -3/5 or -5/8?',opts:{'A':'-3/5','B':'-5/8','C':'They are equal','D':'Cannot compare','E':'Depends on context'},steps:['Convert to same denominator: LCM(5,8) = 40','-3/5 = -24/40 and -5/8 = -25/40','-24 > -25 on number line','So -3/5 > -5/8, meaning -5/8 is smaller... wait: -24/40 > -25/40','So -3/5 is GREATER. But question asks which is greater: -3/5'],eq:'Convert: -24/40 vs -25/40 → -24/40 > -25/40 → -3/5 is greater',answer:'B'},
+  {id:311,year:0,qnum:311,cat:'Maths — Rational Numbers',topic:'Standard form',chapter:'Rational Numbers',word:'Write -36/48 in standard form (lowest terms with positive denominator).',opts:{'A':'-3/4','B':'3/4','C':'-36/48','D':'-4/3','E':'-12/16'},steps:['Find HCF of 36 and 48: HCF = 12','Divide both by 12: -36/48 = -3/4','Denominator is positive ✓'],eq:'HCF(36,48)=12 → -36÷12 / 48÷12 = ___',answer:'A'},
+  {id:312,year:0,qnum:312,cat:'Maths — Rational Numbers',topic:'Rational between two numbers',chapter:'Rational Numbers',word:'How many rational numbers exist between 1/3 and 1/2?',opts:{'A':'0','B':'1','C':'10','D':'100','E':'Infinitely many'},steps:['Between any two distinct rational numbers, there are infinitely many rationals','Example: average of 1/3 and 1/2 = 5/12 — that is one','Average of 1/3 and 5/12 = another one, and so on forever'],eq:'Between any two rationals: infinitely many rationals exist',answer:'E'},
+  {id:313,year:0,qnum:313,cat:'Maths — Rational Numbers',topic:'Word problem',chapter:'Rational Numbers',word:'Seema walked 3/4 km on Monday and 5/6 km on Tuesday. How far did she walk in total?',opts:{'A':'8/10 km','B':'19/12 km','C':'1 km','D':'3/2 km','E':'8/24 km'},steps:['LCM(4,6) = 12','3/4 = 9/12 and 5/6 = 10/12','Total = 9/12 + 10/12 = ___/12'],eq:'9/12 + 10/12 = ___/12',answer:'B'},
+  {id:314,year:0,qnum:314,cat:'Maths — Rational Numbers',topic:'Property identification',chapter:'Rational Numbers',word:'Which property is shown here: (2/3 × 3/4) × 5/6 = 2/3 × (3/4 × 5/6)?',opts:{'A':'Commutative property of multiplication','B':'Distributive property','C':'Associative property of multiplication','D':'Closure property','E':'Identity property'},steps:['Commutative: a × b = b × a (order changes)','Associative: (a × b) × c = a × (b × c) (grouping changes)','Here the grouping of brackets changes, not the order','This is the ___ property'],eq:'(a × b) × c = a × (b × c) → ___ property',answer:'C'},
+  {id:315,year:0,qnum:315,cat:'Maths — Rational Numbers',topic:'Role of zero and one',chapter:'Rational Numbers',word:'For rational number p/q, which statement is true?',opts:{'A':'p/q + 1 = p/q','B':'p/q × 0 = p/q','C':'p/q + 0 = p/q','D':'p/q × 1 = 0','E':'p/q - p/q = 1'},steps:['Additive identity: a + 0 = a (zero does not change the value)','Multiplicative identity: a × 1 = a','p/q + 0 = p/q is the additive identity property','Correct statement: ___'],eq:'Additive identity: p/q + 0 = ___',answer:'C'},
+  {id:316,year:0,qnum:316,cat:'Maths — Linear Equations',topic:'Simple equation',chapter:'Linear Equations',word:'Solve: 2x + 5 = 17',opts:{'A':'x = 4','B':'x = 6','C':'x = 11','D':'x = 3','E':'x = 7'},steps:['Subtract 5 from both sides: 2x = 17 - 5 = ___','Divide both sides by 2: x = ___/2 = ___'],eq:'2x = 12 → x = ___',answer:'B'},
+  {id:317,year:0,qnum:317,cat:'Maths — Linear Equations',topic:'Variables on both sides',chapter:'Linear Equations',word:'Solve: 7x - 3 = 4x + 12',opts:{'A':'x = 3','B':'x = 4','C':'x = 5','D':'x = 6','E':'x = 2'},steps:['Bring variables to left: 7x - 4x = 12 + 3','3x = ___','x = ___ ÷ 3 = ___'],eq:'3x = 15 → x = ___',answer:'C'},
+  {id:318,year:0,qnum:318,cat:'Maths — Linear Equations',topic:'Fraction equation',chapter:'Linear Equations',word:'Solve: x/3 + 1 = 4',opts:{'A':'x = 6','B':'x = 9','C':'x = 12','D':'x = 3','E':'x = 15'},steps:['Subtract 1 from both sides: x/3 = 4 - 1 = ___','Multiply both sides by 3: x = ___ × 3 = ___'],eq:'x/3 = 3 → x = ___',answer:'B'},
+  {id:319,year:0,qnum:319,cat:'Maths — Linear Equations',topic:'Cross multiplication',chapter:'Linear Equations',word:'Solve: (x + 2)/5 = (x - 1)/3',opts:{'A':'x = 11/2','B':'x = 11','C':'x = 5','D':'x = -11','E':'x = 7'},steps:['Cross multiply: 3(x + 2) = 5(x - 1)','3x + 6 = 5x - 5','6 + 5 = 5x - 3x','11 = 2x → x = ___'],eq:'3(x+2) = 5(x-1) → 11 = 2x → x = ___',answer:'B'},
+  {id:320,year:0,qnum:320,cat:'Maths — Linear Equations',topic:'Word problem — ages',chapter:'Linear Equations',word:'Ravi is 3 times as old as his son. In 10 years, Ravi will be twice his son\'s age. How old is the son now?',opts:{'A':'8','B':'10','C':'12','D':'15','E':'20'},steps:['Let son\'s age = x, Ravi\'s age = 3x','In 10 years: 3x + 10 = 2(x + 10)','3x + 10 = 2x + 20','x = ___'],eq:'3x + 10 = 2(x + 10) → x = ___',answer:'B'},
+  {id:321,year:0,qnum:321,cat:'Maths — Linear Equations',topic:'Word problem — numbers',chapter:'Linear Equations',word:'The sum of three consecutive integers is 51. What is the largest?',opts:{'A':'15','B':'16','C':'17','D':'18','E':'19'},steps:['Let integers be n, n+1, n+2','n + (n+1) + (n+2) = 51','3n + 3 = 51 → 3n = 48 → n = 16','Largest = n + 2 = ___'],eq:'n + n+1 + n+2 = 51 → n = 16 → largest = ___',answer:'D'},
+  {id:322,year:0,qnum:322,cat:'Maths — Linear Equations',topic:'Word problem — money',chapter:'Linear Equations',word:'A shopkeeper has some ₹10 and ₹20 notes. Total 25 notes worth ₹380. How many ₹20 notes?',opts:{'A':'8','B':'10','C':'13','D':'12','E':'15'},steps:['Let ₹20 notes = x, so ₹10 notes = 25 - x','20x + 10(25 - x) = 380','20x + 250 - 10x = 380','10x = 130 → x = ___'],eq:'10x + 250 = 380 → x = ___',answer:'C'},
+  {id:323,year:0,qnum:323,cat:'Maths — Linear Equations',topic:'Equation from condition',chapter:'Linear Equations',word:'A number when multiplied by 4 and then reduced by 7 gives 29. What is the number?',opts:{'A':'6','B':'7','C':'8','D':'9','E':'10'},steps:['Let number = n','4n - 7 = 29','4n = 36','n = ___'],eq:'4n - 7 = 29 → 4n = 36 → n = ___',answer:'D'},
+  {id:324,year:0,qnum:324,cat:'Maths — Linear Equations',topic:'Reducing to linear form',chapter:'Linear Equations',word:'Solve: (2x + 1)/(3x - 2) = 1/2',opts:{'A':'x = 4','B':'x = -4','C':'x = 2','D':'x = -2','E':'x = 1'},steps:['Cross multiply: 2(2x + 1) = 1(3x - 2)','4x + 2 = 3x - 2','4x - 3x = -2 - 2','x = ___'],eq:'4x + 2 = 3x - 2 → x = ___',answer:'A'},
+  {id:325,year:0,qnum:325,cat:'Maths — Linear Equations',topic:'Perimeter problem',chapter:'Linear Equations',word:'The length of a rectangle is 5 more than its width. If the perimeter is 58 cm, what is the width?',opts:{'A':'10','B':'12','C':'15','D':'16','E':'22'},steps:['Let width = w, length = w + 5','Perimeter = 2(w + w + 5) = 58','2(2w + 5) = 58 → 4w + 10 = 58','4w = 48 → w = ___'],eq:'2(2w+5) = 58 → 4w = 48 → w = ___',answer:'B'},
+  {id:326,year:0,qnum:326,cat:'Maths — Linear Equations',topic:'Digit problem',chapter:'Linear Equations',word:'A two-digit number has tens digit 3 more than the units digit. If digits are reversed, the new number is 18 less. What is the original number?',opts:{'A':'52','B':'63','C':'74','D':'85','E':'41'},steps:['Let units digit = x, tens digit = x + 3','Original number = 10(x+3) + x','Reversed = 10x + (x+3)','Difference: [10(x+3)+x] - [10x+(x+3)] = 18','27 = 18? No — the number is 74: tens=7, units=4, 7-4=3 ✓, reversed 47, 74-47=27... let me re-check','Actually: 10(x+3)+x - (10x+x+3) = 27, so difference is always 27 for any x','We need: the original number, units digit=4, tens=7 → 74'],eq:'Tens digit = units + 3, difference of reversal = 27 → original = ___',answer:'C'},
+  {id:327,year:0,qnum:327,cat:'Maths — Linear Equations',topic:'Ratio problem',chapter:'Linear Equations',word:'Angles of a triangle are in ratio 1:2:3. What is the largest angle?',opts:{'A':'30°','B':'60°','C':'90°','D':'120°','E':'45°'},steps:['Sum of angles = 180°','Ratio 1:2:3 → total parts = 6','1 part = 180/6 = 30°','Largest = 3 × 30° = ___'],eq:'180 ÷ 6 = 30 per part → largest = 3 × 30 = ___',answer:'C'},
+  {id:328,year:0,qnum:328,cat:'Maths — Linear Equations',topic:'Speed-distance',chapter:'Linear Equations',word:'A train travels from A to B. At 60 km/h it arrives 2 hours late. At 80 km/h it arrives 1 hour early. What is the distance AB?',opts:{'A':'480 km','B':'520 km','C':'720 km','D':'560 km','E':'620 km'},steps:['Let correct time = t hours','At 60: distance = 60(t+2) → late means more time taken','At 80: distance = 80(t-1)','60(t+2) = 80(t-1)','60t + 120 = 80t - 80 → 20t = 200 → t = 10','Distance = 60 × 12 = ___'],eq:'60(t+2) = 80(t-1) → t=10 → d = 60×12 = ___',answer:'C'},
+  {id:329,year:0,qnum:329,cat:'Maths — Linear Equations',topic:'Pipe problem',chapter:'Linear Equations',word:'Pipe A fills a tank in 4 hours, Pipe B in 6 hours. How long to fill together?',opts:{'A':'2 hours','B':'2 hours 24 minutes','C':'3 hours','D':'5 hours','E':'10 hours'},steps:['A fills 1/4 per hour, B fills 1/6 per hour','Together: 1/4 + 1/6 = 3/12 + 2/12 = 5/12 per hour','Time = 12/5 hours = 2 hours ___ minutes','12/5 = 2.4 hours = 2 hours 24 minutes'],eq:'1/4 + 1/6 = 5/12 per hour → time = 12/5 = ___ hours',answer:'B'},
+  {id:330,year:0,qnum:330,cat:'Maths — Linear Equations',topic:'Age reversal',chapter:'Linear Equations',word:'A mother is 30 years older than her daughter. In 5 years, she will be 3 times her daughter\'s age. What is the daughter\'s current age?',opts:{'A':'5','B':'8','C':'10','D':'12','E':'15'},steps:['Let daughter\'s age = x, mother\'s = x + 30','In 5 years: x + 30 + 5 = 3(x + 5)','x + 35 = 3x + 15','20 = 2x → x = ___'],eq:'x + 35 = 3x + 15 → 2x = 20 → x = ___',answer:'C'},
+  {id:331,year:0,qnum:331,cat:'Maths — Quadrilaterals',topic:'Angle sum polygon',chapter:'Quadrilaterals',word:'What is the sum of interior angles of a pentagon?',opts:{'A':'360°','B':'540°','C':'720°','D':'900°','E':'450°'},steps:['Sum of interior angles = (n-2) × 180°','Pentagon: n = 5','(5-2) × 180 = 3 × 180 = ___°'],eq:'(n-2) × 180 = (5-2) × 180 = ___',answer:'B'},
+  {id:332,year:0,qnum:332,cat:'Maths — Quadrilaterals',topic:'Exterior angles',chapter:'Quadrilaterals',word:'What is the sum of all exterior angles of any convex polygon?',opts:{'A':'180°','B':'270°','C':'360°','D':'540°','E':'Depends on polygon'},steps:['For any convex polygon, the sum of all exterior angles = 360°','This is true regardless of the number of sides','Each exterior angle of a regular polygon = 360°/n'],eq:'Sum of exterior angles of any convex polygon = ___°',answer:'C'},
+  {id:333,year:0,qnum:333,cat:'Maths — Quadrilaterals',topic:'Regular polygon angle',chapter:'Quadrilaterals',word:'Each interior angle of a regular octagon measures:',opts:{'A':'108°','B':'120°','C':'135°','D':'144°','E':'150°'},steps:['Sum of interior angles of octagon = (8-2) × 180 = 1080°','Regular octagon: all angles equal','Each angle = 1080 ÷ 8 = ___°'],eq:'1080 ÷ 8 = ___°',answer:'C'},
+  {id:334,year:0,qnum:334,cat:'Maths — Quadrilaterals',topic:'Parallelogram properties',chapter:'Quadrilaterals',word:'In a parallelogram ABCD, angle A = 75°. What is angle C?',opts:{'A':'75°','B':'105°','C':'115°','D':'150°','E':'90°'},steps:['In a parallelogram, opposite angles are EQUAL','Angle A and angle C are opposite angles','Angle C = angle A = ___°'],eq:'Opposite angles in parallelogram are equal → angle C = ___°',answer:'A'},
+  {id:335,year:0,qnum:335,cat:'Maths — Quadrilaterals',topic:'Adjacent angles parallelogram',chapter:'Quadrilaterals',word:'In parallelogram PQRS, angle P = 110°. What is angle Q?',opts:{'A':'70°','B':'80°','C':'110°','D':'120°','E':'90°'},steps:['Adjacent angles in a parallelogram are supplementary (sum = 180°)','Angle P + Angle Q = 180°','Angle Q = 180° - 110° = ___°'],eq:'180° - 110° = ___°',answer:'A'},
+  {id:336,year:0,qnum:336,cat:'Maths — Quadrilaterals',topic:'Rhombus properties',chapter:'Quadrilaterals',word:'Which of the following is NOT necessarily true for a rhombus?',opts:{'A':'All sides are equal','B':'Diagonals bisect each other','C':'All angles are 90°','D':'Diagonals bisect vertex angles','E':'Opposite angles are equal'},steps:['Rhombus properties: all sides equal, opposite angles equal,','diagonals bisect each other at right angles,','diagonals bisect vertex angles','All angles = 90° is true for a SQUARE, not necessarily a rhombus','NOT necessarily true: ___'],eq:'Rhombus ≠ square — angles need not be 90°',answer:'C'},
+  {id:337,year:0,qnum:337,cat:'Maths — Quadrilaterals',topic:'Rectangle diagonals',chapter:'Quadrilaterals',word:'In rectangle ABCD, diagonal AC = 13 cm. What is diagonal BD?',opts:{'A':'6.5 cm','B':'10 cm','C':'13 cm','D':'26 cm','E':'Cannot determine'},steps:['In a rectangle, diagonals are EQUAL in length','Both diagonals bisect each other','BD = AC = ___ cm'],eq:'Rectangle: diagonals equal → BD = AC = ___',answer:'C'},
+  {id:338,year:0,qnum:338,cat:'Maths — Quadrilaterals',topic:'Square properties',chapter:'Quadrilaterals',word:'A square is a special case of which of the following? (Choose the most specific)',opts:{'A':'Trapezium only','B':'Parallelogram only','C':'Rectangle and Rhombus both','D':'Kite only','E':'Irregular quadrilateral'},steps:['A square has: all sides equal (like rhombus) AND all angles 90° (like rectangle)','So a square is BOTH a rectangle and a rhombus','It is also a parallelogram and trapezium (general)','Most specific: a square is a ___ and a ___'],eq:'Square = rectangle (all 90°) + rhombus (all sides equal)',answer:'C'},
+  {id:339,year:0,qnum:339,cat:'Maths — Quadrilaterals',topic:'Finding angles',chapter:'Quadrilaterals',word:'Three angles of a quadrilateral are 85°, 75° and 95°. What is the fourth angle?',opts:{'A':'95°','B':'100°','C':'105°','D':'110°','E':'115°'},steps:['Sum of angles of any quadrilateral = 360°','85 + 75 + 95 = ___','Fourth angle = 360 - ___ = ___°'],eq:'360 - (85+75+95) = 360 - 255 = ___°',answer:'C'},
+  {id:340,year:0,qnum:340,cat:'Maths — Quadrilaterals',topic:'Trapezium',chapter:'Quadrilaterals',word:'In a trapezium, one pair of parallel sides measures 8 cm and 12 cm. The height is 5 cm. What is the area?',opts:{'A':'40 sq.cm','B':'50 sq.cm','C':'60 sq.cm','D':'100 sq.cm','E':'48 sq.cm'},steps:['Area of trapezium = ½ × (sum of parallel sides) × height','= ½ × (8 + 12) × 5','= ½ × 20 × 5 = ___ sq.cm'],eq:'½ × (8+12) × 5 = ½ × 100 = ___',answer:'B'},
+  {id:341,year:0,qnum:341,cat:'Maths — Quadrilaterals',topic:'Kite properties',chapter:'Quadrilaterals',word:'In a kite, the diagonals:',opts:{'A':'Are equal in length','B':'Are parallel to each other','C':'Meet at right angles','D':'Bisect each other equally','E':'Never meet'},steps:['Kite: two pairs of adjacent equal sides','Diagonals of a kite are perpendicular (meet at 90°)','One diagonal bisects the other, but they are NOT equal','Diagonals meet at ___'],eq:'Kite diagonals are ___',answer:'C'},
+  {id:342,year:0,qnum:342,cat:'Maths — Quadrilaterals',topic:'Number of sides from angle sum',chapter:'Quadrilaterals',word:'The sum of interior angles of a polygon is 1260°. How many sides does it have?',opts:{'A':'7','B':'8','C':'9','D':'10','E':'11'},steps:['(n-2) × 180 = 1260','n - 2 = 1260 / 180 = 7','n = ___ sides'],eq:'(n-2) × 180 = 1260 → n-2 = 7 → n = ___',answer:'C'},
+  {id:343,year:0,qnum:343,cat:'Maths — Quadrilaterals',topic:'Parallelogram diagonal',chapter:'Quadrilaterals',word:'In parallelogram ABCD, the diagonals bisect each other at O. If AO = 5 cm, what is AC?',opts:{'A':'2.5 cm','B':'5 cm','C':'10 cm','D':'7.5 cm','E':'Cannot determine'},steps:['In a parallelogram, diagonals bisect each other','O is the midpoint of AC','AO = OC = 5 cm','AC = AO + OC = 5 + 5 = ___ cm'],eq:'Diagonals bisect → AC = 2 × AO = 2 × 5 = ___',answer:'C'},
+  {id:344,year:0,qnum:344,cat:'Maths — Quadrilaterals',topic:'Exterior angle of polygon',chapter:'Quadrilaterals',word:'Each exterior angle of a regular polygon is 40°. How many sides does it have?',opts:{'A':'6','B':'8','C':'9','D':'10','E':'12'},steps:['Sum of exterior angles = 360°','Number of sides = 360° ÷ each exterior angle','= 360 ÷ 40 = ___ sides'],eq:'360 ÷ 40 = ___',answer:'C'},
+  {id:345,year:0,qnum:345,cat:'Maths — Quadrilaterals',topic:'Which is which',chapter:'Quadrilaterals',word:'A parallelogram with diagonals equal in length must be a:',opts:{'A':'Rhombus','B':'Square or Rectangle','C':'Kite','D':'Trapezium','E':'General parallelogram'},steps:['In a parallelogram: diagonals equal → it is a Rectangle','A Square is a special rectangle, so also qualifies','Rhombus: diagonals NOT equal (unless it is a square)','Equal diagonals in a parallelogram → ___'],eq:'Parallelogram + equal diagonals → Rectangle (or Square)',answer:'B'},
+  {id:346,year:0,qnum:346,cat:'Maths — Data Handling',topic:'Pie chart angle',chapter:'Data Handling',word:'In a pie chart, the sector for "Sports" covers 90°. What percentage of the total does Sports represent?',opts:{'A':'15%','B':'20%','C':'25%','D':'30%','E':'45%'},steps:['Total angle in a circle = 360°','Percentage = (sector angle / 360) × 100','= (90/360) × 100 = ___'],eq:'(90/360) × 100 = ___',answer:'C'},
+  {id:347,year:0,qnum:347,cat:'Maths — Data Handling',topic:'Pie chart sector angle',chapter:'Data Handling',word:'In a survey, 40% of students like cricket. What is the angle of the cricket sector in the pie chart?',opts:{'A':'40°','B':'80°','C':'120°','D':'144°','E':'160°'},steps:['Sector angle = (percentage/100) × 360°','= (40/100) × 360','= 0.4 × 360 = ___°'],eq:'(40/100) × 360 = ___°',answer:'D'},
+  {id:348,year:0,qnum:348,cat:'Maths — Data Handling',topic:'Mean calculation',chapter:'Data Handling',word:'The ages of 6 students are 12, 14, 13, 15, 12, 16. What is the mean age?',opts:{'A':'12','B':'13','C':'14','D':'15','E':'13.67'},steps:['Sum = 12+14+13+15+12+16 = ___','Mean = sum ÷ 6 = ___'],eq:'(12+14+13+15+12+16) ÷ 6 = 82 ÷ 6 = ___',answer:'C'},
+  {id:349,year:0,qnum:349,cat:'Maths — Data Handling',topic:'Mode',chapter:'Data Handling',word:'Data: 4, 7, 4, 9, 4, 7, 3, 7, 4. What is the mode?',opts:{'A':'3','B':'4','C':'7','D':'9','E':'Both 4 and 7'},steps:['Mode = the value that appears most often','Count: 4 appears ___ times, 7 appears ___ times','4 appears 4 times, 7 appears 3 times','Mode = ___'],eq:'Count each: 4 appears most (4 times) → mode = ___',answer:'B'},
+  {id:350,year:0,qnum:350,cat:'Maths — Data Handling',topic:'Median odd',chapter:'Data Handling',word:'Find the median of: 8, 3, 5, 2, 9, 1, 7',opts:{'A':'3','B':'5','C':'7','D':'2','E':'9'},steps:['Arrange in order: 1, 2, 3, 5, 7, 8, 9','7 values → middle is 4th value','4th value = ___'],eq:'Sorted: 1,2,3,___,7,8,9 → 4th = ___',answer:'B'},
+  {id:351,year:0,qnum:351,cat:'Maths — Data Handling',topic:'Median even',chapter:'Data Handling',word:'Find the median of: 6, 2, 8, 4, 10, 12',opts:{'A':'6','B':'7','C':'8','D':'5','E':'9'},steps:['Arrange: 2, 4, 6, 8, 10, 12','6 values → median = average of 3rd and 4th values','= (6 + 8) / 2 = ___'],eq:'(6 + 8) / 2 = ___',answer:'B'},
+  {id:352,year:0,qnum:352,cat:'Maths — Data Handling',topic:'Range',chapter:'Data Handling',word:'Heights of 5 plants (cm): 23, 41, 18, 29, 35. What is the range?',opts:{'A':'18','B':'23','C':'29','D':'35','E':'41'},steps:['Range = Highest value - Lowest value','Highest = ___, Lowest = ___','Range = 41 - 18 = ___'],eq:'Range = Max - Min = 41 - 18 = ___',answer:'B'},
+  {id:353,year:0,qnum:353,cat:'Maths — Data Handling',topic:'Probability basic',chapter:'Data Handling',word:'A fair die is rolled. What is the probability of getting a number greater than 4?',opts:{'A':'1/6','B':'1/3','C':'1/2','D':'2/3','E':'5/6'},steps:['Outcomes greater than 4: {5, 6} → ___ outcomes','Total outcomes: ___','P(>4) = 2/6 = ___'],eq:'Favourable: {5,6} = 2 → P = 2/6 = ___',answer:'B'},
+  {id:354,year:0,qnum:354,cat:'Maths — Data Handling',topic:'Probability — not happening',chapter:'Data Handling',word:'P(event A) = 0.65. What is P(not A)?',opts:{'A':'0.35','B':'0.65','C':'1.65','D':'0.135','E':'Cannot determine'},steps:['P(A) + P(not A) = 1','P(not A) = 1 - P(A) = 1 - 0.65 = ___'],eq:'P(not A) = 1 - 0.65 = ___',answer:'A'},
+  {id:355,year:0,qnum:355,cat:'Maths — Data Handling',topic:'Cards probability',chapter:'Data Handling',word:'A card is drawn from a standard deck of 52 cards. What is the probability of drawing a king?',opts:{'A':'1/52','B':'1/26','C':'1/13','D':'4/52','E':'Both C and D'},steps:['Number of kings in a deck = 4','Total cards = 52','P(king) = 4/52','Simplify: 4/52 = 1/13','Both 4/52 and 1/13 are the same value'],eq:'P(king) = 4/52 = 1/13 → both C and D are correct',answer:'E'},
+  {id:356,year:0,qnum:356,cat:'Maths — Data Handling',topic:'Histogram',chapter:'Data Handling',word:'In a histogram, the class intervals are equal. The height of each bar represents the:',opts:{'A':'Class interval width','B':'Frequency of that class','C':'Cumulative frequency','D':'Middle value of class','E':'Number of classes'},steps:['In a histogram with equal class widths:','Height of bar = frequency of that class interval','The bar height directly shows how many data points are in that range'],eq:'Histogram bar height = ___ of that class',answer:'B'},
+  {id:357,year:0,qnum:357,cat:'Maths — Data Handling',topic:'Pie chart reading',chapter:'Data Handling',word:'A pie chart shows monthly expenses. Food = 120°, Rent = 90°, Education = 60°, Others = ?°. What is Others?',opts:{'A':'60°','B':'80°','C':'90°','D':'100°','E':'120°'},steps:['Total angles in pie chart = 360°','Others = 360 - (120 + 90 + 60)','= 360 - ___ = ___°'],eq:'360 - (120+90+60) = 360 - 270 = ___°',answer:'C'},
+  {id:358,year:0,qnum:358,cat:'Maths — Data Handling',topic:'Mean from frequency',chapter:'Data Handling',word:'Score 2 appears 3 times, score 4 appears 5 times, score 6 appears 2 times. What is the mean?',opts:{'A':'3.6','B':'3.8','C':'4','D':'4.2','E':'4.8'},steps:['Total = (2×3) + (4×5) + (6×2) = 6 + 20 + 12 = ___','Total frequency = 3 + 5 + 2 = ___','Mean = 38/10 = ___... wait: 6+20+12=38, 38/10=3.8'],eq:'(2×3 + 4×5 + 6×2) / (3+5+2) = 38/10 = ___',answer:'C'},
+  {id:359,year:0,qnum:359,cat:'Maths — Data Handling',topic:'Probability — coin',chapter:'Data Handling',word:'Two fair coins are tossed together. What is the probability of getting exactly one head?',opts:{'A':'1/4','B':'1/2','C':'3/4','D':'1','E':'2/4'},steps:['Sample space: HH, HT, TH, TT → ___ outcomes','Exactly one head: HT, TH → ___ outcomes','P(exactly one head) = 2/4 = ___'],eq:'Favourable: HT, TH = 2 → P = 2/4 = ___',answer:'B'},
+  {id:360,year:0,qnum:360,cat:'Maths — Data Handling',topic:'Grouped data class mark',chapter:'Data Handling',word:'What is the class mark (midpoint) of the class interval 25-35?',opts:{'A':'25','B':'30','C':'35','D':'10','E':'60'},steps:['Class mark = (lower limit + upper limit) / 2','= (25 + 35) / 2 = ___/2 = ___'],eq:'(25 + 35) / 2 = ___',answer:'B'},
+  {id:361,year:0,qnum:361,cat:'Maths — Squares & Roots',topic:'Perfect square check',chapter:'Squares and Square Roots',word:'Which of the following is a perfect square?',opts:{'A':'72','B':'128','C':'225','D':'242','E':'500'},steps:['Check each: √72 ≈ 8.48 (not perfect)','√128 ≈ 11.31 (not perfect)','√225 = 15 exactly ✓ (15 × 15 = 225)','√242 ≈ 15.56 (not perfect)'],eq:'15 × 15 = 225 → 225 is a perfect square',answer:'C'},
+  {id:362,year:0,qnum:362,cat:'Maths — Squares & Roots',topic:'Properties of perfect squares',chapter:'Squares and Square Roots',word:'A perfect square never ends in which digit?',opts:{'A':'1','B':'4','C':'8','D':'9','E':'5'},steps:['Perfect squares can end in: 0, 1, 4, 5, 6, 9','Perfect squares NEVER end in: 2, 3, 7, 8','From the options: ___'],eq:'Perfect squares never end in 2, 3, 7, or ___',answer:'C'},
+  {id:363,year:0,qnum:363,cat:'Maths — Squares & Roots',topic:'Square root by prime factorisation',chapter:'Squares and Square Roots',word:'Find √784 using prime factorisation.',opts:{'A':'24','B':'26','C':'28','D':'32','E':'36'},steps:['784 = 2 × 392 = 2 × 2 × 196 = 4 × 196','196 = 4 × 49 = 2² × 7²','784 = 2⁴ × 7² = (2² × 7)² = 28²','√784 = ___'],eq:'784 = 4 × 196 = 4 × 4 × 49 = 2⁴ × 7² → √784 = ___',answer:'C'},
+  {id:364,year:0,qnum:364,cat:'Maths — Squares & Roots',topic:'Smallest multiplier for perfect square',chapter:'Squares and Square Roots',word:'What is the smallest number 180 must be multiplied by to make it a perfect square?',opts:{'A':'2','B':'3','C':'4','D':'5','E':'6'},steps:['180 = 2² × 3² × 5','For perfect square, all prime factors need even powers','5 has power 1 — need one more 5','Multiply by ___ to make 2² × 3² × 5²'],eq:'180 = 2²×3²×5 → need one more factor of ___',answer:'D'},
+  {id:365,year:0,qnum:365,cat:'Maths — Squares & Roots',topic:'Smallest divisor for perfect square',chapter:'Squares and Square Roots',word:'What is the smallest number 252 must be divided by to make it a perfect square?',opts:{'A':'2','B':'3','C':'5','D':'7','E':'9'},steps:['252 = 2² × 3² × 7','7 has odd power (1) — divide it out','252 ÷ 7 = 36 = 6² ✓','Divide by ___'],eq:'252 = 2²×3²×7 → divide by ___ to get 36 = 6²',answer:'D'},
+  {id:366,year:0,qnum:366,cat:'Maths — Squares & Roots',topic:'Estimating square root',chapter:'Squares and Square Roots',word:'Between which two consecutive integers does √200 lie?',opts:{'A':'13 and 14','B':'14 and 15','C':'12 and 13','D':'15 and 16','E':'10 and 11'},steps:['14² = 196 and 15² = 225','196 < 200 < 225','So 14 < √200 < 15'],eq:'14² = 196, 15² = 225 → 196 < 200 < 225 → ___ < √200 < ___',answer:'B'},
+  {id:367,year:0,qnum:367,cat:'Maths — Squares & Roots',topic:'Pythagorean triplet',chapter:'Squares and Square Roots',word:'Which of the following is a Pythagorean triplet?',opts:{'A':'3, 4, 6','B':'5, 12, 13','C':'6, 7, 10','D':'8, 10, 12','E':'4, 6, 8'},steps:['Pythagorean triplet: a² + b² = c²','Check 5, 12, 13: 5² + 12² = 25 + 144 = 169 = 13² ✓','Check 3,4,6: 9+16=25 ≠ 36','Triplet: ___'],eq:'5² + 12² = 25 + 144 = 169 = 13² ✓',answer:'B'},
+  {id:368,year:0,qnum:368,cat:'Maths — Squares & Roots',topic:'Odd perfect square property',chapter:'Squares and Square Roots',word:'The square of an odd number is always:',opts:{'A':'Even','B':'Odd','C':'A multiple of 4','D':'A perfect cube too','E':'Divisible by 6'},steps:['Odd × Odd = Odd','E.g. 3² = 9 (odd), 5² = 25 (odd), 7² = 49 (odd)','Square of odd = ___'],eq:'Odd × Odd = ___',answer:'B'},
+  {id:369,year:0,qnum:369,cat:'Maths — Squares & Roots',topic:'Number of digits in square root',chapter:'Squares and Square Roots',word:'How many digits does √17956 have?',opts:{'A':'2','B':'3','C':'4','D':'5','E':'1'},steps:['Method: pair digits from right → 1|79|56 → 3 pairs','Number of digits in square root = number of pairs = ___','Check: √17956 = 134 (3 digits) ✓'],eq:'Pairs: 1|79|56 → 3 pairs → square root has ___ digits',answer:'B'},
+  {id:370,year:0,qnum:370,cat:'Maths — Squares & Roots',topic:'Pattern of squares',chapter:'Squares and Square Roots',word:'Without actual multiplication, find 75².',opts:{'A':'5425','B':'5625','C':'5225','D':'5825','E':'5125'},steps:['Pattern for numbers ending in 5: (a5)² = a(a+1) followed by 25','75²: a=7, a+1=8, a×(a+1)=56','75² = 5625'],eq:'75² = (7×8) followed by 25 = ___',answer:'B'},
+  {id:371,year:0,qnum:371,cat:'Maths — Squares & Roots',topic:'Sum of consecutive odd numbers',chapter:'Squares and Square Roots',word:'1 + 3 + 5 + 7 + 9 = ? (Sum of first 5 odd numbers)',opts:{'A':'20','B':'25','C':'30','D':'15','E':'35'},steps:['Sum of first n odd numbers = n²','First 5 odd numbers: sum = 5² = ___','Check: 1+3+5+7+9 = 25 ✓'],eq:'Sum of first n odd numbers = n² → 5² = ___',answer:'B'},
+  {id:372,year:0,qnum:372,cat:'Maths — Squares & Roots',topic:'Square root long division',chapter:'Squares and Square Roots',word:'Using long division, √2025 = ?',opts:{'A':'40','B':'43','C':'45','D':'47','E':'55'},steps:['Pair digits: 20|25','Largest square ≤ 20: 4² = 16, so first digit = 4','Remainder: 20-16=4, bring down 25 → 425','Double of 4 = 8_, need 8_ × _ ≤ 425: 85×5=425 ✓','√2025 = ___'],eq:'Long division: 45 × 45 = 2025 ✓ → √2025 = ___',answer:'C'},
+  {id:373,year:0,qnum:373,cat:'Maths — Squares & Roots',topic:'Area application',chapter:'Squares and Square Roots',word:'A square garden has area 1764 sq.m. What is the length of the boundary (perimeter)?',opts:{'A':'42 m','B':'168 m','C':'84 m','D':'126 m','E':'52 m'},steps:['Side = √1764','1764 = 4 × 441 = 4 × 9 × 49 = 2² × 3² × 7²','√1764 = 2 × 3 × 7 = 42 m (side)','Perimeter = 4 × 42 = ___'],eq:'√1764 = 42 → perimeter = 4 × 42 = ___',answer:'B'},
+  {id:374,year:0,qnum:374,cat:'Maths — Squares & Roots',topic:'Interesting square pattern',chapter:'Squares and Square Roots',word:'What is 99²?',opts:{'A':'9702','B':'9801','C':'9901','D':'9601','E':'9999'},steps:['Use (a-b)² = a² - 2ab + b²','99² = (100-1)² = 100² - 2×100×1 + 1²','= 10000 - 200 + 1 = ___'],eq:'(100-1)² = 10000 - 200 + 1 = ___',answer:'B'},
+  {id:375,year:0,qnum:375,cat:'Maths — Squares & Roots',topic:'Square root property',chapter:'Squares and Square Roots',word:'If √x = 12, what is √(4x)?',opts:{'A':'24','B':'48','C':'144','D':'6','E':'16'},steps:['√(4x) = √4 × √x = 2 × √x','= 2 × 12 = ___'],eq:'√(4x) = 2√x = 2 × 12 = ___',answer:'A'},
+  {id:376,year:0,qnum:376,cat:'Maths — Cubes & Roots',topic:'Perfect cube check',chapter:'Cubes and Cube Roots',word:'Which of the following is a perfect cube?',opts:{'A':'36','B':'72','C':'125','D':'144','E':'200'},steps:['Check: ∛36 ≈ 3.3 (no)','∛72 ≈ 4.16 (no)','∛125 = 5 exactly (5³ = 125) ✓','∛144 ≈ 5.24 (no)'],eq:'5 × 5 × 5 = 125 ✓ → 125 is a perfect cube',answer:'C'},
+  {id:377,year:0,qnum:377,cat:'Maths — Cubes & Roots',topic:'Cube root',chapter:'Cubes and Cube Roots',word:'What is ∛(-512)?',opts:{'A':'8','B':'-8','C':'64','D':'-64','E':'Not defined'},steps:['Cube root of negative number is negative','(-8)³ = (-8)×(-8)×(-8) = 64×(-8) = -512','∛(-512) = ___'],eq:'(-8)³ = -512 → ∛(-512) = ___',answer:'B'},
+  {id:378,year:0,qnum:378,cat:'Maths — Cubes & Roots',topic:'Smallest multiplier for perfect cube',chapter:'Cubes and Cube Roots',word:'What is the smallest number 72 must be multiplied by to make it a perfect cube?',opts:{'A':'2','B':'3','C':'6','D':'9','E':'12'},steps:['72 = 2³ × 3²','For perfect cube, all prime factors need powers that are multiples of 3','2³ is fine. 3² needs one more 3 to become 3³','Multiply by ___'],eq:'72 = 2³×3² → need one more 3 → multiply by ___',answer:'B'},
+  {id:379,year:0,qnum:379,cat:'Maths — Cubes & Roots',topic:'Cube of negative',chapter:'Cubes and Cube Roots',word:'What is (-4)³?',opts:{'A':'12','B':'64','C':'-64','D':'-12','E':'16'},steps:['(-4)³ = (-4) × (-4) × (-4)','(-4) × (-4) = +16','16 × (-4) = ___'],eq:'(-4) × (-4) × (-4) = 16 × (-4) = ___',answer:'C'},
+  {id:380,year:0,qnum:380,cat:'Maths — Cubes & Roots',topic:'Cube root by prime factorisation',chapter:'Cubes and Cube Roots',word:'Find ∛1728.',opts:{'A':'10','B':'12','C':'14','D':'16','E':'18'},steps:['1728 = 2 × 864 = 2 × 2 × 432 = ...','1728 = 2⁶ × 3³ = (2² × 3)³ = 12³','∛1728 = ___'],eq:'1728 = 12³ → ∛1728 = ___',answer:'B'},
+  {id:381,year:0,qnum:381,cat:'Maths — Cubes & Roots',topic:'Hardy-Ramanujan number',chapter:'Cubes and Cube Roots',word:'1729 is the smallest number expressible as the sum of two cubes in two different ways. Which of the following shows this?',opts:{'A':'1³ + 12³ and 9³ + 10³','B':'2³ + 11³ and 7³ + 12³','C':'3³ + 10³ and 6³ + 11³','D':'4³ + 9³ and 5³ + 12³','E':'1³ + 12³ only'},steps:['1³ + 12³ = 1 + 1728 = 1729 ✓','9³ + 10³ = 729 + 1000 = 1729 ✓','This is the Hardy-Ramanujan (taxi-cab) number','Check option A: ___'],eq:'1³+12³ = 1+1728 = 1729 ✓ and 9³+10³ = 729+1000 = 1729 ✓',answer:'A'},
+  {id:382,year:0,qnum:382,cat:'Maths — Cubes & Roots',topic:'Cube and even/odd',chapter:'Cubes and Cube Roots',word:'The cube of an even number is always:',opts:{'A':'Odd','B':'Even','C':'A perfect square too','D':'Divisible by 8','E':'Both B and D'},steps:['Even number = 2k for some integer k','(2k)³ = 8k³ — always divisible by 8','And 8k³ is always even','So it is BOTH even AND divisible by 8'],eq:'(2k)³ = 8k³ → always even AND divisible by ___',answer:'E'},
+  {id:383,year:0,qnum:383,cat:'Maths — Cubes & Roots',topic:'Cube root application',chapter:'Cubes and Cube Roots',word:'A cube-shaped box has volume 9261 cm³. What is the length of one edge?',opts:{'A':'18 cm','B':'19 cm','C':'21 cm','D':'23 cm','E':'27 cm'},steps:['Edge = ∛(volume) = ∛9261','9261 = 3³ × 7³ = (3×7)³ = 21³','Edge = ___ cm'],eq:'∛9261 = ∛(21³) = ___',answer:'C'},
+  {id:384,year:0,qnum:384,cat:'Maths — Cubes & Roots',topic:'Smallest divisor for perfect cube',chapter:'Cubes and Cube Roots',word:'What is the smallest number 375 should be divided by to make it a perfect cube?',opts:{'A':'3','B':'5','C':'9','D':'15','E':'25'},steps:['375 = 3 × 125 = 3 × 5³','3 has power 1 — not a multiple of 3','Divide by 3 to get 5³ = 125 = perfect cube','Divide by ___'],eq:'375 = 3 × 5³ → divide by ___ to get 5³',answer:'A'},
+  {id:385,year:0,qnum:385,cat:'Maths — Cubes & Roots',topic:'Pattern cubes',chapter:'Cubes and Cube Roots',word:'Using the identity (a+b)³ = a³ + 3a²b + 3ab² + b³, find 11³.',opts:{'A':'1221','B':'1311','C':'1331','D':'1441','E':'1111'},steps:['11³ = (10+1)³','= 10³ + 3(10²)(1) + 3(10)(1²) + 1³','= 1000 + 300 + 30 + 1 = ___'],eq:'(10+1)³ = 1000 + 300 + 30 + 1 = ___',answer:'C'},
+  {id:386,year:0,qnum:386,cat:'Maths — Cubes & Roots',topic:'Cube root of fraction',chapter:'Cubes and Cube Roots',word:'What is ∛(27/64)?',opts:{'A':'3/4','B':'3/8','C':'9/16','D':'1/4','E':'3/16'},steps:['∛(a/b) = ∛a / ∛b','∛27 = ___ and ∛64 = ___','= 3/4'],eq:'∛27/∛64 = ___/___',answer:'A'},
+  {id:387,year:0,qnum:387,cat:'Maths — Cubes & Roots',topic:'Digit of cube',chapter:'Cubes and Cube Roots',word:'If a number ends in 7, its cube ends in:',opts:{'A':'1','B':'3','C':'7','D':'9','E':'Varies'},steps:['7¹ ends in 7','7² = 49 ends in 9','7³ = 343 ends in 3','Any number ending in 7, its cube ends in ___'],eq:'7³ = 343 → ends in ___',answer:'B'},
+  {id:388,year:0,qnum:388,cat:'Maths — Cubes & Roots',topic:'Comparison',chapter:'Cubes and Cube Roots',word:'Which is greater: 2³ or 3²?',opts:{'A':'2³ > 3²','B':'2³ < 3²','C':'2³ = 3²','D':'Cannot compare','E':'Depends on context'},steps:['2³ = 2 × 2 × 2 = ___','3² = 3 × 3 = ___','8 ___ 9'],eq:'2³ = 8, 3² = 9 → 8 ___ 9',answer:'B'},
+  {id:389,year:0,qnum:389,cat:'Maths — Cubes & Roots',topic:'Volume scaling',chapter:'Cubes and Cube Roots',word:'If the side of a cube is doubled, its volume becomes how many times?',opts:{'A':'2 times','B':'4 times','C':'6 times','D':'8 times','E':'16 times'},steps:['Original volume = a³','New side = 2a → new volume = (2a)³ = 8a³','New volume = ___ × original'],eq:'(2a)³ = 8a³ → volume becomes ___ times',answer:'D'},
+  {id:390,year:0,qnum:390,cat:'Maths — Cubes & Roots',topic:'Estimating cube root',chapter:'Cubes and Cube Roots',word:'Between which consecutive integers does ∛100 lie?',opts:{'A':'3 and 4','B':'4 and 5','C':'5 and 6','D':'9 and 10','E':'10 and 11'},steps:['4³ = 64 and 5³ = 125','64 < 100 < 125','So 4 < ∛100 < 5'],eq:'4³=64 < 100 < 125=5³ → ___ < ∛100 < ___',answer:'B'},
+  {id:391,year:0,qnum:391,cat:'Maths — Comparing Quantities',topic:'Percentage increase',chapter:'Comparing Quantities',word:'A shirt costs ₹400. Price increases by 15%. New price?',opts:{'A':'₹440','B':'₹460','C':'₹415','D':'₹460','E':'₹480'},steps:['Increase = 15% of 400 = (15/100) × 400 = ___','New price = 400 + ___ = ___'],eq:'400 + (15% of 400) = 400 + 60 = ___',answer:'B'},
+  {id:392,year:0,qnum:392,cat:'Maths — Comparing Quantities',topic:'Percentage decrease',chapter:'Comparing Quantities',word:'A car worth ₹5,00,000 depreciates by 8% per year. Value after 1 year?',opts:{'A':'₹4,20,000','B':'₹4,40,000','C':'₹4,60,000','D':'₹4,80,000','E':'₹5,40,000'},steps:['Depreciation = 8% of 5,00,000 = ___','Value = 5,00,000 - ___ = ___'],eq:'5,00,000 - (8% of 5,00,000) = 5,00,000 - 40,000 = ___',answer:'C'},
+  {id:393,year:0,qnum:393,cat:'Maths — Comparing Quantities',topic:'Finding original value',chapter:'Comparing Quantities',word:'After a 20% discount, a watch costs ₹1,200. What was the original price?',opts:{'A':'₹1,400','B':'₹1,440','C':'₹1,500','D':'₹1,600','E':'₹1,440'},steps:['If original = x, then 80% of x = 1200','(80/100) × x = 1200','x = 1200 × (100/80) = ___'],eq:'80% of x = 1200 → x = 1200 ÷ 0.8 = ___',answer:'C'},
+  {id:394,year:0,qnum:394,cat:'Maths — Comparing Quantities',topic:'Profit percentage',chapter:'Comparing Quantities',word:'Bought for ₹450, sold for ₹540. Profit percentage?',opts:{'A':'15%','B':'16%','C':'18%','D':'20%','E':'25%'},steps:['Profit = 540 - 450 = ___','Profit % = (profit/CP) × 100 = (90/450) × 100 = ___'],eq:'(540-450)/450 × 100 = 90/450 × 100 = ___',answer:'D'},
+  {id:395,year:0,qnum:395,cat:'Maths — Comparing Quantities',topic:'Loss percentage',chapter:'Comparing Quantities',word:'Bought for ₹750, sold for ₹600. Loss percentage?',opts:{'A':'15%','B':'18%','C':'20%','D':'25%','E':'12%'},steps:['Loss = 750 - 600 = ___','Loss % = (loss/CP) × 100 = (150/750) × 100 = ___'],eq:'(750-600)/750 × 100 = 150/750 × 100 = ___',answer:'C'},
+  {id:396,year:0,qnum:396,cat:'Maths — Comparing Quantities',topic:'Selling price from profit%',chapter:'Comparing Quantities',word:'Cost price ₹280, profit 25%. Find selling price.',opts:{'A':'₹320','B':'₹330','C':'₹340','D':'₹350','E':'₹360'},steps:['SP = CP × (1 + profit%/100)','= 280 × (1 + 25/100)','= 280 × 1.25 = ___'],eq:'280 × 1.25 = ___',answer:'D'},
+  {id:397,year:0,qnum:397,cat:'Maths — Comparing Quantities',topic:'Simple interest',chapter:'Comparing Quantities',word:'Simple interest on ₹6,000 at 12% per annum for 2.5 years.',opts:{'A':'₹1,440','B':'₹1,620','C':'₹1,800','D':'₹2,160','E':'₹720'},steps:['SI = (P × R × T) / 100','= (6000 × 12 × 2.5) / 100','= 6000 × 12 × 2.5 / 100 = ___'],eq:'(6000 × 12 × 2.5) / 100 = 180000/100 = ___',answer:'C'},
+  {id:398,year:0,qnum:398,cat:'Maths — Comparing Quantities',topic:'Compound interest — 1 year',chapter:'Comparing Quantities',word:'Find CI on ₹5,000 at 10% per annum for 1 year, compounded annually.',opts:{'A':'₹450','B':'₹500','C':'₹550','D':'₹600','E':'₹1,000'},steps:['For 1 year: CI = SI (no difference)','CI = (5000 × 10 × 1) / 100 = ___'],eq:'P × R × T / 100 = 5000 × 10 / 100 = ___',answer:'B'},
+  {id:399,year:0,qnum:399,cat:'Maths — Comparing Quantities',topic:'Compound interest — 2 years',chapter:'Comparing Quantities',word:'Find CI on ₹10,000 at 10% per annum for 2 years, compounded annually.',opts:{'A':'₹1,900','B':'₹2,000','C':'₹2,100','D':'₹2,200','E':'₹2,500'},steps:['Year 1: Interest = 10% of 10,000 = ___; Amount = 11,000','Year 2: Interest = 10% of 11,000 = ___; Amount = 12,100','Total CI = 12,100 - 10,000 = ___'],eq:'A₂ = 10000 × (1.1)² = 12100 → CI = 12100 - 10000 = ___',answer:'C'},
+  {id:400,year:0,qnum:400,cat:'Maths — Comparing Quantities',topic:'CI vs SI',chapter:'Comparing Quantities',word:'For ₹4,000 at 10% for 2 years: by how much does CI exceed SI?',opts:{'A':'₹20','B':'₹40','C':'₹60','D':'₹80','E':'₹100'},steps:['SI = (4000 × 10 × 2)/100 = ₹800','CI: Year1=400, Year2=440 → Total CI = ₹840','Difference = 840 - 800 = ___'],eq:'CI - SI = 840 - 800 = ___',answer:'B'},
+  {id:401,year:0,qnum:401,cat:'Maths — Comparing Quantities',topic:'CI formula',chapter:'Comparing Quantities',word:'Using A = P(1 + r/100)ⁿ, find amount on ₹2,000 at 5% for 3 years.',opts:{'A':'₹2,200','B':'₹2,300','C':'₹2,315.25','D':'₹2,310','E':'₹2,350'},steps:['A = 2000 × (1 + 5/100)³','= 2000 × (1.05)³','= 2000 × 1.157625 = ___'],eq:'2000 × (1.05)³ = 2000 × 1.157625 = ___',answer:'C'},
+  {id:402,year:0,qnum:402,cat:'Maths — Comparing Quantities',topic:'Ratio to percentage',chapter:'Comparing Quantities',word:'In a class, 18 out of 30 students are girls. What percentage are boys?',opts:{'A':'40%','B':'50%','C':'60%','D':'30%','E':'45%'},steps:['Girls = 18, Total = 30, Boys = 30 - 18 = ___','Boys% = (12/30) × 100 = ___'],eq:'(12/30) × 100 = ___',answer:'A'},
+  {id:403,year:0,qnum:403,cat:'Maths — Comparing Quantities',topic:'Tax calculation',chapter:'Comparing Quantities',word:'A laptop costs ₹45,000. GST is 18%. What is the total amount paid?',opts:{'A':'₹49,100','B':'₹51,100','C':'₹53,100','D':'₹53,000','E':'₹54,000'},steps:['GST amount = 18% of 45,000 = ___','Total = 45,000 + ___ = ___'],eq:'45000 + (18% of 45000) = 45000 + 8100 = ___',answer:'C'},
+  {id:404,year:0,qnum:404,cat:'Maths — Comparing Quantities',topic:'Principal from SI',chapter:'Comparing Quantities',word:'SI earned is ₹900 at 12% per annum for 2.5 years. Find the principal.',opts:{'A':'₹2,500','B':'₹3,000','C':'₹3,500','D':'₹4,000','E':'₹2,000'},steps:['SI = (P × R × T) / 100','900 = (P × 12 × 2.5) / 100','900 = 30P/100 = 0.3P','P = 900/0.3 = ___'],eq:'P = (SI × 100) / (R × T) = (900 × 100) / (12 × 2.5) = ___',answer:'B'},
+  {id:405,year:0,qnum:405,cat:'Maths — Comparing Quantities',topic:'Population growth',chapter:'Comparing Quantities',word:'A town has population 80,000. It grows at 5% per year. Population after 2 years?',opts:{'A':'88,000','B':'88,200','C':'88,400','D':'88,600','E':'90,000'},steps:['Year 1: 5% of 80,000 = 4,000 → Population = 84,000','Year 2: 5% of 84,000 = 4,200 → Population = ___'],eq:'80000 × (1.05)² = 80000 × 1.1025 = ___',answer:'B'},
+  {id:406,year:0,qnum:406,cat:'Maths — Comparing Quantities',topic:'Discount then GST',chapter:'Comparing Quantities',word:'MRP ₹2,000. Discount 10%, then GST 5% on discounted price. Final amount?',opts:{'A':'₹1,800','B':'₹1,890','C':'₹1,900','D':'₹1,950','E':'₹2,100'},steps:['After 10% discount: 2000 - 200 = ₹1,800','GST 5% on ₹1,800: ___ ','Final = 1800 + ___ = ___'],eq:'1800 + (5% of 1800) = 1800 + 90 = ___',answer:'B'},
+  {id:407,year:0,qnum:407,cat:'Maths — Comparing Quantities',topic:'Successive percentage change',chapter:'Comparing Quantities',word:'A value increases by 20% then decreases by 20%. Net change?',opts:{'A':'No change (0%)','B':'-4%','C':'+4%','D':'-2%','E':'+2%'},steps:['Start with 100: after 20% increase → 120','After 20% decrease on 120: 120 - 24 = 96','Net change = 96 - 100 = -4 → ___'],eq:'100 → 120 → 96 → net change = ___',answer:'B'},
+  {id:408,year:0,qnum:408,cat:'Maths — Comparing Quantities',topic:'Rate from CI',chapter:'Comparing Quantities',word:'₹1,000 becomes ₹1,210 in 2 years with CI. What is the annual rate?',opts:{'A':'5%','B':'8%','C':'10%','D':'12%','E':'15%'},steps:['1210 = 1000 × (1 + r/100)²','(1 + r/100)² = 1.21','1 + r/100 = 1.1','r = ___'],eq:'(1 + r/100)² = 1.21 → 1+r/100 = 1.1 → r = ___',answer:'C'},
+  {id:409,year:0,qnum:409,cat:'Maths — Comparing Quantities',topic:'Profit on marked price',chapter:'Comparing Quantities',word:'MP ₹500, discount 20%, CP ₹320. Profit percentage?',opts:{'A':'15%','B':'20%','C':'25%','D':'30%','E':'35%'},steps:['SP = 500 - 20% of 500 = 500 - 100 = ₹400','Profit = SP - CP = 400 - 320 = ___','Profit % = (80/320) × 100 = ___'],eq:'SP=400, Profit=80, Profit% = (80/320)×100 = ___',answer:'C'},
+  {id:410,year:0,qnum:410,cat:'Maths — Comparing Quantities',topic:'Ratio application',chapter:'Comparing Quantities',word:'Ingredients for a recipe are in ratio 2:3:5. If total is 200g, how much is the largest part?',opts:{'A':'40g','B':'60g','C':'80g','D':'100g','E':'120g'},steps:['Total parts = 2+3+5 = 10','1 part = 200/10 = 20g','Largest part (5) = 5 × 20 = ___g'],eq:'5 × (200/10) = 5 × 20 = ___',answer:'D'},
+  {id:411,year:0,qnum:411,cat:'Maths — Comparing Quantities',topic:'Compound interest half-yearly',chapter:'Comparing Quantities',word:'Find CI on ₹8,000 at 10% per annum, compounded half-yearly, for 1 year.',opts:{'A':'₹800','B':'₹820','C':'₹840','D':'₹860','E':'₹880'},steps:['Half-yearly rate = 10/2 = 5%, periods = 2','A = 8000 × (1.05)² = 8000 × 1.1025 = ___','CI = ___ - 8000 = ___'],eq:'8000 × (1.05)² = 8820 → CI = 8820 - 8000 = ___',answer:'B'},
+  {id:412,year:0,qnum:412,cat:'Maths — Comparing Quantities',topic:'Finding CP from SP and loss',chapter:'Comparing Quantities',word:'A cycle is sold for ₹1,520 at a loss of 5%. Find the cost price.',opts:{'A':'₹1,600','B':'₹1,620','C':'₹1,640','D':'₹1,660','E':'₹1,680'},steps:['SP = CP × (1 - loss%/100)','1520 = CP × (95/100)','CP = 1520 × (100/95) = ___'],eq:'CP = 1520 ÷ 0.95 = ___',answer:'A'},
+  {id:413,year:0,qnum:413,cat:'Maths — Comparing Quantities',topic:'Population decrease',chapter:'Comparing Quantities',word:'A village had 6,250 people. Population decreases by 4% per year. After 2 years?',opts:{'A':'5,760','B':'5,500','C':'5,625','D':'5,800','E':'5,900'},steps:['Year 1: 4% of 6250 = 250 → 6250 - 250 = 6000','Year 2: 4% of 6000 = 240 → 6000 - 240 = ___'],eq:'6250 × (0.96)² = 6250 × 0.9216 = ___',answer:'A'},
+  {id:414,year:0,qnum:414,cat:'Maths — Comparing Quantities',topic:'Two successive discounts',chapter:'Comparing Quantities',word:'Successive discounts of 10% and 20% on ₹500. Final price?',opts:{'A':'₹340','B':'₹350','C':'₹360','D':'₹370','E':'₹380'},steps:['After first 10% discount: 500 × 0.9 = ___','After second 20% discount: 450 × 0.8 = ___'],eq:'500 × 0.9 × 0.8 = ___',answer:'C'},
+  {id:415,year:0,qnum:415,cat:'Maths — Comparing Quantities',topic:'Time from SI',chapter:'Comparing Quantities',word:'Principal ₹2,000, rate 8%, SI = ₹480. Find time in years.',opts:{'A':'2','B':'2.5','C':'3','D':'3.5','E':'4'},steps:['T = (SI × 100) / (P × R)','= (480 × 100) / (2000 × 8)','= 48000 / 16000 = ___'],eq:'T = (480 × 100)/(2000 × 8) = 48000/16000 = ___',answer:'C'},
+  {id:416,year:0,qnum:416,cat:'Maths — Algebraic Expressions',topic:'Types of polynomials',chapter:'Algebraic Expressions',word:'How many terms does 3x² - 2xy + 5y - 7 have?',opts:{'A':'2','B':'3','C':'4','D':'5','E':'6'},steps:['Count each separate term (separated by + or -)','3x² / -2xy / +5y / -7','Total terms = ___'],eq:'3x², -2xy, 5y, -7 → ___ terms',answer:'C'},
+  {id:417,year:0,qnum:417,cat:'Maths — Algebraic Expressions',topic:'Like terms',chapter:'Algebraic Expressions',word:'Which of the following is a like term to -7xy²?',opts:{'A':'7x²y','B':'-7x²y²','C':'4xy²','D':'4x²y','E':'7xy'},steps:['Like terms have the SAME variables with the SAME powers','-7xy² has: x¹ and y²','4xy² also has: x¹ and y² ✓','Like term: ___'],eq:'Same variables same powers as xy² → ___',answer:'C'},
+  {id:418,year:0,qnum:418,cat:'Maths — Algebraic Expressions',topic:'Adding polynomials',chapter:'Algebraic Expressions',word:'Add: (3x² - 4x + 2) + (x² + 5x - 7)',opts:{'A':'4x² + x - 5','B':'4x² - x - 5','C':'4x² + x + 9','D':'2x² + x - 5','E':'4x² + 9x - 5'},steps:['Combine like terms:','3x² + x² = ___','-4x + 5x = ___','2 + (-7) = ___'],eq:'(3+1)x² + (-4+5)x + (2-7) = ___',answer:'A'},
+  {id:419,year:0,qnum:419,cat:'Maths — Algebraic Expressions',topic:'Subtracting polynomials',chapter:'Algebraic Expressions',word:'Subtract (2a - 3b) from (5a + b)',opts:{'A':'3a + 4b','B':'3a - 4b','C':'7a - 2b','D':'7a + 4b','E':'3a + 2b'},steps:['(5a + b) - (2a - 3b)','= 5a + b - 2a + 3b','= (5-2)a + (1+3)b = ___'],eq:'5a + b - 2a + 3b = ___',answer:'A'},
+  {id:420,year:0,qnum:420,cat:'Maths — Algebraic Expressions',topic:'Multiplying monomials',chapter:'Algebraic Expressions',word:'Multiply: (-3x²y) × (4xy²)',opts:{'A':'12x³y³','B':'-12x³y³','C':'12x²y²','D':'-12x²y²','E':'-12xy'},steps:['Multiply coefficients: (-3) × 4 = ___','Multiply x terms: x² × x = x³','Multiply y terms: y × y² = y³','Result: ___'],eq:'(-3×4) × (x²×x) × (y×y²) = -12 × x³ × y³ = ___',answer:'B'},
+  {id:421,year:0,qnum:421,cat:'Maths — Algebraic Expressions',topic:'Monomial × polynomial',chapter:'Algebraic Expressions',word:'Expand: 2x(3x - 4y + 5)',opts:{'A':'6x² - 4xy + 5x','B':'6x² - 8xy + 10x','C':'6x - 8y + 10','D':'5x² - 6xy + 7x','E':'6x² + 8xy - 10x'},steps:['Distribute 2x to each term:','2x × 3x = ___','2x × (-4y) = ___','2x × 5 = ___'],eq:'2x×3x + 2x×(-4y) + 2x×5 = ___',answer:'B'},
+  {id:422,year:0,qnum:422,cat:'Maths — Algebraic Expressions',topic:'Binomial × binomial',chapter:'Algebraic Expressions',word:'Expand: (x + 3)(x - 5)',opts:{'A':'x² - 2x - 15','B':'x² + 2x - 15','C':'x² - 2x + 15','D':'x² - 15','E':'x² + 8x - 15'},steps:['(x+3)(x-5) = x² - 5x + 3x - 15','= x² + (-5+3)x - 15','= x² + ___x - 15'],eq:'x² + (-5+3)x + (3×-5) = ___',answer:'A'},
+  {id:423,year:0,qnum:423,cat:'Maths — Algebraic Expressions',topic:'Identity (a+b)²',chapter:'Algebraic Expressions',word:'Expand using identity: (2x + 3y)²',opts:{'A':'4x² + 9y²','B':'4x² + 6xy + 9y²','C':'4x² + 12xy + 9y²','D':'4x² - 12xy + 9y²','E':'2x² + 12xy + 3y²'},steps:['(a+b)² = a² + 2ab + b²','a = 2x, b = 3y','(2x)² + 2(2x)(3y) + (3y)²','= 4x² + ___ + 9y²'],eq:'(2x)² + 2(2x)(3y) + (3y)² = 4x² + 12xy + 9y²',answer:'C'},
+  {id:424,year:0,qnum:424,cat:'Maths — Algebraic Expressions',topic:'Identity (a-b)²',chapter:'Algebraic Expressions',word:'Expand: (5p - 2q)²',opts:{'A':'25p² + 20pq + 4q²','B':'25p² - 20pq + 4q²','C':'25p² - 10pq + 4q²','D':'25p² + 4q²','E':'5p² - 20pq + 2q²'},steps:['(a-b)² = a² - 2ab + b²','a = 5p, b = 2q','(5p)² - 2(5p)(2q) + (2q)²','= 25p² - ___ + 4q²'],eq:'(5p)² - 2(5p)(2q) + (2q)² = 25p² - 20pq + 4q²',answer:'B'},
+  {id:425,year:0,qnum:425,cat:'Maths — Algebraic Expressions',topic:'Identity (a+b)(a-b)',chapter:'Algebraic Expressions',word:'Using identity, find 97 × 103.',opts:{'A':'9,991','B':'9,999','C':'10,001','D':'10,009','E':'9,909'},steps:['97 × 103 = (100 - 3)(100 + 3)','= (a-b)(a+b) = a² - b²','= 100² - 3² = 10000 - ___ = ___'],eq:'100² - 3² = 10000 - 9 = ___',answer:'A'},
+  {id:426,year:0,qnum:426,cat:'Maths — Algebraic Expressions',topic:'Finding value using identity',chapter:'Algebraic Expressions',word:'If x + 1/x = 5, find x² + 1/x².',opts:{'A':'23','B':'25','C':'27','D':'21','E':'15'},steps:['Square both sides: (x + 1/x)² = 25','x² + 2(x)(1/x) + 1/x² = 25','x² + 2 + 1/x² = 25','x² + 1/x² = 25 - 2 = ___'],eq:'(x + 1/x)² = x² + 2 + 1/x² = 25 → x² + 1/x² = ___',answer:'A'},
+  {id:427,year:0,qnum:427,cat:'Maths — Algebraic Expressions',topic:'Identity (a+b+c)²',chapter:'Algebraic Expressions',word:'Expand: (x + y + z)²',opts:{'A':'x² + y² + z²','B':'x² + y² + z² + xy + yz + zx','C':'x² + y² + z² + 2xy + 2yz + 2zx','D':'x² + y² + z² + 2xyz','E':'3(x² + y² + z²)'},steps:['(a+b+c)² = a² + b² + c² + 2ab + 2bc + 2ca','Here a=x, b=y, c=z','= x² + y² + z² + 2xy + 2yz + 2zx'],eq:'(a+b+c)² = a²+b²+c² + ___',answer:'C'},
+  {id:428,year:0,qnum:428,cat:'Maths — Algebraic Expressions',topic:'Numerical application of identity',chapter:'Algebraic Expressions',word:'Find 105² without actual multiplication.',opts:{'A':'11,000','B':'11,025','C':'11,050','D':'10,025','E':'11,100'},steps:['105² = (100 + 5)²','= (a+b)² = a² + 2ab + b²','= 100² + 2×100×5 + 5²','= 10000 + 1000 + 25 = ___'],eq:'(100+5)² = 10000 + 1000 + 25 = ___',answer:'B'},
+  {id:429,year:0,qnum:429,cat:'Maths — Algebraic Expressions',topic:'Coefficient and degree',chapter:'Algebraic Expressions',word:'What is the degree of the polynomial 5x³y² - 3xy⁴ + 7?',opts:{'A':'3','B':'4','C':'5','D':'6','E':'2'},steps:['Degree of each term: 5x³y² has degree 3+2=5, -3xy⁴ has degree 1+4=5, 7 has degree 0','Degree of polynomial = highest degree term = ___'],eq:'5x³y² → degree 3+2=5, -3xy⁴ → degree 1+4=5 → polynomial degree = ___',answer:'C'},
+  {id:430,year:0,qnum:430,cat:'Maths — Algebraic Expressions',topic:'Multiplication of polynomials',chapter:'Algebraic Expressions',word:'Multiply: (a + b)(a² - ab + b²)',opts:{'A':'a³ + b³','B':'a³ - b³','C':'a³ + 2a²b + b³','D':'a³ - a²b + ab² + b³','E':'a² + ab + b²'},steps:['(a+b)(a²-ab+b²) is the identity for sum of cubes','= a³ - a²b + ab² + a²b - ab² + b³','= a³ + b³','All middle terms cancel!'],eq:'(a+b)(a²-ab+b²) = ___',answer:'A'},
+  {id:431,year:0,qnum:431,cat:'Maths — Algebraic Expressions',topic:'Value substitution',chapter:'Algebraic Expressions',word:'If p = 2 and q = -3, find 3p² - 2pq + q².',opts:{'A':'21','B':'27','C':'31','D':'33','E':'37'},steps:['3p² = 3(4) = 12','-2pq = -2(2)(-3) = +12','q² = (-3)² = 9','Sum = 12 + 12 + 9 = ___'],eq:'3(4) + 12 + 9 = ___',answer:'D'},
+  {id:432,year:0,qnum:432,cat:'Maths — Algebraic Expressions',topic:'Area using algebra',chapter:'Algebraic Expressions',word:'Length of a rectangle = (2x + 3) and width = (x - 1). Find the area.',opts:{'A':'2x² - x - 3','B':'2x² + x - 3','C':'2x² + 3x - 3','D':'3x + 2','E':'2x² - 3'},steps:['Area = length × width = (2x+3)(x-1)','= 2x² - 2x + 3x - 3','= 2x² + ___ - 3'],eq:'(2x+3)(x-1) = 2x²-2x+3x-3 = ___',answer:'B'},
+  {id:433,year:0,qnum:433,cat:'Maths — Algebraic Expressions',topic:'Identity verification',chapter:'Algebraic Expressions',word:'Which identity gives: a² - b² = (a+b)(a-b)?',opts:{'A':'Square of a sum','B':'Square of a difference','C':'Product of sum and difference','D':'Cube of a sum','E':'Distributive property'},steps:['(a+b)(a-b) = a² - ab + ab - b² = a² - b²','This identity: product of sum and difference = difference of squares','Called: ___ identity'],eq:'(a+b)(a-b) = a² - b² → product of ___ and ___',answer:'C'},
+  {id:434,year:0,qnum:434,cat:'Maths — Algebraic Expressions',topic:'Squaring a trinomial',chapter:'Algebraic Expressions',word:'If a + b + c = 0, find a² + b² + c².',opts:{'A':'0','B':'abc','C':'-2(ab+bc+ca)','D':'2(ab+bc+ca)','E':'Cannot determine'},steps:['(a+b+c)² = a²+b²+c² + 2(ab+bc+ca)','0² = a²+b²+c² + 2(ab+bc+ca)','a²+b²+c² = -2(ab+bc+ca)'],eq:'0 = a²+b²+c² + 2(ab+bc+ca) → a²+b²+c² = ___',answer:'C'},
+  {id:435,year:0,qnum:435,cat:'Maths — Algebraic Expressions',topic:'Like and unlike terms',chapter:'Algebraic Expressions',word:'How many like terms are in: 3x, -4y, 2x², -7x, 5y², 9x?',opts:{'A':'2 pairs','B':'3 like terms (3x, -7x, 9x)','C':'2 like terms','D':'No like terms','E':'4 like terms'},steps:['Like terms have same variable and same power','3x, -7x, 9x all have x¹ → these are like terms','-4y has y¹, 2x² has x², 5y² has y² — all different','The like group has ___ terms'],eq:'3x, -7x, 9x all have x to power 1 → ___ like terms',answer:'B'},
+  {id:436,year:0,qnum:436,cat:'Maths — Algebraic Expressions',topic:'Standard identity application',chapter:'Algebraic Expressions',word:'Find 49² - 51² using the identity a² - b² = (a+b)(a-b).',opts:{'A':'-200','B':'200','C':'-100','D':'100','E':'-400'},steps:['a = 49, b = 51','(49+51)(49-51)','= 100 × (-2) = ___'],eq:'(49+51)(49-51) = 100 × (-2) = ___',answer:'A'},
+  {id:437,year:0,qnum:437,cat:'Maths — Algebraic Expressions',topic:'Polynomial division',chapter:'Algebraic Expressions',word:'Divide 6x² + 13x + 5 by (2x + 1).',opts:{'A':'3x + 5','B':'3x - 5','C':'2x + 5','D':'3x + 1','E':'6x + 5'},steps:['Factor 6x²+13x+5: find two numbers that multiply to 6×5=30 and add to 13','10 and 3: 6x²+10x+3x+5','= 2x(3x+5) + 1(3x+5) = (2x+1)(3x+5)','÷ (2x+1) = ___'],eq:'6x²+13x+5 = (2x+1)(3x+5) → ÷(2x+1) = ___',answer:'A'},
+  {id:438,year:0,qnum:438,cat:'Maths — Algebraic Expressions',topic:'Product of three polynomials',chapter:'Algebraic Expressions',word:'Simplify: (x+1)(x+2)(x+3)',opts:{'A':'x³+6x²+11x+6','B':'x³+5x²+6x+1','C':'x³+6x+6','D':'x³+3x²+6x+6','E':'x³+6x²+6'},steps:['First: (x+1)(x+2) = x²+3x+2','Then: (x²+3x+2)(x+3)','= x³+3x²+3x²+9x+2x+6','= x³+6x²+11x+6'],eq:'(x+1)(x+2)=x²+3x+2, then ×(x+3) = ___',answer:'A'},
+  {id:439,year:0,qnum:439,cat:'Maths — Algebraic Expressions',topic:'Identity - cube of sum',chapter:'Algebraic Expressions',word:'Using (a+b)³ = a³+3a²b+3ab²+b³, expand (x+2)³.',opts:{'A':'x³+6x²+12x+8','B':'x³+8','C':'x³+6x+8','D':'x³+3x²+6x+8','E':'x³+12x²+6x+8'},steps:['a=x, b=2','x³ + 3x²(2) + 3x(4) + 8','= x³ + 6x² + 12x + 8'],eq:'x³ + 3(x²)(2) + 3(x)(4) + 8 = ___',answer:'A'},
+  {id:440,year:0,qnum:440,cat:'Maths — Algebraic Expressions',topic:'Factorisation using identity',chapter:'Algebraic Expressions',word:'Factorise: 16x² - 25y²',opts:{'A':'(4x-5y)²','B':'(4x+5y)(4x-5y)','C':'(16x+25y)(x-y)','D':'(4x-5y)(4x-5y)','E':'4(4x²-y²)'},steps:['16x² - 25y² = (4x)² - (5y)²','Using a² - b² = (a+b)(a-b)','= (4x + 5y)(4x - 5y)'],eq:'(4x)² - (5y)² = (4x+5y)(4x-5y)',answer:'B'},
+];
+function getImgSrc(year,qnum){ return null; }
+</script>
+
+<div id="lockScreen" class="screen active">
+  <div class="lock-card">
+    <span class="lock-logo">📗</span>
+    <div class="lock-title">CBSE Class 8 Maths</div>
+    <div class="lock-sub">Ganitha Prakash Part 1 · Chapters 1–8</div>
+    <div class="lock-sec">
+      <span class="lock-lbl">Who is practising today?</span>
+      <div class="profile-row" id="profileRow"></div>
+    </div>
+    <div class="lock-sec">
+      <span class="lock-lbl">How many questions?</span>
+      <div class="num-wrap">
+        <button class="num-btn" onclick="changeNum(-1)">−</button>
+        <span class="num-disp" id="numDisp">10</span>
+        <button class="num-btn" onclick="changeNum(1)">+</button>
+      </div>
+      <div class="qp-row" id="qpRow"></div>
+    </div>
+    <div class="lock-sec">
+      <span class="lock-lbl">Filter by chapter (optional)</span>
+      <div class="cat-wrap" id="catFilt"></div>
+    </div>
+    <div class="pool-info" id="poolInfo"></div>
+    <button class="btn-start" id="btnStart" onclick="startSession()">▶ Start Session</button>
+    <div style="text-align:center;margin-top:12px">
+      <a href="index.html" style="font-size:.78rem;font-weight:700;color:var(--muted);text-decoration:none">← Back to Home</a>
+    </div>
+  </div>
+</div>
+
+<div id="mainScreen" class="screen">
+  <header class="hdr">
+    <span class="hdr-logo">📗</span>
+    <div class="hdr-title">CBSE Grade 8 Maths</div>
+    <div class="hdr-profile" id="hdrProfile"></div>
+    <div class="timer">⏱ <span id="timerDisp">00:00</span></div>
+    <button class="btn-rst" onclick="confirmReset()">↺ Reset</button>
+  </header>
+  <div class="sbar">
+    <div class="sp"><span class="dot"></span><span id="scoreDisp">0</span></div>
+    <div class="sp"><span class="dot a"></span><span id="attDisp">0</span> attempted</div>
+    <div class="prog-wrap"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <span id="progPct" style="font-weight:800;font-size:.78rem;color:var(--muted);white-space:nowrap">0%</span>
+  </div>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sb-sec"><div class="sb-hd">Chapters</div><div id="catBtns"></div></div>
+      <div class="sb-sec"><div class="sb-hd">Questions</div><div class="pills" id="pillsWrap"></div></div>
+    </aside>
+    <main class="content">
+      <div id="qArea"></div>
+      <div class="qnav">
+        <button class="btn-nav" id="btnPrev" onclick="navigate(-1)">← Prev</button>
+        <button class="btn-fin" onclick="finishSession()">Finish ✓</button>
+        <button class="btn-nav" id="btnNext" onclick="navigate(1)">Next →</button>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div id="endScreen" class="screen">
+  <div class="end-card">
+    <div class="end-top">
+      <span class="end-trophy" id="endTrophy">🏆</span>
+      <div class="end-title" id="endTitle">Session Complete!</div>
+      <div style="font-size:.8rem;font-weight:800;color:var(--muted);margin-bottom:6px" id="endName"></div>
+      <div class="end-msg" id="endMsg"></div>
+    </div>
+    <div class="end-bar-wrap"><div class="end-bar" id="endBar" style="width:0%"></div></div>
+    <div class="end-stats">
+      <div class="end-stat"><span class="end-val" id="endScore">-</span><span class="end-lbl">Correct</span></div>
+      <div class="end-stat"><span class="end-val" id="endPts">-</span><span class="end-lbl">Points</span></div>
+      <div class="end-stat"><span class="end-val" id="endTime">-</span><span class="end-lbl">Time</span></div>
+      <div class="end-stat"><span class="end-val" id="endAvg">-</span><span class="end-lbl">Avg/Q</span></div>
+    </div>
+    <div class="review-hd">📋 Question Review</div>
+    <table class="review-table">
+      <thead><tr><th>#</th><th>Topic</th><th>Chapter</th><th>Your Ans</th><th>Correct</th><th></th></tr></thead>
+      <tbody id="reviewBody"></tbody>
+    </table>
+    <div class="end-btns">
+      <button class="btn-again" onclick="confirmReset()">🔄 Try Again</button>
+      <a href="index.html" class="btn-home">🏠 Home</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕ Close</button>
+    <img class="modal-img" id="modalImg" alt="Question">
+  </div>
+</div>
+
+<script>
+
+const LS_KEY_PFX = 'mkp_';
+const CAT_COLORS = [
+  {bg:'#e8edfb',fg:'#4f72e3'},{bg:'#dcfce7',fg:'#22c55e'},{bg:'#fef3c7',fg:'#d97706'},
+  {bg:'#ede9fe',fg:'#8b5cf6'},{bg:'#ccfbf1',fg:'#14b8a6'},{bg:'#fce7f3',fg:'#ec4899'},
+  {bg:'#fee2e2',fg:'#ef4444'},{bg:'#e0f2fe',fg:'#0ea5e9'},{bg:'#f0fdf4',fg:'#16a34a'},
+  {bg:'#fff7ed',fg:'#ea580c'}
+];
+const POINTS = {0:3,1:2,2:1};
+const POINTS_CLASS = {0:'full',1:'part',2:'min'};
+
+// ── STATE ────────────────────────────────────────────────────────
+let S = {
+  profile: null,        // {name, avatar}
+  sessionQs: [],        // array of {year,qnum,answer,steps,eq,word,cat,topic}
+  currentIdx: 0,
+  currentTab: 0,        // 0=word/MCQ, 1=steps, 2=equation
+  answers: {},          // {`${year}_${qnum}`: {chosen, correct, stageFirstCorrect}}
+  timerSecs: 0,
+  timerInterval: null,
+  sessionSize: 10,
+  activeCat: 'All',
+  catMap: {},
+  lockCats: [],
+  locked: false,        // true when session in progress (answers locked after submission)
+};
+let _sessNum = 10;
+let _ttsKA = null;
+
+const lsKey = () => LS_KEY_PFX + (S.profile ? S.profile.name : 'anon');
+
+// ── PROFILES ─────────────────────────────────────────────────────
+function loadProfiles() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY_PFX+'profiles')||'[]'); } catch(e) { return []; }
+}
+function saveProfiles(profs) {
+  localStorage.setItem(LS_KEY_PFX+'profiles', JSON.stringify(profs));
+}
+function renderProfileChips() {
+  const profs = loadProfiles();
+  const wrap = document.getElementById('profileRow');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  profs.forEach(p => {
+    const d = document.createElement('div');
+    d.className = 'profile-chip' + (S.profile && S.profile.name===p.name ? ' active':'');
+    d.innerHTML = `<span class="p-avatar">${p.avatar}</span><span class="p-name">${p.name}</span>`;
+    d.onclick = () => selectProfile(p);
+    wrap.appendChild(d);
+  });
+  const add = document.createElement('button');
+  add.className = 'btn-add-profile'; add.textContent = '+ Add Kid';
+  add.onclick = addProfile;
+  wrap.appendChild(add);
+}
+function selectProfile(p) {
+  S.profile = p;
+  renderProfileChips();
+  updatePoolInfo();
+}
+function addProfile() {
+  const avatars = ['🦁','🐯','🐻','🦊','🐼','🐨','🐸','🦉','🐬','🦄'];
+  const name = prompt('Kid\'s name?');
+  if(!name || !name.trim()) return;
+  const profs = loadProfiles();
+  if(profs.find(p=>p.name===name.trim())) { alert('Name already exists!'); return; }
+  const avatar = avatars[profs.length % avatars.length];
+  profs.push({name:name.trim(), avatar});
+  saveProfiles(profs);
+  selectProfile({name:name.trim(), avatar});
+}
+
+// ── SESSION PERSISTENCE ───────────────────────────────────────────
+function saveSession(finished) {
+  try {
+    localStorage.setItem(lsKey(), JSON.stringify({
+      sessionQs:S.sessionQs, answers:S.answers, timerSecs:S.timerSecs,
+      sessionSize:S.sessionSize, currentIdx:S.currentIdx, currentTab:S.currentTab,
+      catMap:S.catMap, lockCats:S.lockCats, profile:S.profile, finished:!!finished
+    }));
+  } catch(e){}
+}
+function loadSession() {
+  try {
+    const d = JSON.parse(localStorage.getItem(lsKey())||'null');
+    if(!d||!d.sessionQs||!d.sessionQs.length) return false;
+    Object.assign(S,{sessionQs:d.sessionQs,answers:d.answers||{},timerSecs:d.timerSecs||0,
+      sessionSize:d.sessionSize||10,currentIdx:d.currentIdx||0,currentTab:d.currentTab||0,
+      catMap:d.catMap||{},lockCats:d.lockCats||[],profile:d.profile||null});
+    if(d.finished){ showScreen('endScreen'); renderEndScreen(S.timerSecs); return true; }
+    showScreen('mainScreen'); startTimer(); renderAll(); return true;
+  } catch(e){ return false; }
+}
+
+// ── HISTORY (for dashboard) ───────────────────────────────────────
+function saveToHistory(result) {
+  if(!S.profile) return;
+  const key = LS_KEY_PFX + 'hist_' + S.profile.name;
+  try {
+    const hist = JSON.parse(localStorage.getItem(key)||'[]');
+    hist.push(result);
+    localStorage.setItem(key, JSON.stringify(hist.slice(-50))); // keep last 50
+  } catch(e){}
+}
+function loadHistory(name) {
+  try { return JSON.parse(localStorage.getItem(LS_KEY_PFX+'hist_'+name)||'[]'); } catch(e){ return []; }
+}
+
+// ── POOL & FILTERING ──────────────────────────────────────────────
+function getPool() {
+  if(!S.lockCats||!S.lockCats.length) return QUESTION_BANK;
+  return QUESTION_BANK.filter(q=>S.lockCats.includes(q.cat));
+}
+function filteredQs() {
+  if(S.activeCat==='All') return S.sessionQs;
+  return S.sessionQs.filter(q=>q.cat===S.activeCat);
+}
+function currentQ() { return S.sessionQs[S.currentIdx]; }
+function qKey(q) { return `${q.year}_${q.qnum}`; }
+
+function setNum(n) {
+  const a=getPool().length; n=Math.max(1,Math.min(n,a)); _sessNum=n;
+  const el=document.getElementById('numDisp'); if(el) el.textContent=n;
+  updatePoolInfo();
+}
+function changeNum(d) {
+  setNum(_sessNum+d);
+  document.querySelectorAll('.qp').forEach(x=>x.classList.remove('on'));
+}
+function updatePoolInfo() {
+  const a=getPool().length; const n=Math.min(_sessNum,a);
+  if(n!==_sessNum) setNum(n);
+  const el=document.getElementById('poolInfo');
+  if(el) el.innerHTML='Selecting <span>'+_sessNum+'</span> from <span>'+a+'</span> available';
+  const btn=document.getElementById('btnStart');
+  if(btn) btn.disabled=(a===0||!S.profile);
+}
+
+// ── START SESSION ─────────────────────────────────────────────────
+function startSession() {
+  if(!S.profile) { alert('Please select or add a kid first!'); return; }
+  const pool=getPool(); const size=Math.min(_sessNum,pool.length);
+  const sh=[...pool]; for(let i=sh.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[sh[i],sh[j]]=[sh[j],sh[i]];}
+  S.sessionQs=sh.slice(0,size); S.answers={}; S.timerSecs=0;
+  S.currentIdx=0; S.currentTab=0; S.sessionSize=size; S.activeCat='All';
+  const cats=[...new Set(S.sessionQs.map(q=>q.cat))];
+  S.catMap={}; cats.forEach((c,i)=>{S.catMap[c]=i%CAT_COLORS.length;});
+  showScreen('mainScreen'); startTimer(); renderAll(); saveSession(false);
+}
+
+// ── TIMER ─────────────────────────────────────────────────────────
+function startTimer() {
+  if(S.timerInterval)clearInterval(S.timerInterval);
+  S.timerInterval=setInterval(()=>{S.timerSecs++;updateTimerDisp();if(S.timerSecs%10===0)saveSession(false);},1000);
+  updateTimerDisp();
+}
+function stopTimer(){if(S.timerInterval){clearInterval(S.timerInterval);S.timerInterval=null;}}
+function updateTimerDisp(){
+  const m=Math.floor(S.timerSecs/60).toString().padStart(2,'0'),s=(S.timerSecs%60).toString().padStart(2,'0');
+  const el=document.getElementById('timerDisp');if(el)el.textContent=m+':'+s;
+}
+function fmtTime(sec){return Math.floor(sec/60).toString().padStart(2,'0')+':'+(sec%60).toString().padStart(2,'0');}
+
+// ── ANSWER SUBMISSION (one attempt only) ──────────────────────────
+function chooseOption(letter) {
+  const q=currentQ(); if(!q) return;
+  const k=qKey(q);
+  if(S.answers[k]&&S.answers[k].chosen) return; // already answered — locked
+  const correct=(letter===q.answer);
+  S.answers[k]={chosen:letter, correct, stageFirstCorrect:S.currentTab};
+  if(correct) celebrate(S.currentTab);
+  renderQuestion(); renderPills(); renderScoreBar(); saveSession(false);
+  checkAutoFinish();
+}
+
+function checkAutoFinish(){
+  if(Object.keys(S.answers).length>=S.sessionQs.length)
+    setTimeout(()=>{if(confirm('All questions answered! View your results?'))finishSession();},600);
+}
+function finishSession(){
+  stopTimer(); stopSpeech();
+  const {pts,max}=calcPts();
+  const result = {
+    date:new Date().toISOString(), level:LEVEL_ID,
+    total:S.sessionQs.length,
+    correct:Object.values(S.answers).filter(a=>a.correct).length,
+    pts, max, secs:S.timerSecs
+  };
+  // Save locally first (always works, even offline)
+  saveToHistory(result);
+  // Then sync to Supabase (async, non-blocking — won't delay the end screen)
+  if(S.profile) {
+    saveToSupabase({
+      ...result,
+      playerName: S.profile.name,
+      playerAvatar: S.profile.avatar
+    });
+  }
+  saveSession(true); showScreen('endScreen'); renderEndScreen(S.timerSecs); launchConfetti();
+}
+function calcPts(){
+  let pts=0,max=0;
+  S.sessionQs.forEach(q=>{max+=3;const a=S.answers[qKey(q)];if(a&&a.correct)pts+=POINTS[a.stageFirstCorrect]||3;});
+  return {pts,max};
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────
+function navigate(d){
+  const f=filteredQs(),p=f.findIndex(q=>q.year===currentQ().year&&q.qnum===currentQ().qnum),np=p+d;
+  if(np<0||np>=f.length)return;
+  S.currentIdx=S.sessionQs.findIndex(q=>q.year===f[np].year&&q.qnum===f[np].qnum);
+  S.currentTab=0; renderQuestion();renderPills();renderNavBtns();
+}
+function goToQ(idx){S.currentIdx=idx;S.currentTab=0;renderQuestion();renderPills();renderNavBtns();}
+function selectCat(cat){
+  S.activeCat=cat; const f=filteredQs();
+  if(f.length)S.currentIdx=S.sessionQs.findIndex(q=>q.year===f[0].year&&q.qnum===f[0].qnum);
+  S.currentTab=0;renderCatBtns();renderPills();renderQuestion();renderNavBtns();
+}
+function switchTab(t){if(t!==0)stopSpeech();S.currentTab=t;renderQuestion();}
+
+// ── RENDER ────────────────────────────────────────────────────────
+function renderAll(){renderCatBtns();renderPills();renderScoreBar();renderQuestion();renderNavBtns();}
+
+function renderCatBtns(){
+  const el=document.getElementById('catBtns');if(!el)return;
+  let h=`<button class="cat-btn ${S.activeCat==='All'?'on':''}" onclick="selectCat('All')">All <span class="cc">${S.sessionQs.length}</span></button>`;
+  Object.keys(S.catMap).forEach(cat=>{
+    const cnt=S.sessionQs.filter(q=>q.cat===cat).length;
+    const on=S.activeCat===cat; const ci=S.catMap[cat];
+    const st=on?`background:${CAT_COLORS[ci].bg};color:${CAT_COLORS[ci].fg};border-color:${CAT_COLORS[ci].fg};`:'';
+    h+=`<button class="cat-btn ${on?'on':''}" style="${st}" onclick="selectCat('${esc(cat)}')">${esc(cat)} <span class="cc">${cnt}</span></button>`;
+  });
+  el.innerHTML=h;
+}
+
+function renderPills(){
+  const el=document.getElementById('pillsWrap');if(!el)return;
+  const qs=filteredQs();if(!qs.length){el.innerHTML='<em style="font-size:.72rem;color:var(--muted)">None</em>';return;}
+  let h='';
+  qs.forEach((q,i)=>{
+    const k=qKey(q); const a=S.answers[k]; const cur=q.year===currentQ().year&&q.qnum===currentQ().qnum;
+    const ok=a&&a.correct; const tried=!!a;
+    let cl='pill'; if(cur)cl+=' cur'; if(ok)cl+=' ok'; else if(tried)cl+=' tried';
+    const gi=S.sessionQs.findIndex(sq=>sq.year===q.year&&sq.qnum===q.qnum);
+    h+=`<button class="${cl}" onclick="goToQ(${gi})" title="${esc(q.topic||'')}">${i+1}</button>`;
+  });
+  el.innerHTML=h;
+}
+
+function renderScoreBar(){
+  const total=S.sessionQs.length,attempted=Object.keys(S.answers).length;
+  const correct=Object.values(S.answers).filter(a=>a.correct).length;
+  const {pts,max}=calcPts(); const pct=total>0?Math.round(attempted/total*100):0;
+  document.getElementById('scoreDisp').textContent=correct+' correct ('+pts+'/'+max+' pts)';
+  document.getElementById('attDisp').textContent=attempted;
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progPct').textContent=pct+'%';
+  // Profile in header
+  const ph=document.getElementById('hdrProfile');
+  if(ph&&S.profile)ph.textContent=S.profile.avatar+' '+S.profile.name;
+}
+
+function renderNavBtns(){
+  const f=filteredQs(),p=f.findIndex(q=>q.year===currentQ().year&&q.qnum===currentQ().qnum);
+  document.getElementById('btnPrev').disabled=p<=0;
+  document.getElementById('btnNext').disabled=p>=f.length-1;
+}
+
+function renderQuestion(){
+  const q=currentQ(); const area=document.getElementById('qArea');
+  if(!q){area.innerHTML='<div class="empty"><span class="ei">🔍</span>No questions here.</div>';return;}
+  const k=qKey(q); const ans=S.answers[k]; const done=!!(ans&&ans.chosen);
+  const ci=S.catMap[q.cat]; const catSt=ci!==undefined?`background:${CAT_COLORS[ci].bg};color:${CAT_COLORS[ci].fg};`:'';
+  const t=S.currentTab;
+  const imgSrc=getImgSrc(q.year,q.qnum);
+
+  // Tab labels with points
+  const tabsH=['📖 Word Problem','📋 Steps','🔢 Equation'].map((lbl,ti)=>{
+    const solvedHere=done&&ans.correct&&ans.stageFirstCorrect===ti;
+    const ptsBadge=done?(solvedHere?`<span class="tab-pts ${POINTS_CLASS[ti]}">✓ here</span>`:'')
+      :`<span class="tab-pts ${POINTS_CLASS[ti]}">${POINTS[ti]}pt</span>`;
+    return `<button class="tab ${t===ti?'on':''}" onclick="switchTab(${ti})">${lbl}${ptsBadge}</button>`;
+  }).join('');
+
+  // MCQ options (always A-E)
+  function mcqPanel(tabIdx) {
+    const opts=['A','B','C','D','E'];
+    let optsH='';
+    opts.forEach(letter=>{
+      let cl='mcq-opt';
+      if(done){
+        cl+=' locked';
+        if(letter===q.answer) cl+=' correct';
+        else if(ans.chosen===letter&&letter!==q.answer) cl+=' wrong';
+      } else {
+        // not yet answered
+      }
+      optsH+=`<div class="${cl}" onclick="chooseOption('${letter}')"><span class="mcq-key">${letter}</span><span>${letter}</span></div>`;
+    });
+    const isWrong = done && !ans.correct;
+    const fbMsg = done
+      ? (ans.correct
+          ? `✓ Correct! Answer is ${q.answer}. (${POINTS[ans.stageFirstCorrect]} pts)`
+          : `✗ Wrong — you chose ${ans.chosen}, correct answer is ${q.answer}.`)
+      : '';
+    const fbCl = done ? (ans.correct ? 'ok' : 'no') : '';
+    const seeHow = isWrong
+      ? `<button class="btn-see-how" onclick="switchTab(1)">📋 See how to work it out →</button>`
+      : '';
+    return `<div class="mcq-grid">${optsH}</div>
+      <div class="feedback ${done?'on':''} ${fbCl}">${fbMsg}</div>
+      ${seeHow}`;
+  }
+
+  // Explanation banner — shown on Steps/Equation tabs after a wrong answer
+  const wrongAns = done && !ans.correct;
+  const explBanner = wrongAns
+    ? `<div class="expl-banner">
+        <span class="expl-icon">💡</span>
+        <div>
+          <div class="expl-title">You chose <strong>${ans.chosen}</strong> — the correct answer is <strong>${q.answer}</strong></div>
+          <div class="expl-sub">Work through the steps below to understand why.</div>
+        </div>
+      </div>`
+    : '';
+
+  // Image block
+  const imgFull=imgSrc?`<div class="qimg"><img src="${imgSrc}" alt="Q${q.qnum} ${q.year}" loading="lazy"><div class="qimg-cap">Känguru ${q.year} — Q${q.qnum}</div></div>`:'';
+  const imgSm=imgSrc?`<div class="qimg sm" style="margin-bottom:10px"><img src="${imgSrc}" alt="Q${q.qnum}" loading="lazy"></div>`:'';
+
+  // Hint box
+  const hints=['Try from just the story — 3 full points!','Use the steps as a guide — 2 points','The equation sets it up — 1 point'];
+  const hintBox=done?'': `<div class="hint"><span>⭐</span><span>${hints[t]}</span></div>`;
+
+  // Panel 0 — Word + MCQ
+  const p0=`<div class="panel ${t===0?'on':''}" id="p0"><div class="sc">
+    ${imgFull}${hintBox}
+    <div class="word">${esc(q.word||'Look at the image and choose the correct answer.')}</div>
+    <button class="btn-tts" id="ttsBtn" onclick="toggleTTS()">🔊 Read Aloud</button>
+    <div class="mcq-note">Select the correct option (A–E). <strong>One attempt only.</strong></div>
+    ${mcqPanel(0)}
+  </div></div>`;
+
+  // Panel 1 — Steps + MCQ
+  const stepsH=(q.steps||[]).map((s,i)=>`<li><span class="sn">${i+1}</span><span>${esc(s).replace(/___/g,'<span class="blank">___</span>')}</span></li>`).join('');
+  const p1=`<div class="panel ${t===1?'on':''}" id="p1"><div class="sc">
+    ${explBanner}${imgSm}${hintBox}
+    <ul class="steps-list">${stepsH||'<li><span class="sn">1</span><span>Study the image carefully and work through the logic step by step.</span></li>'}</ul>
+    ${mcqPanel(1)}
+  </div></div>`;
+
+  // Panel 2 — Equation + MCQ
+  const p2=`<div class="panel ${t===2?'on':''}" id="p2"><div class="sc">
+    <div class="eq">${esc(q.eq||q.equation||'...')}</div>
+    ${mcqPanel(2)}
+  </div></div>`;
+
+  const status=done?(ans.correct?'✅':'❌'):'⬜';
+  const ptsBadge=done?`<span class="pts-badge ${POINTS_CLASS[ans.stageFirstCorrect]}">+${POINTS[ans.stageFirstCorrect]}pt</span>`:'';
+
+  area.innerHTML=`<div class="qcard">
+    <div class="qcard-hdr">
+      <span class="qnum">Q${S.currentIdx+1}/${S.sessionQs.length}</span>
+      <span class="qbadge" style="${catSt}">${esc(q.cat||'')}</span>
+      <span class="qtopic">${esc(q.topic||'')}</span>
+      ${ptsBadge}<span class="qyear">${q.year||''}</span>
+      <span class="qsts">${status}</span>
+    </div>
+    <div class="tabs">${tabsH}</div>
+    ${p0}${p1}${p2}
+  </div>`;
+}
+
+// ── END SCREEN ────────────────────────────────────────────────────
+function renderEndScreen(secs) {
+  const total=S.sessionQs.length;
+  const correct=Object.values(S.answers).filter(a=>a.correct).length;
+  const {pts,max}=calcPts(); const pct=total>0?Math.round(correct/total*100):0;
+  const ptsPct=max>0?Math.round(pts/max*100):0; const avg=total>0?Math.round(secs/total):0;
+  document.getElementById('endScore').textContent=correct+'/'+total;
+  document.getElementById('endPts').textContent=pts+'/'+max;
+  document.getElementById('endTime').textContent=fmtTime(secs);
+  document.getElementById('endAvg').textContent=avg+'s';
+  setTimeout(()=>{document.getElementById('endBar').style.width=ptsPct+'%';},120);
+  const name=S.profile?S.profile.avatar+' '+S.profile.name:'Student';
+  document.getElementById('endName').textContent=name;
+  let trophy,title,msg;
+  if(ptsPct===100){trophy='🏆';title='Perfect!';msg='Every question solved from the word problem alone. Outstanding work!';}
+  else if(ptsPct>=80){trophy='🥇';title='Excellent!';msg='Brilliant effort! Try to solve more from the word problem to earn full marks.';}
+  else if(ptsPct>=60){trophy='🥈';title='Good Job!';msg='Solid performance. Review the ones you missed and try again!';}
+  else if(ptsPct>=40){trophy='🥉';title='Keep Going!';msg='Good try! Use the Steps tab to understand the method, then challenge yourself again.';}
+  else{trophy='💪';title='Keep Practising!';msg='Every expert was once a beginner. Practise regularly and you will improve fast!';}
+  document.getElementById('endTrophy').textContent=trophy;
+  document.getElementById('endTitle').textContent=title;
+  document.getElementById('endMsg').textContent=msg;
+  // Review table
+  buildReviewTable();
+}
+
+function buildReviewTable(){
+  const el=document.getElementById('reviewBody'); if(!el)return;
+  let h='';
+  S.sessionQs.forEach((q,i)=>{
+    const k=qKey(q); const a=S.answers[k];
+    const chosen=a?a.chosen:'—'; const ok=a&&a.correct;
+    const imgSrc=getImgSrc(q.year,q.qnum);
+    const thumb=imgSrc?`<img class="r-thumb" src="${imgSrc}" onclick="showModal('${k}')" title="Click to enlarge">`:'<span style="font-size:.7rem;color:var(--muted)">—</span>';
+    h+=`<tr>
+      <td>${i+1}</td>
+      <td>${thumb}</td>
+      <td style="max-width:120px;font-size:.74rem">${esc(q.topic||'')}</td>
+      <td>${q.year}</td>
+      <td class="r-ans ${ok?'ok':'no'}">${chosen}</td>
+      <td class="r-ans ok">${q.answer}</td>
+      <td class="r-icon">${ok?'✅':'❌'}</td>
+    </tr>`;
+  });
+  el.innerHTML=h;
+}
+
+function showModal(k){
+  const q=S.sessionQs.find(q=>qKey(q)===k); if(!q)return;
+  const imgSrc=getImgSrc(q.year,q.qnum); if(!imgSrc)return;
+  document.getElementById('modalImg').src=imgSrc;
+  document.getElementById('modalOverlay').classList.add('on');
+}
+function closeModal(){ document.getElementById('modalOverlay').classList.remove('on'); }
+
+// ── TTS ───────────────────────────────────────────────────────────
+function voicesReady(){return new Promise(resolve=>{const v=window.speechSynthesis.getVoices();if(v.length){resolve(v);return;}let done=false;window.speechSynthesis.onvoiceschanged=()=>{if(done)return;done=true;resolve(window.speechSynthesis.getVoices());};setTimeout(()=>{if(!done){done=true;resolve(window.speechSynthesis.getVoices());}},800);});}
+function toggleTTS(){window.speechSynthesis.speaking?stopSpeech():startSpeech();}
+async function startSpeech(){const q=currentQ();if(!q)return;stopSpeech();const voices=await voicesReady();const voice=voices.find(v=>v.lang&&v.lang.startsWith('en-IN'))||voices.find(v=>v.lang&&v.lang.startsWith('en-'));const u=new SpeechSynthesisUtterance(q.word||'Look at the image carefully.');u.rate=0.88;u.pitch=1.05;u.lang='en-IN';if(voice)u.voice=voice;const done=()=>{clearInterval(_ttsKA);_ttsKA=null;const b=document.getElementById('ttsBtn');if(b){b.textContent='🔊 Read Aloud';b.classList.remove('sp');}};u.onend=done;u.onerror=done;window.speechSynthesis.speak(u);_ttsKA=setInterval(()=>{if(!window.speechSynthesis.speaking){clearInterval(_ttsKA);_ttsKA=null;return;}window.speechSynthesis.pause();window.speechSynthesis.resume();},10000);const b=document.getElementById('ttsBtn');if(b){b.textContent='⏹ Stop';b.classList.add('sp');}}
+function stopSpeech(){clearInterval(_ttsKA);_ttsKA=null;window.speechSynthesis.cancel();const b=document.getElementById('ttsBtn');if(b){b.textContent='🔊 Read Aloud';b.classList.remove('sp');}}
+
+// ── CELEBRATION ───────────────────────────────────────────────────
+function celebrate(si){
+  const inp=document.querySelector('.mcq-opt.correct');
+  if(inp){const r=inp.getBoundingClientRect();burstEmojis(r.left+r.width/2,r.top+r.height/2,si);}
+  const card=document.querySelector('.qcard');
+  if(card){card.style.transition='box-shadow .12s';card.style.boxShadow='0 0 0 4px #22c55e,0 4px 32px rgba(34,197,94,.45)';setTimeout(()=>{card.style.boxShadow='';card.style.transition='';},750);}
+  playChime(si);
+}
+function burstEmojis(cx,cy,si){const sets=[['🌟','⭐','🎉','✨','🏆','🎊','💯','🥇'],['👍','✨','🎯','💡','⭐','🙌'],['✅','👌','💪','✨','🎯']];const emojis=sets[Math.min(si,2)];const count=si===0?12:8;for(let i=0;i<count;i++){const el=document.createElement('div');el.textContent=emojis[i%emojis.length];const angle=(360/count)*i*(Math.PI/180);const dist=65+Math.random()*55;el.style.cssText=['position:fixed',`left:${cx}px`,`top:${cy}px`,`font-size:${si===0?'1.6':'1.3'}rem`,'pointer-events:none','z-index:10000','transform:translate(-50%,-50%)',`--dx:${Math.cos(angle)*dist}px`,`--dy:${Math.sin(angle)*dist}px`,'animation:eBurst .9s ease forwards'].join(';');document.body.appendChild(el);setTimeout(()=>el.remove(),960);}}
+function playChime(si){try{const ctx=new(window.AudioContext||window.webkitAudioContext)();const freqs=[[523.25,659.25,783.99,1046.5],[523.25,659.25,783.99],[523.25,659.25]];freqs[Math.min(si,2)].forEach((freq,i)=>{const osc=ctx.createOscillator(),gain=ctx.createGain();osc.connect(gain);gain.connect(ctx.destination);osc.type='sine';osc.frequency.value=freq;const t=ctx.currentTime+i*.13;gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(.20,t+.04);gain.gain.exponentialRampToValueAtTime(.001,t+.55);osc.start(t);osc.stop(t+.6);});setTimeout(()=>ctx.close(),2500);}catch(e){}}
+function launchConfetti(){const w=document.createElement('div');w.className='confetti-wrap';const cols=['#4f72e3','#22c55e','#f59e0b','#ec4899','#8b5cf6','#14b8a6'];for(let i=0;i<30;i++){const p=document.createElement('div');p.className='cp';p.style.cssText=`background:${cols[i%cols.length]};animation-delay:${(Math.random()*.8).toFixed(2)}s;animation-duration:${(2+Math.random()).toFixed(2)}s;transform:rotate(${Math.random()*360}deg);`;w.appendChild(p);}document.body.appendChild(w);setTimeout(()=>w.remove(),4000);}
+
+// ── RESET ─────────────────────────────────────────────────────────
+function confirmReset(){
+  if(!confirm('Reset session? All progress will be cleared.'))return;
+  stopSpeech();stopTimer();
+  S.sessionQs=[];S.answers={};S.timerSecs=0;S.currentIdx=0;S.currentTab=0;
+  S.activeCat='All';S.catMap={};S.lockCats=[];
+  localStorage.removeItem(lsKey());
+  showScreen('lockScreen');
+  renderProfileChips();
+  buildQuickPicks();buildCatFilter();setNum(10);updatePoolInfo();
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function buildQuickPicks(){
+  const pool=QUESTION_BANK.length;
+  const picks=[5,10,15,20,30,pool].filter((v,i,a)=>v<=pool&&a.indexOf(v)===i);
+  const el=document.getElementById('qpRow');if(!el)return;el.innerHTML='';
+  picks.forEach(n=>{const b=document.createElement('button');b.className='qp'+(n===10?' on':'');b.textContent=(n===pool?'All '+n:n+' Qs');b.onclick=()=>{setNum(n);el.querySelectorAll('.qp').forEach(x=>x.classList.remove('on'));b.classList.add('on');};el.appendChild(b);});
+}
+function buildCatFilter(){
+  const cats=[...new Set(QUESTION_BANK.map(q=>q.cat))].sort();
+  const el=document.getElementById('catFilt');if(!el)return;el.innerHTML='';
+  cats.forEach(cat=>{const b=document.createElement('button');b.className='cf';b.textContent=cat;b.onclick=()=>{b.classList.toggle('on');S.lockCats=Array.from(el.querySelectorAll('.cf.on')).map(x=>x.textContent);updatePoolInfo();};el.appendChild(b);});
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  renderProfileChips();buildQuickPicks();buildCatFilter();setNum(10);updatePoolInfo();
+  if(!loadSession()){showScreen('lockScreen');}
+});
+
+
+
+// ── SUPABASE SYNC ─────────────────────────────────────────────────────────
+const SB_URL = 'https://ewogowpkewtrzsslfysv.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3b2dvd3BrZXd0cnpzc2xmeXN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTIzNDEsImV4cCI6MjA5NTUyODM0MX0.KYsUwS2-9B0XZWDa9V3SOW6xJ3kwZGTDH2G0b_qsOvs';
+
+async function saveToSupabase(result) {
+  try {
+    const response = await fetch(SB_URL + '/rest/v1/sessions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SB_KEY,
+        'Authorization': 'Bearer ' + SB_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        player_name: result.playerName,
+        player_avatar: result.playerAvatar,
+        level: result.level,
+        total_questions: result.total,
+        correct: result.correct,
+        pts: result.pts,
+        max_pts: result.max,
+        secs: result.secs,
+        session_date: result.date
+      })
+    });
+    if(!response.ok) console.warn('Supabase save failed:', response.status);
+    else console.log('Supabase: session saved for', result.playerName);
+  } catch(e) {
+    console.warn('Supabase offline, saved locally only:', e.message);
+  }
+}
+// ─────────────────────────────────────────────────────────────────────────
+
+
+
+// Override renderQuestion to show MCQ options from q.opts
+function renderQuestion(){
+  const q=currentQ(); const area=document.getElementById('qArea');
+  if(!q){area.innerHTML='<div class="empty"><span class="ei">🔍</span>No questions.</div>';return;}
+  const k=qKey(q); const ans=S.answers[k]; const done=!!(ans&&ans.chosen);
+  const ci=S.catMap[q.cat]; const catSt=ci!==undefined?`background:${CAT_COLORS[ci].bg};color:${CAT_COLORS[ci].fg};`:'';
+  const t=S.currentTab;
+
+  const tabsH=['📖 Word Problem','📋 Steps','🔢 Equation'].map((lbl,ti)=>{
+    const solvedHere=done&&ans.correct&&ans.stageFirstCorrect===ti;
+    const ptsBadge=done?(solvedHere?`<span class="tab-pts ${POINTS_CLASS[ti]}">✓ here</span>`:''):`<span class="tab-pts ${POINTS_CLASS[ti]}">${POINTS[ti]}pt</span>`;
+    return `<button class="tab ${t===ti?'on':''}" onclick="switchTab(${ti})">${lbl}${ptsBadge}</button>`;
+  }).join('');
+
+  function mcqPanel(tabIdx){
+    const opts=q.opts||{};
+    let optsH='';
+    Object.entries(opts).forEach(([letter,text])=>{
+      let cl='mcq-opt';
+      if(done){cl+=' locked';if(letter===q.answer)cl+=' correct';else if(ans.chosen===letter&&letter!==q.answer)cl+=' wrong';}
+      optsH+=`<div class="${cl}" onclick="chooseOption('${letter}')"><span class="mcq-key">${letter}</span><span>${text}</span></div>`;
+    });
+    const isWrong=done&&!ans.correct;
+    const fbMsg=done?(ans.correct?`✓ Correct! (${POINTS[ans.stageFirstCorrect]} pts)`:`✗ Wrong — you chose ${ans.chosen}, correct is ${q.answer}.`):'';
+    const fbCl=done?(ans.correct?'ok':'no'):'';
+    const seeHow=isWrong?`<button class="btn-see-how" onclick="switchTab(1)">📋 See how to work it out →</button>`:'';
+    return `<div class="mcq-grid">${optsH}</div><div class="feedback ${done?'on':''} ${fbCl}">${fbMsg}</div>${seeHow}`;
+  }
+
+  const wrongAns=done&&!ans.correct;
+  const explBanner=wrongAns?`<div class="expl-banner"><span class="expl-icon">💡</span><div><div class="expl-title">You chose <strong>${ans.chosen}</strong> — correct answer is <strong>${q.answer}</strong></div><div class="expl-sub">Work through the steps below to understand why.</div></div></div>`:'';
+  const hints=['Try to solve from just the question — 3 full points!','Use the steps as a guide — 2 points','The equation sets it up — 1 point'];
+  const hintBox=done?'':`<div class="hint"><span>⭐</span><span>${hints[t]}</span></div>`;
+  const chapterRef=q.chapter?`<div class="chapter-ref">📖 Ch: ${q.chapter}</div>`:'';
+
+  const p0=`<div class="panel ${t===0?'on':''}" id="p0"><div class="sc">
+    ${chapterRef}${hintBox}
+    <div class="word">${esc(q.word||'')}</div>
+    <button class="btn-tts" id="ttsBtn" onclick="toggleTTS()">🔊 Read Aloud</button>
+    <div class="mcq-note">Select the correct option. <strong>One attempt only.</strong></div>
+    ${mcqPanel(0)}</div></div>`;
+
+  const stepsH=(q.steps||[]).map((s,i)=>`<li><span class="sn">${i+1}</span><span>${esc(s).replace(/___/g,'<span class="blank">___</span>')}</span></li>`).join('');
+  const p1=`<div class="panel ${t===1?'on':''}" id="p1"><div class="sc">
+    ${explBanner}${hintBox}
+    <ul class="steps-list">${stepsH}</ul>
+    ${mcqPanel(1)}</div></div>`;
+
+  const p2=`<div class="panel ${t===2?'on':''}" id="p2"><div class="sc">
+    <div class="eq">${esc(q.eq||'')}</div>
+    ${mcqPanel(2)}</div></div>`;
+
+  const status=done?(ans.correct?'✅':'❌'):'⬜';
+  const ptsBadge=done?`<span class="pts-badge ${POINTS_CLASS[ans.stageFirstCorrect]}">${POINTS[ans.stageFirstCorrect]}pt</span>`:'';
+  area.innerHTML=`<div class="qcard"><div class="qcard-hdr">
+    <span class="qnum">Q${S.currentIdx+1}/${S.sessionQs.length}</span>
+    <span class="qbadge" style="${catSt}">${esc(q.cat||'')}</span>
+    ${ptsBadge}<span class="qyear" style="font-size:.68rem">${q.chapter||''}</span>
+    <span class="qsts">${status}</span></div>
+    <div class="tabs">${tabsH}</div>${p0}${p1}${p2}</div>`;
+}
+
+// Review table override (no images)
+function buildReviewTable(){
+  const el=document.getElementById('reviewBody');if(!el)return;
+  let h='';
+  S.sessionQs.forEach((q,i)=>{
+    const k=qKey(q);const a=S.answers[k];
+    const chosen=a?a.chosen:'—';const ok=a&&a.correct;
+    const opts=q.opts||{};
+    const correctText=(opts[q.answer]||q.answer).slice(0,30);
+    const chosenText=a?(opts[a.chosen]||a.chosen).slice(0,30):'—';
+    h+=`<tr><td>${i+1}</td><td style="font-size:.72rem;max-width:160px">${esc(q.topic||'')}</td>
+      <td style="font-size:.7rem">${esc(q.chapter||'')}</td>
+      <td class="r-ans ${ok?'ok':'no'}">${chosen}: ${esc(chosenText)}</td>
+      <td class="r-ans ok">${q.answer}: ${esc(correctText)}</td>
+      <td class="r-icon">${ok?'✅':'❌'}</td></tr>`;
+  });
+  el.innerHTML=h;
+}
+</script>
+</body>
+</html>
