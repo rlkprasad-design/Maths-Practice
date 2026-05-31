@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>చదువు కుండామా — Chaduvu Kundama</title>
+<title>చదువు కుందామా? — Chaduvu Kundama</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Hind+Guntur:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -127,7 +127,7 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
   <!-- HERO -->
   <div class="hero">
     <span class="hero-logo admin-trigger" id="adminTrigger" title="">🦘</span>
-    <div class="hero-title">చదువు కుండామా ?</div>
+    <div class="hero-title"> చదువు కుందామా ? </div>
     <div class="hero-sub">Chaduvu Kundama · Family Maths Practice</div>
     <div style="font-size:.85rem;color:var(--muted);font-weight:700;margin-top:6px;letter-spacing:.5px" id="heroNames"></div>
   </div>
@@ -406,54 +406,6 @@ async function confirmAddProfile() {
   selectProfile({ name, avatar: _selectedAvatar });
 }
 
-
-function renderProfiles(){
-  // Update hero names line
-  const heroNames = document.getElementById('heroNames');
-  if(heroNames) {
-    const profs = loadProfiles();
-    heroNames.textContent = profs.length
-      ? profs.map(p => p.name).join(' · ')
-      : '';
-  }
-
-  const profs = loadProfiles();
-  const wrap = document.getElementById('profileStrip');
-  wrap.innerHTML = '';
-  profs.forEach(p => {
-    const hist = loadHistory(p.name);
-    const streak = calcStreak(hist);
-    const d = document.createElement('div');
-    d.className = 'p-card' + (activeProfile&&activeProfile.name===p.name?' active':'');
-    d.innerHTML = `<span class="av">${p.avatar}</span><span class="nm">${p.name}</span><span class="streak">${streak>0?'🔥'+streak+' day streak':''}</span><button class="del-btn" title="Delete ${p.name}" onclick="deleteProfile(event,'${p.name.replace(/'/g,"\\'")}')">✕</button>`;
-    d.onclick = () => selectProfile(p);
-    wrap.appendChild(d);
-  });
-  const add = document.createElement('button');
-  add.className = 'btn-add'; add.textContent = '+ Add Kid';
-  add.onclick = addProfile;
-  wrap.appendChild(add);
-}
-
-function deleteProfile(e, name) {
-  e.stopPropagation(); // prevent card click
-  if(!confirm('Delete ' + name + '? This removes their profile and local history.')) return;
-  // Remove from profiles list
-  const profs = loadProfiles().filter(p => p.name !== name);
-  saveProfiles(profs);
-  // Remove local history
-  localStorage.removeItem(PFX + 'hist_' + name);
-  localStorage.removeItem(PFX + name);
-  // Clear active profile if it was this one
-  if(activeProfile && activeProfile.name === name) {
-    activeProfile = null;
-    document.getElementById('dashSection').style.display = 'none';
-    document.getElementById('histTitle').style.display = 'none';
-    document.getElementById('histTable').style.display = 'none';
-  }
-  renderProfiles();
-  renderLeaderboard();
-}
 
 function calcStreak(hist){
   if(!hist.length) return 0;
