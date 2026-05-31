@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>చదువు కుందామా? — Chaduvu Kundama</title>
+<title>చదువు కుందామా — Chaduvu Kundama ? </title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Hind+Guntur:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -127,7 +127,7 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
   <!-- HERO -->
   <div class="hero">
     <span class="hero-logo admin-trigger" id="adminTrigger" title="">🦘</span>
-    <div class="hero-title"> చదువు కుందామా ? </div>
+    <div class="hero-title">చదువు కుందామా ?</div>
     <div class="hero-sub">Chaduvu Kundama · Family Maths Practice</div>
     <div style="font-size:.85rem;color:var(--muted);font-weight:700;margin-top:6px;letter-spacing:.5px" id="heroNames"></div>
   </div>
@@ -235,7 +235,7 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
 const PFX = 'mkp_';
 let activeProfile = null;
 let _selectedAvatar = null;
-let _cachedProfiles = null;  // in-memory cache
+let _cachedProfiles = null;
 
 const SB_URL = 'https://ewogowpkewtrzsslfysv.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3b2dvd3BrZXd0cnpzc2xmeXN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTIzNDEsImV4cCI6MjA5NTUyODM0MX0.KYsUwS2-9B0XZWDa9V3SOW6xJ3kwZGTDH2G0b_qsOvs';
@@ -246,18 +246,21 @@ const ALL_AVATARS = [
   '🌟','⚡','🔥','🌈','🎯','🎸','🚀','🎩','🌺','🍀'
 ];
 
-function loadHistory(name){ try{return JSON.parse(localStorage.getItem(PFX+'hist_'+name)||'[]');}catch(e){return [];} }
+function loadHistory(name){
+  try{return JSON.parse(localStorage.getItem(PFX+'hist_'+name)||'[]');}catch(e){return [];}
+}
 
-// ── SUPABASE PROFILE FUNCTIONS ───────────────────────────────────────────
+// ── SUPABASE PROFILE FUNCTIONS ────────────────────────────────────────────
+
 async function fetchProfilesFromSB() {
   try {
     const res = await fetch(SB_URL + '/rest/v1/profiles?select=*&order=created_at.asc', {
       headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
     });
-    if(!res.ok) return null;
+    if(!res.ok) { console.warn('profiles fetch status:', res.status); return null; }
     const data = await res.json();
     return data.map(p => ({ name: p.player_name, avatar: p.player_avatar }));
-  } catch(e) { return null; }
+  } catch(e) { console.warn('fetchProfilesFromSB error:', e); return null; }
 }
 
 async function saveProfileToSB(name, avatar) {
@@ -272,8 +275,12 @@ async function saveProfileToSB(name, avatar) {
       },
       body: JSON.stringify({ player_name: name, player_avatar: avatar })
     });
+    if(!res.ok) {
+      const txt = await res.text();
+      console.error('saveProfileToSB failed:', res.status, txt);
+    }
     return res.ok || res.status === 201;
-  } catch(e) { return false; }
+  } catch(e) { console.error('saveProfileToSB error:', e); return false; }
 }
 
 async function deleteProfileFromSB(name) {
@@ -288,20 +295,19 @@ async function deleteProfileFromSB(name) {
 }
 
 async function loadProfiles() {
-  // Try Supabase first
   const sbProfs = await fetchProfilesFromSB();
-  if(sbProfs && sbProfs.length >= 0) {
+  if(sbProfs !== null) {
     _cachedProfiles = sbProfs;
-    // Sync to localStorage as offline cache
     localStorage.setItem(PFX+'profiles', JSON.stringify(sbProfs));
     return sbProfs;
   }
-  // Fallback to localStorage if offline
+  // Offline fallback
   try { return JSON.parse(localStorage.getItem(PFX+'profiles')||'[]'); }
   catch(e) { return []; }
 }
 
-// ── PROFILE UI ────────────────────────────────────────────────────────────
+// ── PROFILE UI ─────────────────────────────────────────────────────────────
+
 async function renderProfiles() {
   const profs = await loadProfiles();
   const heroNames = document.getElementById('heroNames');
@@ -310,8 +316,6 @@ async function renderProfiles() {
   }
   const wrap = document.getElementById('profileStrip');
   if(!wrap) return;
-  wrap.innerHTML = '<div style="font-size:.8rem;color:var(--muted);padding:8px">⏳ Loading...</div>';
-  
   wrap.innerHTML = '';
   profs.forEach(p => {
     const hist = loadHistory(p.name);
@@ -331,11 +335,12 @@ async function renderProfiles() {
 
 function selectProfile(p) {
   activeProfile = p;
-  // Re-render without async (use cached)
+  // Update active card highlight without re-fetching Supabase
   const wrap = document.getElementById('profileStrip');
   if(wrap) {
     wrap.querySelectorAll('.p-card').forEach(c => {
-      c.classList.toggle('active', c.querySelector('.nm')&&c.querySelector('.nm').textContent===p.name);
+      const nm = c.querySelector('.nm');
+      c.classList.toggle('active', nm && nm.textContent === p.name);
     });
   }
   renderDash(p);
@@ -346,12 +351,9 @@ function selectProfile(p) {
 async function deleteProfile(name, event) {
   event.stopPropagation();
   if(!confirm(`Remove ${name} from all devices?`)) return;
-  // Delete from Supabase
   await deleteProfileFromSB(name);
-  // Clear local cache
   if(activeProfile && activeProfile.name === name) activeProfile = null;
   _cachedProfiles = null;
-  // Re-render
   await renderProfiles();
   renderLeaderboard();
   document.getElementById('dashSection').style.display='none';
@@ -383,7 +385,7 @@ function addProfile() {
 
 function checkCreateReady() {
   const name = document.getElementById('avatarNameInput').value.trim();
-  document.getElementById('btnCreate').disabled = !(name && _selectedAvatar);
+  document.getElementById('btnCreate').disabled = !(name.length >= 2 && _selectedAvatar);
 }
 
 function closeAvatarModal() {
@@ -397,15 +399,20 @@ async function confirmAddProfile() {
   if(!_selectedAvatar) { alert('Please pick an emoji first!'); return; }
   const profs = await loadProfiles();
   if(profs.find(p => p.name === name)) { alert('That name is already taken!'); return; }
-  // Save to Supabase
+  const btn = document.getElementById('btnCreate');
+  btn.disabled = true; btn.textContent = '⏳ Saving...';
   const ok = await saveProfileToSB(name, _selectedAvatar);
-  if(!ok) { alert('Could not save — check your connection.'); return; }
+  btn.textContent = '✓ Create Profile';
+  if(!ok) {
+    btn.disabled = false;
+    alert('Could not save to Supabase.\n\nCheck: Table Editor → profiles → RLS Policies\nAdd policy: allow anon INSERT.');
+    return;
+  }
   closeAvatarModal();
-  _cachedProfiles = null;  // invalidate cache
+  _cachedProfiles = null;
   await renderProfiles();
   selectProfile({ name, avatar: _selectedAvatar });
 }
-
 
 function calcStreak(hist){
   if(!hist.length) return 0;
@@ -419,16 +426,6 @@ function calcStreak(hist){
   return streak;
 }
 
-function selectProfile(p){
-  activeProfile = p;
-  renderProfiles();
-  renderDash(p);
-  renderHistory(p);
-  renderLeaderboard();
-}
-
-
-
 function renderDash(p){
   const hist = loadHistory(p.name);
   const sec = document.getElementById('dashSection');
@@ -436,22 +433,13 @@ function renderDash(p){
   sec.style.display='block';
   document.getElementById('dashName').textContent = p.avatar+' '+p.name;
   const total = hist.length;
-  const avgScore = hist.length ? Math.round(hist.reduce((a,h)=>a+(h.correct/h.total*100),0)/hist.length) : 0;
+  const avgScore = Math.round(hist.reduce((a,h)=>a+(h.correct/h.total*100),0)/hist.length);
   const totalQs = hist.reduce((a,h)=>a+h.total,0);
-  const bestScore = hist.length ? Math.max(...hist.map(h=>Math.round(h.correct/h.total*100))) : 0;
+  const bestScore = Math.max(...hist.map(h=>Math.round(h.correct/h.total*100)));
   const streak = calcStreak(hist);
-
-  // Avg time per question across all sessions
   const totalSecs = hist.reduce((a,h)=>a+(h.secs||0),0);
-  const totalQsForTime = hist.reduce((a,h)=>a+h.total,0);
-  const avgSecsPerQ = totalQsForTime > 0 ? Math.round(totalSecs / totalQsForTime) : 0;
-
-  // Speed label — gives context to the number
-  const speedLabel = avgSecsPerQ === 0 ? '—'
-    : avgSecsPerQ <= 15 ? avgSecsPerQ + 's ⚡'
-    : avgSecsPerQ <= 35 ? avgSecsPerQ + 's 🎯'
-    : avgSecsPerQ + 's 🐢';
-
+  const avgSecsPerQ = totalQs > 0 ? Math.round(totalSecs/totalQs) : 0;
+  const speedLabel = avgSecsPerQ===0?'—':avgSecsPerQ<=15?avgSecsPerQ+'s ⚡':avgSecsPerQ<=35?avgSecsPerQ+'s 🎯':avgSecsPerQ+'s 🐢';
   document.getElementById('dashGrid').innerHTML = `
     <div class="dash-stat"><span class="dash-val">${total}</span><span class="dash-lbl">Sessions Done</span></div>
     <div class="dash-stat"><span class="dash-val">${avgScore}%</span><span class="dash-lbl">Avg Score</span></div>
@@ -469,16 +457,14 @@ function renderHistory(p){
   if(!hist.length){title.style.display='none';table.style.display='none';return;}
   title.style.display='block'; table.style.display='table';
   title.textContent = `Recent Sessions — ${p.avatar} ${p.name}`;
-  const tbody = document.getElementById('histBody');
-  tbody.innerHTML = hist.map(h=>{
+  const lvlMap = {'felix':'🐨 Felix','ecolier':'🦘 Écolier','cbse_34':'📚 CBSE 3→4','cbse_67':'📐 CBSE 6→7','cbse_78':'🔬 CBSE 7→8'};
+  document.getElementById('histBody').innerHTML = hist.map(h=>{
     const pct = Math.round(h.correct/h.total*100);
     const d = new Date(h.date).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
-    const lvlMap = {'felix':'🐨 Felix','ecolier':'🦘 Écolier','cbse_34':'📚 CBSE 3→4','cbse_67':'📐 CBSE 6→7','cbse_78':'🔬 CBSE 7→8'};
     const lvl = lvlMap[h.level] || h.level;
-    const ptsPct = h.max>0?Math.round(h.pts/h.max*100):0;
     const cls = pct>=80?'ok':'no';
     const m=Math.floor(h.secs/60),s=h.secs%60;
-    const avgQ = h.total > 0 ? Math.round((h.secs||0)/h.total) : 0;
+    const avgQ = h.total>0?Math.round((h.secs||0)/h.total):0;
     const avgQLabel = avgQ===0?'—':avgQ<=15?avgQ+'s ⚡':avgQ<=35?avgQ+'s 🎯':avgQ+'s 🐢';
     return `<tr><td>${d}</td><td>${lvl}</td><td>${h.total}</td>
       <td class="${cls}">${h.correct}/${h.total} (${pct}%)</td>
@@ -488,65 +474,19 @@ function renderHistory(p){
   }).join('');
 }
 
-function renderLeaderboard(){
-  const profs = loadProfiles();
-  const lb = document.getElementById('leaderboard');
-  if(!profs.length){lb.innerHTML='<div class="no-hist">Add kids above to see the leaderboard!</div>';return;}
-  const now = new Date(); const weekAgo = new Date(now - 7*24*3600*1000);
-  const data = profs.map(p=>{
-    const hist = loadHistory(p.name).filter(h=>new Date(h.date)>weekAgo);
-    const avgPct = hist.length?Math.round(hist.reduce((a,h)=>a+(h.correct/h.total*100),0)/hist.length):0;
-    const sessions = hist.length;
-    const totalQs = hist.reduce((a,h)=>a+h.total,0);
-    const totalSecs = hist.reduce((a,h)=>a+(h.secs||0),0);
-    const avgSecsPerQ = totalQs > 0 ? Math.round(totalSecs/totalQs) : 0;
-    return {p,avgPct,sessions,totalQs,avgSecsPerQ};
-  }).sort((a,b)=>b.avgPct-a.avgPct||(b.totalQs-a.totalQs));
-  const medals = ['🥇','🥈','🥉'];
-  lb.innerHTML = data.map((d,i)=>{
-    const speedTxt = d.avgSecsPerQ > 0 ? ` · ⏱ ${d.avgSecsPerQ}s/Q` : '';
-    return `
-    <div class="lb-row">
-      <div class="lb-rank">${medals[i]||'#'+(i+1)}</div>
-      <div class="lb-av">${d.p.avatar}</div>
-      <div class="lb-info">
-        <div class="lb-name">${d.p.name}</div>
-        <div class="lb-sub">${d.sessions} sessions · ${d.totalQs} questions${speedTxt}</div>
-      </div>
-      <div class="lb-score">${d.avgPct>0?d.avgPct+'%':'No sessions yet'}</div>
-    </div>`;
-  }).join('');
-}
-
-window.addEventListener('DOMContentLoaded',async ()=>{
-  await renderProfiles();
-  renderLeaderboard();  // now async — fetches from Supabase
-  // Auto-select first profile if exists
-  const profs = loadProfiles();
-  if(profs.length) selectProfile(profs[0]);
-});
-
-// ── SUPABASE SYNC FOR DASHBOARD ──────────────────────────────────────────
-// SB_URL and SB_KEY already declared above
+// ── LEADERBOARD — reads from Supabase sessions ────────────────────────────
 
 async function fetchSupabaseSessions() {
   try {
     const res = await fetch(
       SB_URL + '/rest/v1/sessions?select=*&order=created_at.desc&limit=500', {
-      headers: {
-        'apikey': SB_KEY,
-        'Authorization': 'Bearer ' + SB_KEY
-      }
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
     });
     if(!res.ok) return null;
     return await res.json();
-  } catch(e) {
-    console.warn('Supabase fetch failed, using local data:', e.message);
-    return null;
-  }
+  } catch(e) { console.warn('fetchSupabaseSessions error:', e); return null; }
 }
 
-// Override renderLeaderboard to use Supabase data when available
 async function renderLeaderboard() {
   const lb = document.getElementById('leaderboard');
   lb.innerHTML = '<div class="no-hist" style="padding:20px;text-align:center">⏳ Loading scores...</div>';
@@ -554,12 +494,8 @@ async function renderLeaderboard() {
   const sbSessions = await fetchSupabaseSessions();
 
   if(sbSessions && sbSessions.length > 0) {
-    // Use Supabase data — group by player
-    const now = new Date(); 
-    const weekAgo = new Date(now - 7*24*3600*1000);
+    const weekAgo = new Date(Date.now() - 7*24*3600*1000);
     const weekSessions = sbSessions.filter(s => new Date(s.created_at) > weekAgo);
-
-    // Get unique players from Supabase
     const playerMap = {};
     weekSessions.forEach(s => {
       if(!playerMap[s.player_name]) {
@@ -570,26 +506,24 @@ async function renderLeaderboard() {
         };
       }
       playerMap[s.player_name].sessions.push(s);
-      playerMap[s.player_name].totalQs += s.total_questions;
+      playerMap[s.player_name].totalQs += (s.total_questions || s.total || 0);
     });
-
     const data = Object.values(playerMap).map(p => {
       const avgPct = p.sessions.length
-        ? Math.round(p.sessions.reduce((a,s)=>a+(s.correct/s.total_questions*100),0)/p.sessions.length)
+        ? Math.round(p.sessions.reduce((a,s)=>a+((s.correct/(s.total_questions||s.total||1))*100),0)/p.sessions.length)
         : 0;
       const totalSecs = p.sessions.reduce((a,s)=>a+(s.secs||0),0);
-      const avgSecsPerQ = p.totalQs > 0 ? Math.round(totalSecs/p.totalQs) : 0;
-      return { ...p, avgPct, avgSecsPerQ };
+      const avgSecsPerQ = p.totalQs>0?Math.round(totalSecs/p.totalQs):0;
+      return {...p, avgPct, avgSecsPerQ};
     }).sort((a,b)=>b.avgPct-a.avgPct||(b.totalQs-a.totalQs));
 
     if(!data.length) {
-      lb.innerHTML = '<div class="no-hist">No sessions this week yet — start practising!</div>';
+      lb.innerHTML = '<div class="no-hist">No sessions this week — start practising!</div>';
       return;
     }
-
     const medals = ['🥇','🥈','🥉'];
     lb.innerHTML = data.map((d,i) => {
-      const speedTxt = d.avgSecsPerQ > 0 ? ` · ⏱ ${d.avgSecsPerQ}s/Q` : '';
+      const speedTxt = d.avgSecsPerQ>0?` · ⏱ ${d.avgSecsPerQ}s/Q`:'';
       return `<div class="lb-row">
         <div class="lb-rank">${medals[i]||'#'+(i+1)}</div>
         <div class="lb-av">${d.avatar}</div>
@@ -601,27 +535,24 @@ async function renderLeaderboard() {
       </div>`;
     }).join('');
 
-    // Also update per-kid dashboard if a profile is active
-    if(activeProfile) renderDash(activeProfile);
-
   } else {
-    // Fallback to localStorage
-    const profs = _cachedProfiles || JSON.parse(localStorage.getItem('mkp_profiles')||'[]');
+    // Fallback: localStorage
+    const profs = _cachedProfiles || JSON.parse(localStorage.getItem(PFX+'profiles')||'[]');
     if(!profs.length){lb.innerHTML='<div class="no-hist">Add kids above to see the leaderboard!</div>';return;}
-    const now2=new Date(); const weekAgo2=new Date(now2-7*24*3600*1000);
-    const data2=profs.map(p=>{
-      const hist=loadHistory(p.name).filter(h=>new Date(h.date)>weekAgo2);
+    const weekAgo = new Date(Date.now()-7*24*3600*1000);
+    const data = profs.map(p=>{
+      const hist=loadHistory(p.name).filter(h=>new Date(h.date)>weekAgo);
       const avgPct=hist.length?Math.round(hist.reduce((a,h)=>a+(h.correct/h.total*100),0)/hist.length):0;
       const sessions=hist.length; const totalQs=hist.reduce((a,h)=>a+h.total,0);
       const totalSecs=hist.reduce((a,h)=>a+(h.secs||0),0);
       const avgSecsPerQ=totalQs>0?Math.round(totalSecs/totalQs):0;
       return {p,avgPct,sessions,totalQs,avgSecsPerQ};
     }).sort((a,b)=>b.avgPct-a.avgPct||(b.totalQs-a.totalQs));
-    const medals2=['🥇','🥈','🥉'];
-    lb.innerHTML=data2.map((d,i)=>{
+    const medals=['🥇','🥈','🥉'];
+    lb.innerHTML=data.map((d,i)=>{
       const speedTxt=d.avgSecsPerQ>0?` · ⏱ ${d.avgSecsPerQ}s/Q`:'';
       return `<div class="lb-row">
-        <div class="lb-rank">${medals2[i]||'#'+(i+1)}</div>
+        <div class="lb-rank">${medals[i]||'#'+(i+1)}</div>
         <div class="lb-av">${d.p.avatar}</div>
         <div class="lb-info">
           <div class="lb-name">${d.p.name}</div>
@@ -632,16 +563,24 @@ async function renderLeaderboard() {
     }).join('');
   }
 }
-// ─────────────────────────────────────────────────────────────────────────
 
+// ── INIT ──────────────────────────────────────────────────────────────────
 
-// ── ADMIN RESET ───────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', async () => {
+  await renderProfiles();
+  await renderLeaderboard();
+  // Auto-select first profile
+  const profs = _cachedProfiles || JSON.parse(localStorage.getItem(PFX+'profiles')||'[]');
+  if(profs.length) selectProfile(profs[0]);
+});
+
+// ── ADMIN RESET ────────────────────────────────────────────────────────────
+
 let _adminTaps = 0, _adminTimer = null;
 
 document.getElementById('adminTrigger').addEventListener('click', () => {
   _adminTaps++;
   if(_adminTimer) clearTimeout(_adminTimer);
-  // Reset tap count if no tap within 2 seconds
   _adminTimer = setTimeout(() => { _adminTaps = 0; }, 2000);
   if(_adminTaps >= 5) {
     _adminTaps = 0;
@@ -662,9 +601,7 @@ function setAdminStatus(msg, type) {
 
 function adminResetLocal() {
   if(!confirm('Clear all profiles and scores on THIS device only?')) return;
-  Object.keys(localStorage)
-    .filter(k => k.startsWith('mkp_'))
-    .forEach(k => localStorage.removeItem(k));
+  Object.keys(localStorage).filter(k=>k.startsWith('mkp_')).forEach(k=>localStorage.removeItem(k));
   setAdminStatus('✓ This device cleared!', 'ok');
   activeProfile = null;
   setTimeout(() => { closeAdmin(); renderProfiles(); renderLeaderboard(); }, 1200);
@@ -673,40 +610,21 @@ function adminResetLocal() {
 async function adminResetAll() {
   if(!confirm('Delete ALL scores from ALL devices (Supabase + this device)?')) return;
   if(!confirm('Are you absolutely sure? This cannot be undone.')) return;
-  
   setAdminStatus('⏳ Clearing...', '');
-
-  // Clear Supabase
   let sbOk = false;
   try {
-    const res = await fetch('https://ewogowpkewtrzsslfysv.supabase.co/rest/v1/sessions?id=neq.00000000-0000-0000-0000-000000000000', {
+    const res = await fetch(
+      SB_URL + '/rest/v1/sessions?id=neq.00000000-0000-0000-0000-000000000000', {
       method: 'DELETE',
-      headers: {
-        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3b2dvd3BrZXd0cnpzc2xmeXN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTIzNDEsImV4cCI6MjA5NTUyODM0MX0.KYsUwS2-9B0XZWDa9V3SOW6xJ3kwZGTDH2G0b_qsOvs',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3b2dvd3BrZXd0cnpzc2xmeXN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTIzNDEsImV4cCI6MjA5NTUyODM0MX0.KYsUwS2-9B0XZWDa9V3SOW6xJ3kwZGTDH2G0b_qsOvs',
-      }
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
     });
     sbOk = res.ok || res.status === 204;
-  } catch(e) {
-    console.warn('Supabase delete failed:', e);
-  }
-
-  // Clear localStorage on this device
-  Object.keys(localStorage)
-    .filter(k => k.startsWith('mkp_'))
-    .forEach(k => localStorage.removeItem(k));
-
-  if(sbOk) {
-    setAdminStatus('✓ All data cleared everywhere!', 'ok');
-  } else {
-    setAdminStatus('✓ Local cleared. Supabase: go to dashboard and run DELETE FROM sessions;', 'err');
-  }
-
+  } catch(e) { console.warn('Supabase delete failed:', e); }
+  Object.keys(localStorage).filter(k=>k.startsWith('mkp_')).forEach(k=>localStorage.removeItem(k));
+  setAdminStatus(sbOk ? '✓ All data cleared everywhere!' : '✓ Local cleared. Manually delete sessions in Supabase.', sbOk?'ok':'err');
   activeProfile = null;
   setTimeout(() => { closeAdmin(); renderProfiles(); renderLeaderboard(); }, 2000);
 }
-// ─────────────────────────────────────────────────────────────────────────
-
 </script>
 
 <!-- ADMIN RESET PANEL (tap logo 5 times to open) -->
