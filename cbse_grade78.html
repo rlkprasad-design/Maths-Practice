@@ -328,7 +328,7 @@ const QUESTION_BANK = [
   {id:212,year:0,qnum:212,cat:'Maths — Geometry',topic:'Exterior angle theorem',chapter:'Triangles',word:'An exterior angle of a triangle equals the sum of:',opts:{'A':'All three interior angles','B':'The two NON-ADJACENT interior angles','C':'The adjacent interior angle','D':'The two equal angles','E':'180° minus the interior angles'},steps:['Exterior Angle Theorem: an exterior angle of a triangle = sum of the two REMOTE interior angles','Remote = non-adjacent (the two interior angles not next to the exterior angle)','Exterior angle = sum of ___ interior angles'],eq:'Exterior angle = sum of ___ interior angles',answer:'B'},
   {id:213,year:0,qnum:213,cat:'Maths — Rational Numbers',topic:'Operations on rational numbers',chapter:'Rational Numbers',word:'What is (-3/5) + (7/10)?',opts:{'A':'4/15','B':'1/10','C':'4/10','D':'10/50','E':'-1/10'},steps:['LCM of 5 and 10 = 10','-3/5 = -6/10','-6/10 + 7/10 = ___/10','Simplify: ___'],eq:'-6/10 + 7/10 = ___/10',answer:'B'},
   {id:214,year:0,qnum:214,cat:'Maths — Geometry',topic:'Properties of quadrilaterals',chapter:'Quadrilaterals',word:'A quadrilateral with ONE pair of parallel sides is called a:',opts:{'A':'Rectangle','B':'Rhombus','C':'Trapezium','D':'Parallelogram','E':'Kite'},steps:['Parallelogram: 2 pairs of parallel sides','Rectangle: 2 pairs of parallel sides + right angles','Rhombus: 2 pairs of parallel sides + all sides equal','Trapezium: exactly ONE pair of parallel sides','One pair parallel = ___'],eq:'Exactly one pair of parallel sides = ___',answer:'C'},
-  {id:215,year:0,qnum:215,cat:'Maths — Data',topic:'Probability — basic',chapter:'Probability',word:'A bag contains 3 red, 4 blue and 5 green balls. One ball is drawn randomly. What is the probability of drawing a blue ball?',opts:{'A':'1/3','B':'4/12','C':'1/4','D':'1/3','E':'4/12 = 1/3'},steps:['Total balls = 3+4+5 = ___','Blue balls = ___','P(blue) = blue balls / total = ___/___ ','Simplify: ___'],eq:'P(blue) = 4/12 = ___',answer:'C'},
+  {id:215,year:0,qnum:215,cat:'Maths — Data',topic:'Probability — basic',chapter:'Probability',word:'A bag contains 3 red, 4 blue and 5 green balls. One ball is drawn randomly. What is the probability of drawing a blue ball?',opts:{'A':'1/3','B':'4/12','C':'1/4','D':'5/12','E':'1/2'},steps:['Total balls = 3+4+5 = ___','Blue balls = ___','P(blue) = blue balls / total = ___/___ ','Simplify: 4/12 = ___'],eq:'P(blue) = 4/12 = ___',answer:'A'},
   {id:216,year:0,qnum:216,cat:'Maths — Numbers',topic:'Exponents',chapter:'Exponents',word:'Simplify: 2³ × 2⁴',opts:{'A':'2⁷','B':'4⁷','C':'2¹²','D':'8⁴','E':'2⁶'},steps:['Law of exponents: aᵐ × aⁿ = aᵐ⁺ⁿ (same base → add powers)','2³ × 2⁴ = 2^(___+___) = ___'],eq:'aᵐ × aⁿ = a^(m+n) → 2³×2⁴ = ___',answer:'A'},
   {id:217,year:0,qnum:217,cat:'Maths — Mensuration',topic:'Surface area of a cube',chapter:'Mensuration',word:'What is the total surface area of a cube with side 5 cm?',opts:{'A':'25 sq.cm','B':'75 sq.cm','C':'125 sq.cm','D':'150 sq.cm','E':'100 sq.cm'},steps:['A cube has 6 square faces','Area of one face = side² = 5² = ___ sq.cm','Total surface area = 6 × ___ = ___ sq.cm'],eq:'6 × 5² = 6 × 25 = ___',answer:'D'},
   {id:218,year:0,qnum:218,cat:'Maths — Algebra',topic:'Simultaneous equations',chapter:'Algebra',word:'Solve: x + y = 10 and x - y = 4',opts:{'A':'x=7, y=3','B':'x=6, y=4','C':'x=8, y=2','D':'x=5, y=5','E':'x=9, y=1'},steps:['Add both equations: (x+y) + (x-y) = 10+4','2x = ___  →  x = ___','Substitute into x+y=10: ___ + y = 10 → y = ___'],eq:'Add equations: 2x=14 → x=___ → y=___',answer:'A'},
@@ -528,10 +528,13 @@ function renderProfileChips() {
     d.onclick = () => selectProfile(p);
     wrap.appendChild(d);
   });
-  const add = document.createElement('button');
-  add.className = 'btn-add-profile'; add.textContent = '+ Add Kid';
-  add.onclick = addProfile;
-  wrap.appendChild(add);
+  // No Add Kid here — manage profiles from Home page
+  if(!profs.length) {
+    const msg = document.createElement('div');
+    msg.style.cssText = 'font-size:.8rem;color:var(--muted);font-weight:700;padding:8px 0';
+    msg.innerHTML = 'No kids added yet. <a href="index.html" style="color:var(--accent)">Go to Home</a> to add kids.';
+    wrap.appendChild(msg);
+  }
 }
 function selectProfile(p) {
   S.profile = p;
@@ -1095,6 +1098,43 @@ async function saveToSupabase(result) {
   } catch(e) {
     console.warn('Supabase offline, saved locally only:', e.message);
   }
+}
+// ─────────────────────────────────────────────────────────────────────────
+
+
+// ── PROFILES from Supabase (no Add Kid here — manage from Home) ──────────
+const SB_URL_P = 'https://ewogowpkewtrzsslfysv.supabase.co';
+const SB_KEY_P = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3b2dvd3BrZXd0cnpzc2xmeXN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTIzNDEsImV4cCI6MjA5NTUyODM0MX0.KYsUwS2-9B0XZWDa9V3SOW6xJ3kwZGTDH2G0b_qsOvs';
+let _cachedProfs = null;
+
+async function fetchProfilesFromSB() {
+  try {
+    const res = await fetch(SB_URL_P + '/rest/v1/profiles?select=*&order=created_at.asc', {
+      headers: { 'apikey': SB_KEY_P, 'Authorization': 'Bearer ' + SB_KEY_P }
+    });
+    if(!res.ok) return null;
+    const data = await res.json();
+    return data.map(p => ({ name: p.player_name, avatar: p.player_avatar }));
+  } catch(e) { return null; }
+}
+
+function loadProfiles() {
+  // Returns cached or localStorage (sync fallback)
+  if(_cachedProfs) return _cachedProfs;
+  try { return JSON.parse(localStorage.getItem('mkp_profiles')||'[]'); }
+  catch(e) { return []; }
+}
+
+async function initProfiles() {
+  const sbProfs = await fetchProfilesFromSB();
+  if(sbProfs !== null) {
+    _cachedProfs = sbProfs;
+    localStorage.setItem('mkp_profiles', JSON.stringify(sbProfs));
+  } else {
+    _cachedProfs = loadProfiles();
+  }
+  renderProfileChips();
+  updatePoolInfo();
 }
 // ─────────────────────────────────────────────────────────────────────────
 

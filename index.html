@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>చదువు కుందామా? — Chaduvu Kundama</title>
+<title>చదువు కుండామా — Chaduvu Kundama</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Hind+Guntur:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f0f4ff;--surface:#fff;--surface2:#f7f9ff;--border:#dde3f4;--text:#1e2a45;--muted:#6b7a99;--accent:#4f72e3;--accent-l:#e8edfb;--green:#22c55e;--green-l:#dcfce7;--font:'Nunito',system-ui,sans-serif;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -13,7 +13,7 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
 .page{max-width:860px;margin:0 auto;padding:32px 16px}
 .hero{text-align:center;margin-bottom:36px}
 .hero-logo{font-size:64px;display:block;margin-bottom:10px}
-.hero-title{font-size:2.4rem;font-weight:900;color:var(--accent);letter-spacing:-.5px;margin-bottom:6px}
+.hero-title{font-size:2.4rem;font-weight:900;color:var(--accent);letter-spacing:-.5px;margin-bottom:6px;font-family:'Hind Guntur','Nunito',system-ui,sans-serif}
 .hero-sub{font-size:1rem;color:var(--muted);font-weight:600;margin-bottom:0}
 /* PROFILE SECTION */
 .section-title{font-size:.78rem;font-weight:900;letter-spacing:1.1px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
@@ -127,7 +127,7 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
   <!-- HERO -->
   <div class="hero">
     <span class="hero-logo admin-trigger" id="adminTrigger" title="">🦘</span>
-    <div class="hero-title">చదువు కుందామా ?</div>
+    <div class="hero-title">చదువు కుండామా ?</div>
     <div class="hero-sub">Chaduvu Kundama · Family Maths Practice</div>
     <div style="font-size:.85rem;color:var(--muted);font-weight:700;margin-top:6px;letter-spacing:.5px" id="heroNames"></div>
   </div>
@@ -171,7 +171,7 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
       <span class="lc-icon">📚</span>
       <div class="lc-name" style="color:#d97706">Class 3 → 4</div>
       <div class="lc-grade">Class 3 to Class 4 Transition</div>
-      <div class="lc-stats"><span>65</span> questions · Maths, Science, English, SSt</div>
+      <div class="lc-stats"><span>185</span> questions · Maths-heavy · All chapters</div>
     </a>
 
     <a href="cbse_grade67.html" class="level-card" style="border-color:#8b5cf6">
@@ -197,7 +197,7 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
       <div class="lc-grade">Ganitha Prakash Part 1 · Ch 1–8</div>
       <div class="lc-stats"><span>140</span> questions · All chapters covered</div>
     </a>
- 
+
   </div>
 
   <!-- RECENT HISTORY -->
@@ -235,6 +235,10 @@ html{font-size:16px}body{font-family:var(--font);background:var(--bg);color:var(
 const PFX = 'mkp_';
 let activeProfile = null;
 let _selectedAvatar = null;
+let _cachedProfiles = null;  // in-memory cache
+
+const SB_URL = 'https://ewogowpkewtrzsslfysv.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3b2dvd3BrZXd0cnpzc2xmeXN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTIzNDEsImV4cCI6MjA5NTUyODM0MX0.KYsUwS2-9B0XZWDa9V3SOW6xJ3kwZGTDH2G0b_qsOvs';
 
 const ALL_AVATARS = [
   '🦁','🐯','🐻','🦊','🐼','🐨','🐸','🦉','🐬','🦄',
@@ -242,9 +246,118 @@ const ALL_AVATARS = [
   '🌟','⚡','🔥','🌈','🎯','🎸','🚀','🎩','🌺','🍀'
 ];
 
-function loadProfiles(){ try{return JSON.parse(localStorage.getItem(PFX+'profiles')||'[]');}catch(e){return [];} }
-function saveProfiles(p){ localStorage.setItem(PFX+'profiles',JSON.stringify(p)); }
 function loadHistory(name){ try{return JSON.parse(localStorage.getItem(PFX+'hist_'+name)||'[]');}catch(e){return [];} }
+
+// ── SUPABASE PROFILE FUNCTIONS ───────────────────────────────────────────
+async function fetchProfilesFromSB() {
+  try {
+    const res = await fetch(SB_URL + '/rest/v1/profiles?select=*&order=created_at.asc', {
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+    });
+    if(!res.ok) return null;
+    const data = await res.json();
+    return data.map(p => ({ name: p.player_name, avatar: p.player_avatar }));
+  } catch(e) { return null; }
+}
+
+async function saveProfileToSB(name, avatar) {
+  try {
+    const res = await fetch(SB_URL + '/rest/v1/profiles', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SB_KEY,
+        'Authorization': 'Bearer ' + SB_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ player_name: name, player_avatar: avatar })
+    });
+    return res.ok || res.status === 201;
+  } catch(e) { return false; }
+}
+
+async function deleteProfileFromSB(name) {
+  try {
+    const res = await fetch(
+      SB_URL + '/rest/v1/profiles?player_name=eq.' + encodeURIComponent(name), {
+      method: 'DELETE',
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+    });
+    return res.ok;
+  } catch(e) { return false; }
+}
+
+async function loadProfiles() {
+  // Try Supabase first
+  const sbProfs = await fetchProfilesFromSB();
+  if(sbProfs && sbProfs.length >= 0) {
+    _cachedProfiles = sbProfs;
+    // Sync to localStorage as offline cache
+    localStorage.setItem(PFX+'profiles', JSON.stringify(sbProfs));
+    return sbProfs;
+  }
+  // Fallback to localStorage if offline
+  try { return JSON.parse(localStorage.getItem(PFX+'profiles')||'[]'); }
+  catch(e) { return []; }
+}
+
+// ── PROFILE UI ────────────────────────────────────────────────────────────
+async function renderProfiles() {
+  const profs = await loadProfiles();
+  const heroNames = document.getElementById('heroNames');
+  if(heroNames) {
+    heroNames.textContent = profs.length ? profs.map(p => p.name).join(' · ') : '';
+  }
+  const wrap = document.getElementById('profileStrip');
+  if(!wrap) return;
+  wrap.innerHTML = '<div style="font-size:.8rem;color:var(--muted);padding:8px">⏳ Loading...</div>';
+  
+  wrap.innerHTML = '';
+  profs.forEach(p => {
+    const hist = loadHistory(p.name);
+    const streak = calcStreak(hist);
+    const d = document.createElement('div');
+    d.className = 'p-card' + (activeProfile && activeProfile.name===p.name ? ' active' : '');
+    d.innerHTML = `<span class="av">${p.avatar}</span><span class="nm">${p.name}</span><span class="streak">${streak>0?'🔥'+streak+' day streak':''}</span>
+      <button class="del-btn" onclick="deleteProfile('${p.name}',event)" title="Remove">✕</button>`;
+    d.onclick = () => selectProfile(p);
+    wrap.appendChild(d);
+  });
+  const add = document.createElement('button');
+  add.className = 'btn-add'; add.textContent = '+ Add Kid';
+  add.onclick = addProfile;
+  wrap.appendChild(add);
+}
+
+function selectProfile(p) {
+  activeProfile = p;
+  // Re-render without async (use cached)
+  const wrap = document.getElementById('profileStrip');
+  if(wrap) {
+    wrap.querySelectorAll('.p-card').forEach(c => {
+      c.classList.toggle('active', c.querySelector('.nm')&&c.querySelector('.nm').textContent===p.name);
+    });
+  }
+  renderDash(p);
+  renderHistory(p);
+  renderLeaderboard();
+}
+
+async function deleteProfile(name, event) {
+  event.stopPropagation();
+  if(!confirm(`Remove ${name} from all devices?`)) return;
+  // Delete from Supabase
+  await deleteProfileFromSB(name);
+  // Clear local cache
+  if(activeProfile && activeProfile.name === name) activeProfile = null;
+  _cachedProfiles = null;
+  // Re-render
+  await renderProfiles();
+  renderLeaderboard();
+  document.getElementById('dashSection').style.display='none';
+  document.getElementById('histTitle').style.display='none';
+  document.getElementById('histTable').style.display='none';
+}
 
 function addProfile() {
   _selectedAvatar = null;
@@ -278,15 +391,18 @@ function closeAvatarModal() {
   _selectedAvatar = null;
 }
 
-function confirmAddProfile() {
+async function confirmAddProfile() {
   const name = document.getElementById('avatarNameInput').value.trim();
   if(!name || name.length < 2) { alert('Please enter a name (at least 2 characters).'); return; }
   if(!_selectedAvatar) { alert('Please pick an emoji first!'); return; }
-  const profs = loadProfiles();
+  const profs = await loadProfiles();
   if(profs.find(p => p.name === name)) { alert('That name is already taken!'); return; }
-  profs.push({ name, avatar: _selectedAvatar });
-  saveProfiles(profs);
+  // Save to Supabase
+  const ok = await saveProfileToSB(name, _selectedAvatar);
+  if(!ok) { alert('Could not save — check your connection.'); return; }
   closeAvatarModal();
+  _cachedProfiles = null;  // invalidate cache
+  await renderProfiles();
   selectProfile({ name, avatar: _selectedAvatar });
 }
 
@@ -450,8 +566,8 @@ function renderLeaderboard(){
   }).join('');
 }
 
-window.addEventListener('DOMContentLoaded',()=>{
-  renderProfiles();
+window.addEventListener('DOMContentLoaded',async ()=>{
+  await renderProfiles();
   renderLeaderboard();  // now async — fetches from Supabase
   // Auto-select first profile if exists
   const profs = loadProfiles();
@@ -459,8 +575,7 @@ window.addEventListener('DOMContentLoaded',()=>{
 });
 
 // ── SUPABASE SYNC FOR DASHBOARD ──────────────────────────────────────────
-const SB_URL = 'https://ewogowpkewtrzsslfysv.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3b2dvd3BrZXd0cnpzc2xmeXN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTIzNDEsImV4cCI6MjA5NTUyODM0MX0.KYsUwS2-9B0XZWDa9V3SOW6xJ3kwZGTDH2G0b_qsOvs';
+// SB_URL and SB_KEY already declared above
 
 async function fetchSupabaseSessions() {
   try {
@@ -539,7 +654,7 @@ async function renderLeaderboard() {
 
   } else {
     // Fallback to localStorage
-    const profs = loadProfiles();
+    const profs = _cachedProfiles || JSON.parse(localStorage.getItem('mkp_profiles')||'[]');
     if(!profs.length){lb.innerHTML='<div class="no-hist">Add kids above to see the leaderboard!</div>';return;}
     const now2=new Date(); const weekAgo2=new Date(now2-7*24*3600*1000);
     const data2=profs.map(p=>{
