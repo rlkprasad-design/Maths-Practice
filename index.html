@@ -494,77 +494,80 @@ async function renderLeaderboard() {
   const sbSessions = await fetchSupabaseSessions();
 
   if(sbSessions && sbSessions.length > 0) {
-    const weekAgo = new Date(Date.now() - 7*24*3600*1000);
+    const now = new Date();
+    const weekAgo = new Date(now - 7*24*3600*1000);
     const weekSessions = sbSessions.filter(s => new Date(s.created_at) > weekAgo);
+
     const playerMap = {};
     weekSessions.forEach(s => {
       if(!playerMap[s.player_name]) {
         playerMap[s.player_name] = {
           name: s.player_name,
           avatar: s.player_avatar || '🦁',
-          sessions: [], totalQs: 0
+          sessions: [], totalQs: 0, totalPts: 0
         };
       }
       playerMap[s.player_name].sessions.push(s);
-      playerMap[s.player_name].totalQs += (s.total_questions || s.total || 0);
+      playerMap[s.player_name].totalQs += s.total_questions;
+      playerMap[s.player_name].totalPts += (s.pts || 0);
     });
+
     const data = Object.values(playerMap).map(p => {
-      const avgPct = p.sessions.length
-        ? Math.round(p.sessions.reduce((a,s)=>a+((s.correct/(s.total_questions||s.total||1))*100),0)/p.sessions.length)
-        : 0;
       const totalSecs = p.sessions.reduce((a,s)=>a+(s.secs||0),0);
-      const avgSecsPerQ = p.totalQs>0?Math.round(totalSecs/p.totalQs):0;
-      return {...p, avgPct, avgSecsPerQ};
-    }).sort((a,b)=>b.avgPct-a.avgPct||(b.totalQs-a.totalQs));
+      const avgSecsPerQ = p.totalQs > 0 ? Math.round(totalSecs/p.totalQs) : 0;
+      return { ...p, avgSecsPerQ };
+    }).sort((a,b)=>b.totalPts-a.totalPts||b.totalQs-a.totalQs);
 
     if(!data.length) {
-      lb.innerHTML = '<div class="no-hist">No sessions this week — start practising!</div>';
+      lb.innerHTML = '<div class="no-hist">No sessions this week yet — start practising!</div>';
       return;
     }
+
     const medals = ['🥇','🥈','🥉'];
     lb.innerHTML = data.map((d,i) => {
-      const speedTxt = d.avgSecsPerQ>0?` · ⏱ ${d.avgSecsPerQ}s/Q`:'';
+      const speedTxt = d.avgSecsPerQ > 0 ? ` · ⏱ ${d.avgSecsPerQ}s/Q` : '';
       return `<div class="lb-row">
         <div class="lb-rank">${medals[i]||'#'+(i+1)}</div>
         <div class="lb-av">${d.avatar}</div>
         <div class="lb-info">
           <div class="lb-name">${d.name}</div>
-          <div class="lb-sub">${d.sessions.length} sessions · ${d.totalQs} questions${speedTxt} <span style="font-size:.65rem;color:#22c55e;font-weight:800">● live</span></div>
+          <div class="lb-sub">${d.sessions.length} sessions · ${d.totalQs} Qs${speedTxt} <span style="font-size:.65rem;color:#22c55e;font-weight:800">● live</span></div>
         </div>
-        <div class="lb-score">${d.avgPct>0?d.avgPct+'%':'No sessions yet'}</div>
+        <div class="lb-score">${d.totalPts > 0 ? d.totalPts : '—'}<span style="font-size:.7rem;font-weight:700;color:var(--muted)"> pts</span></div>
       </div>`;
     }).join('');
 
+    if(activeProfile) renderDash(activeProfile);
+
   } else {
-    // Fallback: localStorage
-    const profs = _cachedProfiles || JSON.parse(localStorage.getItem(PFX+'profiles')||'[]');
+    const profs = _cachedProfiles || JSON.parse(localStorage.getItem('mkp_profiles')||'[]');
     if(!profs.length){lb.innerHTML='<div class="no-hist">Add kids above to see the leaderboard!</div>';return;}
-    const weekAgo = new Date(Date.now()-7*24*3600*1000);
-    const data = profs.map(p=>{
-      const hist=loadHistory(p.name).filter(h=>new Date(h.date)>weekAgo);
-      const avgPct=hist.length?Math.round(hist.reduce((a,h)=>a+(h.correct/h.total*100),0)/hist.length):0;
+    const now2=new Date(); const weekAgo2=new Date(now2-7*24*3600*1000);
+    const data2=profs.map(p=>{
+      const hist=loadHistory(p.name).filter(h=>new Date(h.date)>weekAgo2);
+      const totalPts=hist.reduce((a,h)=>a+(h.pts||0),0);
       const sessions=hist.length; const totalQs=hist.reduce((a,h)=>a+h.total,0);
       const totalSecs=hist.reduce((a,h)=>a+(h.secs||0),0);
       const avgSecsPerQ=totalQs>0?Math.round(totalSecs/totalQs):0;
-      return {p,avgPct,sessions,totalQs,avgSecsPerQ};
-    }).sort((a,b)=>b.avgPct-a.avgPct||(b.totalQs-a.totalQs));
-    const medals=['🥇','🥈','🥉'];
-    lb.innerHTML=data.map((d,i)=>{
+      return {p,totalPts,sessions,totalQs,avgSecsPerQ};
+    }).sort((a,b)=>b.totalPts-a.totalPts||b.totalQs-a.totalQs);
+    const medals2=['🥇','🥈','🥉'];
+    lb.innerHTML=data2.map((d,i)=>{
       const speedTxt=d.avgSecsPerQ>0?` · ⏱ ${d.avgSecsPerQ}s/Q`:'';
       return `<div class="lb-row">
-        <div class="lb-rank">${medals[i]||'#'+(i+1)}</div>
+        <div class="lb-rank">${medals2[i]||'#'+(i+1)}</div>
         <div class="lb-av">${d.p.avatar}</div>
         <div class="lb-info">
           <div class="lb-name">${d.p.name}</div>
-          <div class="lb-sub">${d.sessions} sessions · ${d.totalQs} questions${speedTxt} <span style="font-size:.65rem;color:#f59e0b;font-weight:800">● local only</span></div>
+          <div class="lb-sub">${d.sessions} sessions · ${d.totalQs} Qs${speedTxt} <span style="font-size:.65rem;color:#f59e0b;font-weight:800">● local only</span></div>
         </div>
-        <div class="lb-score">${d.avgPct>0?d.avgPct+'%':'No sessions yet'}</div>
+        <div class="lb-score">${d.totalPts>0?d.totalPts:'—'}<span style="font-size:.7rem;font-weight:700;color:var(--muted)"> pts</span></div>
       </div>`;
     }).join('');
   }
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────────
+  // ── INIT ──────────────────────────────────────────────────────────────────
 
 window.addEventListener('DOMContentLoaded', async () => {
   await renderProfiles();
