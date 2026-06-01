@@ -561,27 +561,23 @@ async function renderLeaderboard() {
 
     // Get unique players from Supabase
     const playerMap = {};
-    weekSessions.forEach(s => {
-      if(!playerMap[s.player_name]) {
-        playerMap[s.player_name] = {
-          name: s.player_name,
-          avatar: s.player_avatar || '🦁',
-          sessions: [], totalQs: 0
-        };
-      }
-      playerMap[s.player_name].sessions.push(s);
-      playerMap[s.player_name].totalQs += s.total_questions;
-    });
+weekSessions.forEach(s => {
+  if(!playerMap[s.player_name]) {
+    playerMap[s.player_name] = {
+      name: s.player_name,
+      avatar: s.player_avatar || '🦁',
+      sessions: [], totalQs: 0, totalPts: 0
+    };
+  }
+  playerMap[s.player_name].sessions.push(s);
+  playerMap[s.player_name].totalQs += s.total_questions;
+  playerMap[s.player_name].totalPts += (s.pts || 0);
+});
 
-    const data = Object.values(playerMap).map(p => {
-      const avgPct = p.sessions.length
-        ? Math.round(p.sessions.reduce((a,s)=>a+(s.correct/s.total_questions*100),0)/p.sessions.length)
-        : 0;
-      const totalSecs = p.sessions.reduce((a,s)=>a+(s.secs||0),0);
-      const avgSecsPerQ = p.totalQs > 0 ? Math.round(totalSecs/p.totalQs) : 0;
-      return { ...p, avgPct, avgSecsPerQ };
-    }).sort((a,b)=>b.totalPts-a.totalPts||b.totalQs-a.totalQs);
-
+const data = Object.values(playerMap).map(p => {
+  const totalSecs = p.sessions.reduce((a,s)=>a+(s.secs||0),0);
+  const avgSecsPerQ = p.totalQs > 0 ? Math.round(totalSecs/p.totalQs) : 0;
+  return { ...p, avgSecsPerQ };
     if(!data.length) {
       lb.innerHTML = '<div class="no-hist">No sessions this week yet — start practising!</div>';
       return;
