@@ -518,7 +518,7 @@ async function renderLeaderboard() {
       const totalSecs = p.sessions.reduce((a,s)=>a+(s.secs||0),0);
       const avgSecsPerQ = p.totalQs>0 ? Math.round(totalSecs/p.totalQs) : 0;
       return {...p, avgPct, avgSecsPerQ};
-    }).sort((a,b)=>b.avgPct-a.avgPct||(b.totalQs-a.totalQs));
+    }).sort((a,b)=>b.totalPts-a.totalPts||(b.avgPct-a.avgPct));
 
     if(!data.length) {
       lb.innerHTML = '<div class="no-hist">No sessions this week — start practising!</div>';
@@ -535,7 +535,7 @@ async function renderLeaderboard() {
           <div class="lb-name">${d.name}</div>
           <div class="lb-sub">${d.sessions.length} sessions · ${d.totalQs} Qs${speedTxt} <span style="font-size:.65rem;color:#22c55e;font-weight:800">● live</span></div>
         </div>
-        <div class="lb-score">${d.avgPct > 0 ? d.avgPct + '%' : 'No sessions yet'}</div>
+        <div class="lb-score">${d.totalPts > 0 ? d.totalPts + '<span style="font-size:.7rem;font-weight:700;color:var(--muted)"> pts</span> <span style="font-size:.75rem;color:var(--muted)">(${d.avgPct}%)</span>' : 'No sessions yet'}</div>
       </div>`;
     }).join('');
 
