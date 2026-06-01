@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class 8 – Science & Maths | Chaduvu Kundama</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3250;
+    --accent-m: #4f8ef7;
+    --accent-s: #34d399;
+    --accent-app: #f472b6;
+    --text: #e8eaf6;
+    --text2: #8892b0;
+    --correct: #34d399;
+    --wrong: #f87171;
+    --radius: 14px;
+    --font: 'Segoe UI', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* ── Header ── */
+  header {
+    background: linear-gradient(135deg, #1a1d27 0%, #0f1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 20px 14px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .back-btn {
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text2); border-radius: 8px; padding: 6px 14px;
+    font-size: 13px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .back-btn:hover { background: var(--border); color: var(--text); }
+  h1 { font-size: 20px; font-weight: 700; }
+  h1 span { font-size: 13px; font-weight: 400; color: var(--text2); margin-left: 8px; }
+  .pill { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; margin-left: 6px; }
+  .pill-m { background: rgba(79,142,247,.15); color: var(--accent-m); border: 1px solid rgba(79,142,247,.3); }
+  .pill-s { background: rgba(52,211,153,.15); color: var(--accent-s); border: 1px solid rgba(52,211,153,.3); }
+
+  /* ── Layout ── */
+  .main { max-width: 900px; margin: 0 auto; padding: 24px 16px 80px; }
+
+  /* ── Subject / Chapter filters ── */
+  .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
+  .filter-btn {
+    padding: 7px 16px; border-radius: 20px; font-size: 13px; font-weight: 600;
+    border: 1px solid var(--border); background: var(--surface); color: var(--text2);
+    cursor: pointer; transition: all .2s;
+  }
+  .filter-btn.active-m { background: rgba(79,142,247,.2); color: var(--accent-m); border-color: var(--accent-m); }
+  .filter-btn.active-s { background: rgba(52,211,153,.2); color: var(--accent-s); border-color: var(--accent-s); }
+  .filter-btn.active-all { background: rgba(244,114,182,.2); color: var(--accent-app); border-color: var(--accent-app); }
+
+  /* ── Progress bar ── */
+  .progress-wrap { margin-bottom: 20px; }
+  .progress-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .progress-track { height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent-m), var(--accent-s)); transition: width .4s; }
+
+  /* ── Question card ── */
+  .q-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 22px 24px; margin-bottom: 18px;
+    transition: border-color .2s;
+  }
+  .q-card.answered-correct { border-color: var(--correct); }
+  .q-card.answered-wrong { border-color: var(--wrong); }
+
+  .q-meta { font-size: 11px; color: var(--text2); margin-bottom: 10px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .q-num { font-size: 11px; font-weight: 700; }
+  .chap-tag { background: var(--surface2); padding: 2px 8px; border-radius: 10px; }
+
+  .q-text { font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
+
+  /* ── Options ── */
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media(max-width:520px){ .options { grid-template-columns: 1fr; } }
+  .opt-btn {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 11px 14px; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--surface2); color: var(--text); font-size: 14px;
+    cursor: pointer; text-align: left; transition: all .15s;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: var(--accent-m); background: rgba(79,142,247,.1); }
+  .opt-btn .key { font-weight: 700; color: var(--text2); min-width: 16px; }
+  .opt-btn.correct { background: rgba(52,211,153,.15); border-color: var(--correct); color: var(--correct); }
+  .opt-btn.wrong   { background: rgba(248,113,113,.15); border-color: var(--wrong);  color: var(--wrong); }
+  .opt-btn:disabled { cursor: default; }
+
+  /* ── Explanation ── */
+  .exp-box {
+    margin-top: 14px; padding: 12px 16px; border-radius: 10px;
+    background: var(--surface2); border-left: 3px solid var(--accent-s);
+    font-size: 13px; color: var(--text2); line-height: 1.6;
+    display: none;
+  }
+  .exp-box.show { display: block; }
+  .exp-box strong { color: var(--text); }
+
+  /* ── Scaffolding tabs ── */
+  .scaffold { margin-top: 12px; display: none; }
+  .scaffold.show { display: block; }
+  .sc-tabs { display: flex; gap: 6px; margin-bottom: 8px; }
+  .sc-tab {
+    padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 600;
+    border: 1px solid var(--border); background: var(--surface2); color: var(--text2);
+    cursor: pointer;
+  }
+  .sc-tab.active { background: rgba(79,142,247,.2); color: var(--accent-m); border-color: var(--accent-m); }
+  .sc-panel { font-size: 13px; color: var(--text2); padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; display: none; line-height: 1.6; }
+  .sc-panel.show { display: block; }
+
+  /* ── Score panel ── */
+  #score-panel {
+    display: none; text-align: center; padding: 40px 20px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  }
+  #score-panel h2 { font-size: 28px; margin-bottom: 8px; }
+  #score-panel .score-num { font-size: 64px; font-weight: 800; background: linear-gradient(135deg, var(--accent-m), var(--accent-s)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  #score-panel .score-sub { color: var(--text2); font-size: 15px; margin-bottom: 24px; }
+  .restart-btn {
+    padding: 12px 32px; border-radius: 10px; font-size: 15px; font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-m), var(--accent-s)); color: #fff;
+    border: none; cursor: pointer;
+  }
+
+  /* ── Emoji burst ── */
+  .burst { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 60px; pointer-events: none; z-index: 999; animation: burst .7s ease forwards; display: none; }
+  @keyframes burst { 0%{opacity:1;transform:translate(-50%,-50%) scale(.5)} 60%{opacity:1;transform:translate(-50%,-50%) scale(1.3)} 100%{opacity:0;transform:translate(-50%,-50%) scale(1.6)} }
+
+  /* ── Chapter summary ── */
+  .chap-summary { margin-bottom: 28px; }
+  .chap-header {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 700; color: var(--text2);
+    text-transform: uppercase; letter-spacing: .06em;
+    padding: 8px 0; border-bottom: 1px solid var(--border); margin-bottom: 12px;
+  }
+  .chap-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-m { background: var(--accent-m); }
+  .dot-s { background: var(--accent-s); }
+
+  /* ── Admin ── */
+  #admin-link { position: fixed; bottom: 12px; right: 16px; font-size: 11px; color: var(--border); text-decoration: none; }
+  #admin-link:hover { color: var(--text2); }
+  .admin-panel { display: none; position: fixed; bottom: 40px; right: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; font-size: 13px; z-index: 500; }
+  .admin-panel.show { display: block; }
+  .admin-btn { display: block; width: 100%; padding: 8px 14px; margin-bottom: 6px; background: var(--wrong); border: none; color: #fff; border-radius: 6px; cursor: pointer; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="burst" id="burst">✨</div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="back-btn">← Home</a>
+    <div>
+      <h1>Class 8 <span>Science & Maths</span>
+        <span class="pill pill-m">Maths</span>
+        <span class="pill pill-s">Science</span>
+      </h1>
+    </div>
+  </div>
+</header>
+
+<div class="main">
+  <!-- Filter bar -->
+  <div class="filter-bar" id="filter-bar">
+    <button class="filter-btn active-all" data-filter="all" onclick="setFilter('all',this)">All (85 Q)</button>
+    <button class="filter-btn" data-filter="Maths"   onclick="setFilter('Maths',this)">📐 Maths (39 Q)</button>
+    <button class="filter-btn" data-filter="Science" onclick="setFilter('Science',this)">🔬 Science (46 Q)</button>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-label"><span id="prog-text">0 answered</span><span id="prog-score">Score: 0</span></div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- Questions container -->
+  <div id="q-container"></div>
+
+  <!-- Score panel -->
+  <div id="score-panel">
+    <h2>🎉 Session Complete!</h2>
+    <div class="score-num" id="final-score">-</div>
+    <div class="score-sub" id="final-sub">out of 85 questions</div>
+    <button class="restart-btn" onclick="restartSession()">Try Again</button>
+  </div>
+</div>
+
+<!-- Admin -->
+<a href="#" id="admin-link" onclick="toggleAdmin(event)">⚙</a>
+<div class="admin-panel" id="admin-panel">
+  <button class="admin-btn" onclick="resetAll()">🗑 Reset All Progress</button>
+</div>
+
+<script>
+const QUESTION_BANK = [{"id": 1, "subject": "Maths", "chapter": "Rational Numbers", "q": "Which property is shown by: (3/4) × (1/3 + 2/5) = (3/4 × 1/3) + (3/4 × 2/5)?", "opts": {"A": "Commutative", "B": "Associative", "C": "Distributive", "D": "Closure"}, "ans": "C", "exp": "Multiplication distributing over addition is the Distributive Property."}, {"id": 2, "subject": "Maths", "chapter": "Rational Numbers", "q": "What is the additive inverse of −7/9?", "opts": {"A": "7/9", "B": "−7/9", "C": "9/7", "D": "−9/7"}, "ans": "A", "exp": "The additive inverse of a number x is −x. So inverse of −7/9 is +7/9."}, {"id": 3, "subject": "Maths", "chapter": "Rational Numbers", "q": "Between which two consecutive integers does −13/4 lie?", "opts": {"A": "−2 and −3", "B": "−3 and −4", "C": "−4 and −5", "D": "−1 and −2"}, "ans": "B", "exp": "−13/4 = −3.25, which lies between −3 and −4."}, {"id": 4, "subject": "Maths", "chapter": "Linear Equations in One Variable", "q": "Solve: 2x − 3 = x + 4. What is x?", "opts": {"A": "6", "B": "7", "C": "1", "D": "−7"}, "ans": "B", "exp": "2x − x = 4 + 3 → x = 7."}, {"id": 5, "subject": "Maths", "chapter": "Linear Equations in One Variable", "q": "The sum of three consecutive even numbers is 78. What is the largest number?", "opts": {"A": "24", "B": "26", "C": "28", "D": "30"}, "ans": "C", "exp": "Let numbers be n, n+2, n+4. Then 3n + 6 = 78 → n = 24. Largest = 28."}, {"id": 6, "subject": "Maths", "chapter": "Linear Equations in One Variable", "q": "A number is 3 times another. Their sum is 48. What is the smaller number?", "opts": {"A": "12", "B": "16", "C": "36", "D": "24"}, "ans": "A", "exp": "Let smaller = x, larger = 3x. x + 3x = 48 → x = 12."}, {"id": 7, "subject": "Maths", "chapter": "Understanding Quadrilaterals", "q": "The sum of all interior angles of a hexagon is:", "opts": {"A": "540°", "B": "720°", "C": "900°", "D": "360°"}, "ans": "B", "exp": "Sum = (n−2)×180°. For n=6: 4×180° = 720°."}, {"id": 8, "subject": "Maths", "chapter": "Understanding Quadrilaterals", "q": "In a parallelogram, one angle is 65°. What are the remaining three angles (in order)?", "opts": {"A": "65°, 115°, 115°", "B": "115°, 65°, 115°", "C": "65°, 65°, 115°", "D": "115°, 115°, 65°"}, "ans": "B", "exp": "Opposite angles are equal and adjacent angles are supplementary. So angles are 65°, 115°, 65°, 115°."}, {"id": 9, "subject": "Maths", "chapter": "Practical Geometry", "q": "To construct a unique quadrilateral, the minimum number of measurements needed is:", "opts": {"A": "3", "B": "4", "C": "5", "D": "6"}, "ans": "C", "exp": "A quadrilateral has 5 independent elements needed for a unique construction."}, {"id": 10, "subject": "Maths", "chapter": "Practical Geometry", "q": "A rhombus can be uniquely constructed if we know its:", "opts": {"A": "Two diagonals", "B": "One side only", "C": "Two sides", "D": "Perimeter only"}, "ans": "A", "exp": "The two diagonals of a rhombus uniquely determine its shape since they bisect each other at right angles."}, {"id": 11, "subject": "Maths", "chapter": "Data Handling", "q": "The probability of getting a head when a fair coin is tossed is:", "opts": {"A": "1", "B": "0", "C": "1/2", "D": "2"}, "ans": "C", "exp": "There are 2 equally likely outcomes. Favourable outcomes = 1. P(H) = 1/2."}, {"id": 12, "subject": "Maths", "chapter": "Data Handling", "q": "A bag has 3 red, 4 blue, and 5 green balls. What is the probability of picking a blue ball?", "opts": {"A": "1/4", "B": "1/3", "C": "5/12", "D": "4/3"}, "ans": "B", "exp": "Total = 12. P(blue) = 4/12 = 1/3."}, {"id": 13, "subject": "Maths", "chapter": "Data Handling", "q": "Which graph is best suited to show parts of a whole?", "opts": {"A": "Bar graph", "B": "Line graph", "C": "Pie chart", "D": "Histogram"}, "ans": "C", "exp": "A pie chart divides a circle into sectors proportional to each category's share of the whole."}, {"id": 14, "subject": "Maths", "chapter": "Squares and Square Roots", "q": "What is √2025?", "opts": {"A": "40", "B": "45", "C": "50", "D": "55"}, "ans": "B", "exp": "45 × 45 = 2025. So √2025 = 45."}, {"id": 15, "subject": "Maths", "chapter": "Squares and Square Roots", "q": "How many non-perfect square numbers lie between 15² and 16²?", "opts": {"A": "28", "B": "29", "C": "30", "D": "31"}, "ans": "C", "exp": "Between n² and (n+1)² there are 2n non-perfect squares. Here 2×15 = 30."}, {"id": 16, "subject": "Maths", "chapter": "Squares and Square Roots", "q": "Which of the following is NOT a perfect square?", "opts": {"A": "81", "B": "144", "C": "200", "D": "225"}, "ans": "C", "exp": "200 = 2³×5². The prime 2 appears an odd number of times, so it cannot be a perfect square."}, {"id": 17, "subject": "Maths", "chapter": "Cubes and Cube Roots", "q": "What is the cube root of 3375?", "opts": {"A": "12", "B": "13", "C": "15", "D": "18"}, "ans": "C", "exp": "15³ = 15 × 15 × 15 = 3375."}, {"id": 18, "subject": "Maths", "chapter": "Cubes and Cube Roots", "q": "The smallest number by which 72 must be multiplied to make it a perfect cube is:", "opts": {"A": "2", "B": "3", "C": "9", "D": "6"}, "ans": "B", "exp": "72 = 2³ × 3². We need one more 3 to complete the triplet. 72 × 3 = 216 = 6³."}, {"id": 19, "subject": "Maths", "chapter": "Comparing Quantities", "q": "A shirt costs ₹800 and is sold for ₹1000. What is the profit percentage?", "opts": {"A": "20%", "B": "25%", "C": "15%", "D": "30%"}, "ans": "B", "exp": "Profit = 200. Profit% = (200/800)×100 = 25%."}, {"id": 20, "subject": "Maths", "chapter": "Comparing Quantities", "q": "₹5000 is invested at 10% p.a. compound interest for 2 years. What is the total amount?", "opts": {"A": "₹6000", "B": "₹6050", "C": "₹6100", "D": "₹6500"}, "ans": "B", "exp": "A = 5000×(1.1)² = 5000×1.21 = ₹6050."}, {"id": 21, "subject": "Maths", "chapter": "Comparing Quantities", "q": "The price of a phone increases from ₹12,000 to ₹15,000. What is the percentage increase?", "opts": {"A": "20%", "B": "25%", "C": "30%", "D": "15%"}, "ans": "B", "exp": "Increase = 3000. % increase = (3000/12000)×100 = 25%."}, {"id": 22, "subject": "Maths", "chapter": "Algebraic Expressions and Identities", "q": "Using (a+b)² = a²+2ab+b², expand (3x+4)².", "opts": {"A": "9x²+12x+16", "B": "9x²+24x+16", "C": "3x²+24x+16", "D": "9x²+24x+8"}, "ans": "B", "exp": "a=3x, b=4. (3x)²+2(3x)(4)+4² = 9x²+24x+16."}, {"id": 23, "subject": "Maths", "chapter": "Algebraic Expressions and Identities", "q": "What is the product of (x+5)(x−5)?", "opts": {"A": "x²+25", "B": "x²−25", "C": "x²−10x+25", "D": "x²+10x−25"}, "ans": "B", "exp": "Using (a+b)(a−b) = a²−b². So (x+5)(x−5) = x²−25."}, {"id": 24, "subject": "Maths", "chapter": "Algebraic Expressions and Identities", "q": "Using identities, quickly calculate 99².", "opts": {"A": "9800", "B": "9801", "C": "9900", "D": "9999"}, "ans": "B", "exp": "99² = (100−1)² = 10000−200+1 = 9801."}, {"id": 25, "subject": "Maths", "chapter": "Visualising Solid Shapes", "q": "For a cube, what is V + F − E (Euler's formula)?", "opts": {"A": "0", "B": "1", "C": "2", "D": "3"}, "ans": "C", "exp": "Euler's formula: V + F − E = 2. For cube: 8+6−12 = 2."}, {"id": 26, "subject": "Maths", "chapter": "Visualising Solid Shapes", "q": "A triangular prism has how many edges?", "opts": {"A": "6", "B": "8", "C": "9", "D": "12"}, "ans": "C", "exp": "A triangular prism has 6 vertices, 9 edges, and 5 faces."}, {"id": 27, "subject": "Maths", "chapter": "Mensuration", "q": "A trapezium has parallel sides 8 cm and 12 cm, height 5 cm. What is its area?", "opts": {"A": "40 cm²", "B": "50 cm²", "C": "60 cm²", "D": "48 cm²"}, "ans": "B", "exp": "Area = ½×(sum of parallel sides)×height = ½×20×5 = 50 cm²."}, {"id": 28, "subject": "Maths", "chapter": "Mensuration", "q": "Volume of a cylinder with radius 7 cm and height 10 cm is (use π = 22/7):", "opts": {"A": "1540 cm³", "B": "440 cm³", "C": "880 cm³", "D": "2200 cm³"}, "ans": "A", "exp": "V = πr²h = (22/7)×49×10 = 22×70 = 1540 cm³."}, {"id": 29, "subject": "Maths", "chapter": "Mensuration", "q": "A pool is 50 m long, 20 m wide, and 3 m deep. How many litres? (1 m³ = 1000 L)", "opts": {"A": "3,00,000 L", "B": "30,000 L", "C": "3,000 L", "D": "30,00,000 L"}, "ans": "D", "exp": "Volume = 50×20×3 = 3000 m³ = 3000×1000 = 30,00,000 L."}, {"id": 30, "subject": "Maths", "chapter": "Exponents and Powers", "q": "Simplify: (2³ × 2⁵) ÷ 2⁴", "opts": {"A": "2²", "B": "2⁴", "C": "2⁶", "D": "2⁸"}, "ans": "B", "exp": "2³×2⁵ = 2⁸. 2⁸÷2⁴ = 2⁴."}, {"id": 31, "subject": "Maths", "chapter": "Exponents and Powers", "q": "Express 0.0000045 in standard form.", "opts": {"A": "4.5 × 10⁻⁶", "B": "4.5 × 10⁻⁵", "C": "45 × 10⁻⁷", "D": "4.5 × 10⁵"}, "ans": "A", "exp": "0.0000045 = 4.5 × 10⁻⁶ (move decimal 6 places right)."}, {"id": 32, "subject": "Maths", "chapter": "Direct and Inverse Proportions", "q": "15 workers build a wall in 48 days. How many days will 20 workers take?", "opts": {"A": "30", "B": "36", "C": "40", "D": "64"}, "ans": "B", "exp": "Inverse proportion: 15×48 = 20×d → d = 36 days."}, {"id": 33, "subject": "Maths", "chapter": "Direct and Inverse Proportions", "q": "A car travels 180 km in 3 hours. How far in 5 hours at the same speed?", "opts": {"A": "250 km", "B": "270 km", "C": "300 km", "D": "360 km"}, "ans": "C", "exp": "Direct proportion: speed = 60 km/h. Distance in 5 hrs = 300 km."}, {"id": 34, "subject": "Maths", "chapter": "Factorisation", "q": "Factorise: x² − 9", "opts": {"A": "(x−3)(x+3)", "B": "(x−9)(x+1)", "C": "(x−3)²", "D": "(x+3)²"}, "ans": "A", "exp": "x²−9 = x²−3² = (x−3)(x+3) using the difference of squares identity."}, {"id": 35, "subject": "Maths", "chapter": "Factorisation", "q": "Divide: (x² + 7x + 10) ÷ (x + 2)", "opts": {"A": "x+5", "B": "x+3", "C": "x−5", "D": "x+7"}, "ans": "A", "exp": "x²+7x+10 = (x+2)(x+5). Dividing by (x+2) gives (x+5)."}, {"id": 36, "subject": "Maths", "chapter": "Introduction to Graphs", "q": "A point is at (−3, 4). In which quadrant does it lie?", "opts": {"A": "Quadrant I", "B": "Quadrant II", "C": "Quadrant III", "D": "Quadrant IV"}, "ans": "B", "exp": "Negative x and positive y → Quadrant II."}, {"id": 37, "subject": "Maths", "chapter": "Introduction to Graphs", "q": "Which of these points lies on the y-axis?", "opts": {"A": "(3, 0)", "B": "(0, −5)", "C": "(2, 2)", "D": "(−4, 0)"}, "ans": "B", "exp": "A point on the y-axis has x = 0. Only (0, −5) qualifies."}, {"id": 38, "subject": "Maths", "chapter": "Playing with Numbers", "q": "A 2-digit number is 4 times the sum of its digits (tens = t, units = u). Which equation holds?", "opts": {"A": "10t+u = 4(t+u)", "B": "t+u = 4(10t+u)", "C": "10t+u = 4tu", "D": "t×u = 4(t+u)"}, "ans": "A", "exp": "The number = 10t+u. Four times digit-sum = 4(t+u). So 10t+u = 4(t+u)."}, {"id": 39, "subject": "Maths", "chapter": "Playing with Numbers", "q": "A number divisible by both 4 and 6 must also be divisible by:", "opts": {"A": "8", "B": "24", "C": "12", "D": "16"}, "ans": "C", "exp": "LCM(4,6) = 12. So any number divisible by both must be divisible by 12."}, {"id": 40, "subject": "Science", "chapter": "Crop Production and Management", "q": "Which of the following is a Kharif crop?", "opts": {"A": "Wheat", "B": "Mustard", "C": "Rice", "D": "Gram"}, "ans": "C", "exp": "Kharif crops are sown in June–July with the monsoon. Rice, maize, and cotton are Kharif crops. Wheat and mustard are Rabi crops."}, {"id": 41, "subject": "Science", "chapter": "Crop Production and Management", "q": "The process of loosening and turning the soil before sowing is called:", "opts": {"A": "Sowing", "B": "Ploughing/Tilling", "C": "Irrigation", "D": "Harvesting"}, "ans": "B", "exp": "Ploughing aerates the soil, improves water retention, and helps roots grow deeper."}, {"id": 42, "subject": "Science", "chapter": "Crop Production and Management", "q": "Rhizobium bacteria in legume root nodules help by:", "opts": {"A": "Decomposing dead matter", "B": "Fixing atmospheric nitrogen", "C": "Absorbing water", "D": "Producing oxygen"}, "ans": "B", "exp": "Rhizobium fixes atmospheric N₂ into ammonia, enriching the soil — which is why legumes are used in crop rotation."}, {"id": 43, "subject": "Science", "chapter": "Microorganisms: Friend and Foe", "q": "Which microorganism is used to make bread rise?", "opts": {"A": "Bacteria", "B": "Protozoa", "C": "Yeast", "D": "Algae"}, "ans": "C", "exp": "Yeast (a fungus) ferments sugars and releases CO₂, which makes bread dough rise."}, {"id": 44, "subject": "Science", "chapter": "Microorganisms: Friend and Foe", "q": "Foot-and-mouth disease in cattle is caused by a:", "opts": {"A": "Bacterium", "B": "Virus", "C": "Protozoan", "D": "Fungus"}, "ans": "B", "exp": "Foot-and-mouth disease is a viral disease affecting cloven-hoofed animals."}, {"id": 45, "subject": "Science", "chapter": "Microorganisms: Friend and Foe", "q": "Substances like salt, sugar, and vinegar used to prevent food spoilage are called:", "opts": {"A": "Vaccines", "B": "Preservatives", "C": "Antibiotics", "D": "Nutrients"}, "ans": "B", "exp": "Preservatives inhibit microbial growth in food, extending shelf life."}, {"id": 46, "subject": "Science", "chapter": "Synthetic Fibres and Plastics", "q": "Which synthetic fibre is known as 'artificial silk'?", "opts": {"A": "Nylon", "B": "Polyester", "C": "Acrylic", "D": "Rayon"}, "ans": "D", "exp": "Rayon is made from cellulose (wood pulp) and resembles silk. It is called artificial or regenerated silk."}, {"id": 47, "subject": "Science", "chapter": "Synthetic Fibres and Plastics", "q": "Which plastic is used for non-stick cookware coatings?", "opts": {"A": "PVC", "B": "Bakelite", "C": "Teflon", "D": "Nylon"}, "ans": "C", "exp": "Teflon (PTFE) has extremely low friction and high heat resistance, making it ideal for non-stick coatings."}, {"id": 48, "subject": "Science", "chapter": "Synthetic Fibres and Plastics", "q": "Thermosetting plastics cannot be remoulded because:", "opts": {"A": "They melt at low temperature", "B": "Their polymer chains cross-link permanently", "C": "They are made from natural fibres", "D": "They dissolve in water"}, "ans": "B", "exp": "Cross-linked polymer chains in thermosetting plastics (like Bakelite) cannot be broken by heat."}, {"id": 49, "subject": "Science", "chapter": "Materials: Metals and Non-Metals", "q": "Which property allows metals to be drawn into thin wires?", "opts": {"A": "Malleability", "B": "Ductility", "C": "Lustre", "D": "Conductivity"}, "ans": "B", "exp": "Ductility is the property of being drawn into wires. Malleability means being beaten into thin sheets."}, {"id": 50, "subject": "Science", "chapter": "Materials: Metals and Non-Metals", "q": "Which non-metal is a good conductor of electricity?", "opts": {"A": "Sulphur", "B": "Phosphorus", "C": "Graphite", "D": "Iodine"}, "ans": "C", "exp": "Graphite (a form of carbon) is the only common non-metal that conducts electricity due to its delocalised electrons."}, {"id": 51, "subject": "Science", "chapter": "Materials: Metals and Non-Metals", "q": "Galvanisation protects iron from rusting by coating it with:", "opts": {"A": "Tin", "B": "Copper", "C": "Zinc", "D": "Aluminium"}, "ans": "C", "exp": "Zinc is more reactive and acts as a sacrificial layer, corroding in place of the iron underneath."}, {"id": 52, "subject": "Science", "chapter": "Coal and Petroleum", "q": "Fossil fuels are called non-renewable because:", "opts": {"A": "They produce pollution", "B": "They take millions of years to form", "C": "They are found underground", "D": "They release CO₂"}, "ans": "B", "exp": "Fossil fuels formed over millions of years from compressed organic matter and cannot be replenished at the rate they are used."}, {"id": 53, "subject": "Science", "chapter": "Coal and Petroleum", "q": "The process of separating different fractions of petroleum by heating is:", "opts": {"A": "Refining", "B": "Fractional distillation", "C": "Smelting", "D": "Filtration"}, "ans": "B", "exp": "Fractional distillation separates petroleum into LPG, petrol, kerosene, diesel, etc., based on different boiling points."}, {"id": 54, "subject": "Science", "chapter": "Combustion and Flame", "q": "The hottest zone of a candle flame is the:", "opts": {"A": "Innermost dark zone", "B": "Middle luminous zone", "C": "Outermost blue zone", "D": "All zones are equally hot"}, "ans": "C", "exp": "The outermost blue zone has the highest temperature because complete combustion occurs there with ample oxygen."}, {"id": 55, "subject": "Science", "chapter": "Combustion and Flame", "q": "Water is NOT used to put out electrical fires because:", "opts": {"A": "Water evaporates quickly", "B": "Water conducts electricity", "C": "Water makes flames bigger", "D": "Water is too heavy"}, "ans": "B", "exp": "Water conducts electricity and could cause electrocution. CO₂ extinguishers are used for electrical fires."}, {"id": 56, "subject": "Science", "chapter": "Combustion and Flame", "q": "Calorific value of a fuel refers to:", "opts": {"A": "Its ignition temperature", "B": "Heat energy released per unit mass on complete combustion", "C": "The speed at which it burns", "D": "The temperature of its flame"}, "ans": "B", "exp": "Calorific value (kJ/kg) measures heat energy released when 1 kg of fuel burns completely. Higher is better."}, {"id": 57, "subject": "Science", "chapter": "Conservation of Plants and Animals", "q": "A biosphere reserve differs from a wildlife sanctuary in that it:", "opts": {"A": "Is smaller in area", "B": "Allows human activities in buffer/transition zones", "C": "Only protects birds", "D": "Is entirely fenced"}, "ans": "B", "exp": "Biosphere reserves have core (strictly protected), buffer, and transition zones. Human activities are permitted in outer zones."}, {"id": 58, "subject": "Science", "chapter": "Conservation of Plants and Animals", "q": "The Red Data Book is maintained to record:", "opts": {"A": "All known animal species", "B": "Endangered and threatened species", "C": "Extinct species only", "D": "Migratory birds"}, "ans": "B", "exp": "The IUCN Red Data Book lists threatened species — vulnerable, endangered, and critically endangered."}, {"id": 59, "subject": "Science", "chapter": "Cell Structure and Functions", "q": "Which organelle is called the 'powerhouse of the cell'?", "opts": {"A": "Nucleus", "B": "Ribosome", "C": "Mitochondria", "D": "Golgi body"}, "ans": "C", "exp": "Mitochondria produce ATP through cellular respiration, providing energy for all cell activities."}, {"id": 60, "subject": "Science", "chapter": "Cell Structure and Functions", "q": "The plant cell wall is made of:", "opts": {"A": "Starch", "B": "Cellulose", "C": "Protein", "D": "Chitin"}, "ans": "B", "exp": "Plant cell walls are made of cellulose, providing rigidity and support."}, {"id": 61, "subject": "Science", "chapter": "Cell Structure and Functions", "q": "A cell with no membrane-bound nucleus is called:", "opts": {"A": "Eukaryotic", "B": "Prokaryotic", "C": "Multicellular", "D": "Unicellular"}, "ans": "B", "exp": "Prokaryotic cells (like bacteria) lack a nuclear membrane. Their DNA floats freely in the cytoplasm."}, {"id": 62, "subject": "Science", "chapter": "Reproduction in Animals", "q": "In humans, fertilisation takes place in the:", "opts": {"A": "Uterus", "B": "Ovary", "C": "Fallopian tube", "D": "Vagina"}, "ans": "C", "exp": "The sperm fertilises the egg in the fallopian tube. The zygote then travels to the uterus and implants."}, {"id": 63, "subject": "Science", "chapter": "Reproduction in Animals", "q": "Hydra reproduces asexually by:", "opts": {"A": "Fragmentation", "B": "Budding", "C": "Spore formation", "D": "Binary fission"}, "ans": "B", "exp": "Hydra produces buds on its body wall that grow into new organisms and eventually detach."}, {"id": 64, "subject": "Science", "chapter": "Reaching the Age of Adolescence", "q": "The hormone responsible for secondary sexual characteristics in boys is:", "opts": {"A": "Oestrogen", "B": "Testosterone", "C": "Insulin", "D": "Adrenalin"}, "ans": "B", "exp": "Testosterone (produced by testes) triggers voice change, facial hair, and muscle development during puberty."}, {"id": 65, "subject": "Science", "chapter": "Reaching the Age of Adolescence", "q": "Which gland is called the 'master gland' of the body?", "opts": {"A": "Thyroid", "B": "Pancreas", "C": "Pituitary", "D": "Adrenal"}, "ans": "C", "exp": "The pituitary gland regulates other endocrine glands by releasing hormones like FSH, LH, and growth hormone."}, {"id": 66, "subject": "Science", "chapter": "Force and Pressure", "q": "A box of weight 600 N rests on a surface of area 0.5 m². What is the pressure exerted?", "opts": {"A": "300 Pa", "B": "1200 Pa", "C": "600 Pa", "D": "120 Pa"}, "ans": "B", "exp": "Pressure = Force ÷ Area = 600 ÷ 0.5 = 1200 Pa."}, {"id": 67, "subject": "Science", "chapter": "Force and Pressure", "q": "A knife has a very sharp edge so that the same cutting force exerts:", "opts": {"A": "Less pressure", "B": "More pressure", "C": "No pressure", "D": "Equal pressure on all surfaces"}, "ans": "B", "exp": "Smaller area → greater pressure for the same force (P = F/A). This is why sharp edges cut more easily."}, {"id": 68, "subject": "Science", "chapter": "Force and Pressure", "q": "Atmospheric pressure acts in:", "opts": {"A": "Downward direction only", "B": "Upward direction only", "C": "All directions", "D": "Horizontal direction only"}, "ans": "C", "exp": "Atmospheric (air) pressure acts equally in all directions at a given point — a property of fluids."}, {"id": 69, "subject": "Science", "chapter": "Friction", "q": "Ball bearings are used in machines to:", "opts": {"A": "Increase friction", "B": "Convert rolling friction to sliding friction", "C": "Convert sliding friction to rolling friction", "D": "Eliminate friction entirely"}, "ans": "C", "exp": "Rolling friction is much less than sliding friction. Ball bearings replace sliding surfaces with rolling ones."}, {"id": 70, "subject": "Science", "chapter": "Friction", "q": "A bicycle slows down and stops even without brakes, mainly due to:", "opts": {"A": "Gravity", "B": "Air resistance and rolling friction", "C": "Magnetic force", "D": "The weight of the rider"}, "ans": "B", "exp": "Rolling friction between tyres and road, plus air resistance, gradually remove kinetic energy from the bicycle."}, {"id": 71, "subject": "Science", "chapter": "Sound", "q": "The number of oscillations per second of a vibrating object is called its:", "opts": {"A": "Amplitude", "B": "Wavelength", "C": "Frequency", "D": "Speed"}, "ans": "C", "exp": "Frequency (Hz) = number of complete oscillations per second."}, {"id": 72, "subject": "Science", "chapter": "Sound", "q": "Sound cannot travel through:", "opts": {"A": "Water", "B": "Steel", "C": "Vacuum", "D": "Wood"}, "ans": "C", "exp": "Sound needs a material medium to travel. In vacuum there are no particles to vibrate."}, {"id": 73, "subject": "Science", "chapter": "Sound", "q": "The safe limit of sound exposure for human ears (prolonged) is approximately:", "opts": {"A": "35 dB", "B": "55 dB", "C": "85 dB", "D": "120 dB"}, "ans": "C", "exp": "85 dB is the safe upper limit for prolonged exposure. Above this, hearing damage can occur."}, {"id": 74, "subject": "Science", "chapter": "Chemical Effects of Electric Current", "q": "Electroplating uses electric current to:", "opts": {"A": "Heat the metal", "B": "Deposit a layer of one metal over another", "C": "Dissolve the metal", "D": "Magnetise the metal"}, "ans": "B", "exp": "In electroplating, the object is the cathode. Metal ions from the solution deposit as a thin layer on it."}, {"id": 75, "subject": "Science", "chapter": "Chemical Effects of Electric Current", "q": "Which liquid is a good conductor of electricity?", "opts": {"A": "Distilled water", "B": "Vegetable oil", "C": "Saltwater", "D": "Alcohol"}, "ans": "C", "exp": "Saltwater contains dissolved ions (Na⁺, Cl⁻) that carry charge. Pure water has no free ions and is a poor conductor."}, {"id": 76, "subject": "Science", "chapter": "Some Natural Phenomena", "q": "Lightning is caused by:", "opts": {"A": "Collision of warm and cold air", "B": "Discharge of static electricity between clouds and ground", "C": "Rapid evaporation of water", "D": "Reflection of sunlight"}, "ans": "B", "exp": "Charge builds up in storm clouds. When enough accumulates, it discharges as a giant static electric spark."}, {"id": 77, "subject": "Science", "chapter": "Some Natural Phenomena", "q": "On the Richter scale, each increase of 1 unit means the earthquake is approximately how much stronger?", "opts": {"A": "10 times", "B": "100 times", "C": "2 times", "D": "1000 times"}, "ans": "A", "exp": "The Richter scale is logarithmic. Each unit increase represents ~10× greater amplitude of seismic waves."}, {"id": 78, "subject": "Science", "chapter": "Light", "q": "A ray of light hits a plane mirror at 30° to the mirror surface. What is the angle of reflection (from normal)?", "opts": {"A": "30°", "B": "60°", "C": "90°", "D": "150°"}, "ans": "B", "exp": "Angle of incidence = angle of reflection, measured from the normal. 30° to surface = 60° to normal. So reflection = 60°."}, {"id": 79, "subject": "Science", "chapter": "Light", "q": "Which eye defect is corrected using a concave lens?", "opts": {"A": "Hypermetropia (long-sightedness)", "B": "Myopia (short-sightedness)", "C": "Astigmatism", "D": "Colour blindness"}, "ans": "B", "exp": "In myopia, image forms in front of the retina. A concave (diverging) lens corrects this by spreading the rays."}, {"id": 80, "subject": "Science", "chapter": "Light", "q": "The splitting of white light into colours by a prism is called:", "opts": {"A": "Reflection", "B": "Refraction", "C": "Dispersion", "D": "Diffraction"}, "ans": "C", "exp": "Dispersion occurs because different colours (wavelengths) refract at slightly different angles, separating into VIBGYOR."}, {"id": 81, "subject": "Science", "chapter": "Stars and the Solar System", "q": "A light year is a unit of:", "opts": {"A": "Time", "B": "Speed", "C": "Distance", "D": "Brightness"}, "ans": "C", "exp": "A light year is the distance light travels in one year: about 9.46 × 10¹² km."}, {"id": 82, "subject": "Science", "chapter": "Stars and the Solar System", "q": "Comet tails always point:", "opts": {"A": "Toward the Sun", "B": "Away from the Sun", "C": "In the direction of travel", "D": "Toward Earth"}, "ans": "B", "exp": "The Sun's solar wind pushes comet tails away. The tail always points away from the Sun regardless of travel direction."}, {"id": 83, "subject": "Science", "chapter": "Stars and the Solar System", "q": "Which planet has the largest number of known moons?", "opts": {"A": "Jupiter", "B": "Mars", "C": "Saturn", "D": "Neptune"}, "ans": "C", "exp": "Saturn has the most confirmed moons (surpassing Jupiter with over 140 moons as of recent discoveries)."}, {"id": 84, "subject": "Science", "chapter": "Pollution of Air and Water", "q": "Acid rain is primarily caused by oxides of:", "opts": {"A": "Carbon and oxygen", "B": "Nitrogen and sulphur", "C": "Hydrogen and helium", "D": "Calcium and magnesium"}, "ans": "B", "exp": "SO₂ and NO₂ from burning fossil fuels dissolve in rainwater forming sulphuric and nitric acids."}, {"id": 85, "subject": "Science", "chapter": "Pollution of Air and Water", "q": "The Ganga Action Plan was launched to:", "opts": {"A": "Generate hydroelectric power", "B": "Reduce pollution in the Ganga river", "C": "Irrigate farmland", "D": "Build dams on the Ganga"}, "ans": "B", "exp": "The Ganga Action Plan (1985) was India's first large river cleanup initiative targeting industrial and sewage pollution."}];
+
+const SUPABASE_URL = 'https://ewogowpkewtrzsslfysv.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3b2dvd3BrZXd0cnpzc2xmeXN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYyMzgwNzgsImV4cCI6MjA2MTgxNDA3OH0.iZ4OHiVuCvHMqcB7QOPN8m9F0n0Wm_7hJqBvgkxJnE8';
+
+// ── State ──────────────────────────────────────────────────────────────────────
+let answered = {}; // id -> {chosen, correct}
+let currentFilter = 'all';
+let sessionStart = Date.now();
+
+function getProfile() {
+  try { return JSON.parse(localStorage.getItem('activeProfile') || 'null'); } catch { return null; }
+}
+
+// ── Persistence ────────────────────────────────────────────────────────────────
+function saveState() {
+  localStorage.setItem('cbse8_answered', JSON.stringify(answered));
+}
+function loadState() {
+  try { answered = JSON.parse(localStorage.getItem('cbse8_answered') || '{}'); } catch { answered = {}; }
+}
+
+// ── Filter ─────────────────────────────────────────────────────────────────────
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.className = 'filter-btn';
+  });
+  if (f === 'all') btn.classList.add('active-all');
+  else if (f === 'Maths') btn.classList.add('active-m');
+  else btn.classList.add('active-s');
+  renderQuestions();
+}
+
+function filteredQs() {
+  if (currentFilter === 'all') return QUESTION_BANK;
+  return QUESTION_BANK.filter(q => q.subject === currentFilter);
+}
+
+// ── Render ─────────────────────────────────────────────────────────────────────
+function renderQuestions() {
+  const qs = filteredQs();
+  const container = document.getElementById('q-container');
+
+  // Group by chapter
+  const chapters = {};
+  qs.forEach(q => {
+    const key = q.subject + '||' + q.chapter;
+    if (!chapters[key]) chapters[key] = [];
+    chapters[key].push(q);
+  });
+
+  let html = '';
+  for (const key of Object.keys(chapters)) {
+    const [subj, chap] = key.split('||');
+    const dotClass = subj === 'Maths' ? 'dot-m' : 'dot-s';
+    const subjLabel = subj === 'Maths' ? '📐' : '🔬';
+    html += `<div class="chap-summary">
+      <div class="chap-header"><span class="chap-dot ${dotClass}"></span>${subjLabel} ${chap}</div>`;
+    chapters[key].forEach(q => {
+      html += renderCard(q);
+    });
+    html += '</div>';
+  }
+
+  container.innerHTML = html;
+  // Restore answered state
+  Object.keys(answered).forEach(id => {
+    const a = answered[id];
+    restoreCard(parseInt(id), a.chosen, a.correct);
+  });
+  updateProgress();
+}
+
+function renderCard(q) {
+  const optsHtml = Object.entries(q.opts).map(([k,v]) =>
+    `<button class="opt-btn" id="opt-${q.id}-${k}" onclick="answer(${q.id},'${k}')" data-key="${k}">
+       <span class="key">${k}</span><span>${v}</span>
+     </button>`
+  ).join('');
+
+  // Scaffold hints
+  const hints = buildHints(q);
+
+  return `<div class="q-card" id="card-${q.id}">
+    <div class="q-meta">
+      <span class="q-num">Q${q.id}</span>
+      <span class="chap-tag">${q.chapter}</span>
+    </div>
+    <div class="q-text">${q.q}</div>
+    <div class="options">${optsHtml}</div>
+    <div class="exp-box" id="exp-${q.id}"><strong>Explanation:</strong> ${q.exp}</div>
+    <div class="scaffold" id="scaffold-${q.id}">
+      <div class="sc-tabs">
+        <button class="sc-tab active" onclick="showTab(${q.id},'hint',this)">💡 Hint</button>
+        <button class="sc-tab" onclick="showTab(${q.id},'step',this)">🔢 Step</button>
+        <button class="sc-tab" onclick="showTab(${q.id},'exp',this)">📖 Explain</button>
+      </div>
+      <div class="sc-panel show" id="sc-hint-${q.id}">${hints.hint}</div>
+      <div class="sc-panel" id="sc-step-${q.id}">${hints.step}</div>
+      <div class="sc-panel" id="sc-exp-${q.id}">${q.exp}</div>
+    </div>
+  </div>`;
+}
+
+function buildHints(q) {
+  // Generic scaffolding — specific hints per chapter type
+  const chapHints = {
+    'Rational Numbers': { hint: 'Think about properties of operations: commutative swaps order, associative changes grouping, distributive multiplies across a sum.', step: 'Write out both sides and compare the structure of the expression.' },
+    'Linear Equations in One Variable': { hint: 'Move all x-terms to one side, constants to the other.', step: 'Collect like terms, then divide both sides by the coefficient of x.' },
+    'Understanding Quadrilaterals': { hint: 'For n-sided polygon, interior angle sum = (n−2) × 180°.', step: 'Count the number of sides, then apply the formula.' },
+    'Data Handling': { hint: 'Probability = Favourable outcomes ÷ Total outcomes.', step: 'Count all objects in the bag/sample space first.' },
+    'Squares and Square Roots': { hint: 'Try to prime-factorise the number and see if all prime factors appear in pairs.', step: 'Group factors into pairs; if any factor is unpaired it is not a perfect square.' },
+    'Cubes and Cube Roots': { hint: 'Prime-factorise the number. For a perfect cube, every prime factor must appear in groups of 3.', step: 'Find which prime factor needs more copies to complete a triplet.' },
+    'Comparing Quantities': { hint: 'Profit% = (Profit ÷ Cost Price) × 100. For CI, use A = P(1 + r/100)ⁿ.', step: 'Identify whether it is a profit/loss or CI problem, then apply the correct formula.' },
+    'Algebraic Expressions and Identities': { hint: 'Recall the identities: (a+b)² = a²+2ab+b², (a−b)(a+b) = a²−b².', step: 'Identify a and b in your expression, then substitute into the identity.' },
+    'Visualising Solid Shapes': { hint: "Euler's formula: Vertices + Faces − Edges = 2.", step: 'Count V, F, E for the shape and verify.' },
+    'Mensuration': { hint: 'Area of trapezium = ½(a+b)h. Volume of cylinder = πr²h.', step: 'Write down the given values and substitute into the formula carefully.' },
+    'Exponents and Powers': { hint: 'When multiplying same base: add exponents. When dividing: subtract. Standard form: a × 10ⁿ where 1 ≤ a < 10.', step: 'Apply the exponent rules step by step.' },
+    'Direct and Inverse Proportions': { hint: 'Direct: more workers → more done. Inverse: more workers → less time.', step: 'Set up the proportion correctly: x₁y₁ = x₂y₂ for inverse.' },
+    'Factorisation': { hint: 'Look for common factors, or apply difference of squares: a²−b² = (a−b)(a+b).', step: 'Try to write the expression as a product of two simpler ones.' },
+    'Introduction to Graphs': { hint: 'In (x, y): right of y-axis = +x, left = −x. Above x-axis = +y, below = −y.', step: 'Check the signs of x and y to determine the quadrant.' },
+    'Playing with Numbers': { hint: 'A 2-digit number with tens digit t and units digit u equals 10t + u.', step: 'Write an equation using the given condition and solve.' },
+  };
+  const sci = {
+    'Crop Production and Management': { hint: 'Kharif = monsoon season (June-July). Rabi = winter season (Oct-Nov).', step: 'Recall which season each crop grows in.' },
+    'Microorganisms: Friend and Foe': { hint: 'Think: which microorganism is used in food preparation — bacteria, yeast, or protozoa?', step: 'Recall common uses of microorganisms in daily life.' },
+    'Synthetic Fibres and Plastics': { hint: 'Rayon = wood pulp (natural base). Nylon = coal + water + air (fully synthetic).', step: 'Think about what the fibre is made from.' },
+    'Materials: Metals and Non-Metals': { hint: 'Ductility = wires. Malleability = sheets. Conductivity = heat/electricity.', step: 'Match the property to its definition.' },
+    'Coal and Petroleum': { hint: 'Think: can the resource reform within a human lifetime?', step: 'Consider the time scale of fossil fuel formation.' },
+    'Combustion and Flame': { hint: 'Complete combustion → blue flame, higher temperature. Incomplete → yellow/orange.', step: 'Identify which zone has the most available oxygen.' },
+    'Conservation of Plants and Animals': { hint: 'Biosphere reserves have THREE zones. Wildlife sanctuaries protect specific animals.', step: 'Think about which type allows some human activity.' },
+    'Cell Structure and Functions': { hint: 'ATP = energy currency. Which organelle makes ATP?', step: 'Connect the term "powerhouse" to the organelle that produces energy.' },
+    'Reproduction in Animals': { hint: 'Trace the path of the egg from ovary after ovulation.', step: 'The egg is released from the ovary → enters fallopian tube → fertilisation occurs there.' },
+    'Reaching the Age of Adolescence': { hint: 'Which gland releases hormones that control all other endocrine glands?', step: 'Think "master controller" — which brain gland fits?' },
+    'Force and Pressure': { hint: 'P = F/A. For same force: smaller area → more pressure.', step: 'Identify the force and the area, then divide.' },
+    'Friction': { hint: 'Rolling friction < sliding friction. Bearings convert one to the other.', step: 'Think about which type of friction ball bearings eliminate.' },
+    'Sound': { hint: 'Frequency = oscillations per second (Hz). Sound needs a medium — particles must vibrate.', step: 'Eliminate solid, liquid, and gas — what is left?' },
+    'Chemical Effects of Electric Current': { hint: 'Electrolytes have free ions. Pure water has no free ions.', step: 'Ask: does this liquid have dissolved ions that can carry charge?' },
+    'Some Natural Phenomena': { hint: 'Lightning = static electricity discharge. Richter scale is logarithmic.', step: 'For Richter: each step = 10× amplitude (not 2× or 100×).' },
+    'Light': { hint: 'Angle of incidence = angle of reflection, measured from the normal (perpendicular to surface).', step: 'If ray hits at 30° to mirror surface, it hits at 60° to the normal.' },
+    'Stars and the Solar System': { hint: 'Light year = distance, not time. Solar wind always blows away from the Sun.', step: 'For comet tail: think of a flag in wind — which way does it point?' },
+    'Pollution of Air and Water': { hint: 'SO₂ + H₂O → H₂SO₄ (sulphuric acid). NO₂ + H₂O → HNO₃ (nitric acid).', step: 'Identify which gases from burning fossil fuels dissolve in rain.' },
+  };
+  const all = { ...chapHints, ...sci };
+  return all[q.chapter] || { hint: 'Read the question carefully and eliminate wrong options one by one.', step: 'Apply the relevant formula or concept from your textbook.' };
+}
+
+function showTab(id, tab, btn) {
+  ['hint','step','exp'].forEach(t => {
+    document.getElementById(`sc-${t}-${id}`).classList.remove('show');
+  });
+  document.getElementById(`sc-${tab}-${id}`).classList.add('show');
+  btn.closest('.sc-tabs').querySelectorAll('.sc-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ── Answer ─────────────────────────────────────────────────────────────────────
+function answer(id, chosen) {
+  if (answered[id]) return; // locked
+  const q = QUESTION_BANK.find(x => x.id === id);
+  const correct = chosen === q.ans;
+
+  answered[id] = { chosen, correct };
+  saveState();
+  restoreCard(id, chosen, correct);
+  updateProgress();
+
+  if (correct) showBurst('✅');
+  else showBurst('❌');
+
+  // Show scaffold on wrong answer
+  if (!correct) {
+    document.getElementById(`scaffold-${id}`).classList.add('show');
+  }
+}
+
+function restoreCard(id, chosen, correct) {
+  const q = QUESTION_BANK.find(x => x.id === id);
+  const card = document.getElementById(`card-${id}`);
+  if (!card) return;
+  card.classList.add(correct ? 'answered-correct' : 'answered-wrong');
+
+  // Disable all opts
+  Object.keys(q.opts).forEach(k => {
+    const btn = document.getElementById(`opt-${id}-${k}`);
+    if (!btn) return;
+    btn.disabled = true;
+    if (k === q.ans) btn.classList.add('correct');
+    else if (k === chosen) btn.classList.add('wrong');
+  });
+
+  // Show explanation
+  document.getElementById(`exp-${id}`).classList.add('show');
+  if (!correct) document.getElementById(`scaffold-${id}`).classList.add('show');
+}
+
+// ── Progress ───────────────────────────────────────────────────────────────────
+function updateProgress() {
+  const qs = filteredQs();
+  const total = qs.length;
+  const done = qs.filter(q => answered[q.id]).length;
+  const correct = qs.filter(q => answered[q.id] && answered[q.id].correct).length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+
+  document.getElementById('prog-text').textContent = `${done} of ${total} answered`;
+  document.getElementById('prog-score').textContent = `Correct: ${correct}/${done}`;
+  document.getElementById('prog-fill').style.width = pct + '%';
+
+  if (done === total && total > 0) {
+    setTimeout(() => showScorePanel(correct, total), 800);
+  }
+}
+
+function showScorePanel(correct, total) {
+  document.getElementById('q-container').style.display = 'none';
+  document.getElementById('score-panel').style.display = 'block';
+  document.getElementById('final-score').textContent = correct;
+  document.getElementById('final-sub').textContent = `out of ${total} questions • ${Math.round(correct/total*100)}%`;
+  syncScore(correct, total);
+}
+
+function restartSession() {
+  answered = {};
+  saveState();
+  document.getElementById('q-container').style.display = 'block';
+  document.getElementById('score-panel').style.display = 'none';
+  renderQuestions();
+}
+
+// ── Supabase sync ──────────────────────────────────────────────────────────────
+async function syncScore(correct, total) {
+  const profile = getProfile();
+  if (!profile) return;
+  const duration = Math.round((Date.now() - sessionStart) / 1000);
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/sessions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        profile_id: profile.id,
+        level: 'class8',
+        score: correct,
+        total: total,
+        duration_seconds: duration
+      })
+    });
+  } catch(e) { /* offline fine */ }
+}
+
+// ── Burst ──────────────────────────────────────────────────────────────────────
+function showBurst(emoji) {
+  const el = document.getElementById('burst');
+  el.textContent = emoji;
+  el.style.display = 'block';
+  el.style.animation = 'none';
+  el.offsetHeight;
+  el.style.animation = 'burst .7s ease forwards';
+  setTimeout(() => el.style.display = 'none', 700);
+}
+
+// ── Admin ──────────────────────────────────────────────────────────────────────
+function toggleAdmin(e) { e.preventDefault(); document.getElementById('admin-panel').classList.toggle('show'); }
+function resetAll() {
+  if (!confirm('Reset all progress for Class 8?')) return;
+  answered = {};
+  localStorage.removeItem('cbse8_answered');
+  document.getElementById('admin-panel').classList.remove('show');
+  restartSession();
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────────
+loadState();
+renderQuestions();
+</script>
+
+</body>
+</html>
