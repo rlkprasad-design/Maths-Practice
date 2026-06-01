@@ -535,7 +535,7 @@ async function renderLeaderboard() {
           <div class="lb-name">${d.name}</div>
           <div class="lb-sub">${d.sessions.length} sessions · ${d.totalQs} Qs${speedTxt} <span style="font-size:.65rem;color:#22c55e;font-weight:800">● live</span></div>
         </div>
-        <div class="lb-score">${d.totalPts > 0 ? d.totalPts + '<span style="font-size:.7rem;font-weight:700;color:var(--muted)"> pts</span> <span style="font-size:.75rem;color:var(--muted)">(${d.avgPct}%)</span>' : 'No sessions yet'}</div>
+        <div class="lb-score">${d.totalPts > 0 ? d.totalPts + ' pts (' + d.avgPct + '%)' : 'No sessions yet'}</div>
       </div>`;
     }).join('');
 
