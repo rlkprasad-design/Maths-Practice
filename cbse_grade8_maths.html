@@ -1802,7 +1802,7 @@ const QUESTION_BANK = [
  word:'Akhil has a square piece of cloth of area 125 cm². He wants to cut the largest square handkerchief with an integer side length. What is the maximum side length?',
  opts:{A:'12 cm',B:'11 cm',C:'10 cm',D:'13 cm'},
  steps:['Find the largest perfect square ≤ 125.',
-         '11² = 121 and 12² = 144. Since 144 > 125, a 12 cm square won't fit.',
+         '11² = 121 and 12² = 144. Since 144 > 125, a 12 cm square won\'t fit.',
          '121 ≤ 125, so the largest integer side length is 11 cm.'],
  eq:'11² = 121 ≤ 125 < 144 = 12²  →  max side = 11 cm',
  answer:'B',
@@ -1822,7 +1822,7 @@ const QUESTION_BANK = [
  word:'Find the smallest number by which 9408 must be multiplied to make it a perfect square.',
  opts:{A:'2',B:'3',C:'7',D:'6'},
  steps:['Prime factorise 9408: 9408 = 2⁵ × 3 × 7².',
-         'Wait — let's check: 9408 ÷ 2 = 4704, ÷2=2352, ÷2=1176, ÷2=588, ÷2=294, ÷2=147, ÷3=49, ÷7=7. So 9408 = 2⁶ × 3 × 7².',
+         'Wait — let\'s check: 9408 ÷ 2 = 4704, ÷2=2352, ÷2=1176, ÷2=588, ÷2=294, ÷2=147, ÷3=49, ÷7=7. So 9408 = 2⁶ × 3 × 7².',
          'The factor 3 appears once (odd). Multiply by 3 to pair it: 9408 × 3 = 28224 = 2⁶ × 3² × 7² = (2³ × 3 × 7)² = 168².'],
  eq:'9408 = 2⁶ × 3 × 7²  →  multiply by 3 → 28224 = 168²',
  answer:'B',
@@ -1904,7 +1904,7 @@ const QUESTION_BANK = [
  steps:['A: Odd × Odd × Odd = Odd. So cube of any odd is ODD, not even. FALSE.',
          'B: 2³=8, so 2 is a perfect cube ending in 8. FALSE.',
          'C: Largest 2-digit number is 99. 99³ = 970299 (6 digits). So a 2-digit cube has at most 6 digits. FALSE.',
-         'D: 8=2³ has factors 1,2,4,8 — that's 4 (even). So cubes do NOT always have an odd number of factors. FALSE. All are false — but among the options, none is stated as true. Re-reading: C says MAY have 7+ digits. 99³=970299 is 6 digits, 100³=1000000 is 7 but 100 is 3-digit. So C is FALSE. All four statements given are false.'],
+         'D: 8=2³ has factors 1,2,4,8 — that\'s 4 (even). So cubes do NOT always have an odd number of factors. FALSE. All are false — but among the options, none is stated as true. Re-reading: C says MAY have 7+ digits. 99³=970299 is 6 digits, 100³=1000000 is 7 but 100 is 3-digit. So C is FALSE. All four statements given are false.'],
  eq:'99³ = 970299 (6 digits max for 2-digit base). All statements are false.',
  answer:'B',
  explanation:'Actually all four are false. 2³=8 disproves B. But among typical exam choices, the question tests whether students know: cube of odd is ODD (not even), 2³=8 disproves B, 99³=970299 has 6 digits not 7+, and 8=2³ has 4 factors (even). The book states all four are FALSE.'},
@@ -2156,7 +2156,7 @@ const QUESTION_BANK = [
  opts:{A:'Yes, always true',B:'No, never true',C:'Only true if the numbers are consecutive',D:'Only true for odd numbers'},
  steps:['Let the three numbers be 6a+2, 6b+2, 6c+2 for integers a,b,c.',
          'Sum = 6a+2+6b+2+6c+2 = 6(a+b+c) + 6 = 6(a+b+c+1).',
-         'This is always a multiple of 6. So Tathagat's claim is TRUE.'],
+         'This is always a multiple of 6. So Tathagat\'s claim is TRUE.'],
  eq:'(6a+2)+(6b+2)+(6c+2) = 6(a+b+c+1) — always divisible by 6',
  answer:'A',
  explanation:'Each number is of the form 6k+2. Adding three: 6(a+b+c) + 6 = 6(a+b+c+1), always a multiple of 6.'},
@@ -2299,7 +2299,7 @@ const QUESTION_BANK = [
          '37 : 2 :: x : 1 → x = 37 × 1 ÷ 2 = 18.5 kg.'],
  eq:'37:2 :: x:1  →  x = 37/2 = 18.5 kg',
  answer:'B',
- explanation:'By proportion: 37/2 = x/1, so x = 18.5 kg. This also corresponds to gold's real density of about 19.3 g/cm³ (approximate).'},
+ explanation:'By proportion: 37/2 = x/1, so x = 18.5 kg. This also corresponds to gold\'s real density of about 19.3 g/cm³ (approximate).'},
 
 {id:682,year:2025,qnum:682,cat:'Maths — Ch7: Proportional Reasoning',topic:'Bricks and wall length',chapter:'Proportional Reasoning-1',
  word:'A mason needs 1450 bricks per 10 feet of wall. The house has total wall length 108 feet. How many bricks are needed?',
@@ -2432,7 +2432,7 @@ function getImgSrc(year,qnum){ return null; }
 </div>
 
 <script>
-
+console.log('%c CBSE Maths v3 — 453 questions loaded ', 'background:#4f72e3;color:white;font-size:14px;padding:4px 8px;border-radius:4px');
 const LS_KEY_PFX = 'mkp_';
 const CAT_COLORS = [
   {bg:'#e8edfb',fg:'#4f72e3'},{bg:'#dcfce7',fg:'#22c55e'},{bg:'#fef3c7',fg:'#d97706'},
@@ -2927,6 +2927,10 @@ window.addEventListener('DOMContentLoaded',()=>{
   renderProfileChips();buildQuickPicks();buildCatFilter();setNum(10);updatePoolInfo();
   if(!loadSession()){showScreen('lockScreen');}
   refreshCustomQs().then(()=>buildCatFilter()).catch(()=>{});
+  setTimeout(()=>{
+    const el=document.getElementById('catFilt');
+    if(el&&!el.children.length){console.warn('catFilt empty — retrying buildCatFilter');buildCatFilter();}
+  },800);
 });
 
 
