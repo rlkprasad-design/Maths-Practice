@@ -298,6 +298,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   font-weight:900;background:#f0fdf4;color:#16a34a;border:1.5px solid #86efac;margin-bottom:8px}
 .chapter-ref{font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:10px;
   padding:4px 10px;background:var(--surface2);border-radius:var(--rs);display:inline-block}
+
+.expl-row{margin:8px 0 4px;padding:8px 12px;background:#f0f9ff;border-left:3px solid #0ea5e9;
+  border-radius:0 6px 6px 0;font-size:.88rem;color:#0369a1;line-height:1.5;}
 </style>
 </head>
 <body>
@@ -2095,9 +2098,10 @@ function renderQuestion(){
     return `<button class="tab ${t===ti?'on':''}" onclick="switchTab(${ti})">${lbl}${ptsBadge}</button>`;
   }).join('');
 
-  // MCQ options (always A-E)
+  // MCQ options — render only letters present in q.opts (supports A–D or A–E)
   function mcqPanel(tabIdx) {
-    const opts=['A','B','C','D','E'];
+    const allLetters=['A','B','C','D','E'];
+    const opts=allLetters.filter(l=>q.opts&&q.opts[l]!==undefined);
     let optsH='';
     opts.forEach(letter=>{
       let cl='mcq-opt';
@@ -2105,24 +2109,26 @@ function renderQuestion(){
         cl+=' locked';
         if(letter===q.answer) cl+=' correct';
         else if(ans.chosen===letter&&letter!==q.answer) cl+=' wrong';
-      } else {
-        // not yet answered
       }
-      optsH+=`<div class="${cl}" onclick="chooseOption('${letter}')"><span class="mcq-key">${letter}</span><span>${letter}</span></div>`;
+      optsH+=`<div class="${cl}" onclick="chooseOption('${letter}')"><span class="mcq-key">${letter}</span><span>${esc(q.opts[letter]||'')}</span></div>`;
     });
     const isWrong = done && !ans.correct;
+    const optRange = opts.length>0 ? `A\u2013${opts[opts.length-1]}` : 'A\u2013D';
     const fbMsg = done
       ? (ans.correct
-          ? `✓ Correct! Answer is ${q.answer}. (${POINTS[ans.stageFirstCorrect]} pts)`
-          : `✗ Wrong — you chose ${ans.chosen}, correct answer is ${q.answer}.`)
+          ? `✓ Correct! Answer is ${q.answer}: ${esc(q.opts[q.answer]||'')}. (+${POINTS[ans.stageFirstCorrect]} pts)`
+          : `✗ Wrong — you chose ${ans.chosen}, correct answer is ${q.answer}: ${esc(q.opts[q.answer]||'')}.`)
       : '';
     const fbCl = done ? (ans.correct ? 'ok' : 'no') : '';
+    const explRow = (done && q.explanation)
+      ? `<div class="expl-row">${esc(q.explanation)}</div>`
+      : '';
     const seeHow = isWrong
       ? `<button class="btn-see-how" onclick="switchTab(1)">📋 See how to work it out →</button>`
       : '';
     return `<div class="mcq-grid">${optsH}</div>
       <div class="feedback ${done?'on':''} ${fbCl}">${fbMsg}</div>
-      ${seeHow}`;
+      ${explRow}${seeHow}`;
   }
 
   // Explanation banner — shown on Steps/Equation tabs after a wrong answer
@@ -2150,7 +2156,7 @@ function renderQuestion(){
     ${imgFull}${hintBox}
     <div class="word">${esc(q.word||'Look at the image and choose the correct answer.')}</div>
     <button class="btn-tts" id="ttsBtn" onclick="toggleTTS()">🔊 Read Aloud</button>
-    <div class="mcq-note">Select the correct option (A–E). <strong>One attempt only.</strong></div>
+    <div class="mcq-note">Select the correct option. <strong>One attempt only.</strong></div>
     ${mcqPanel(0)}
   </div></div>`;
 
