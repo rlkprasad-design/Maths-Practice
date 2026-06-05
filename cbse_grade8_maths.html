@@ -363,7 +363,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <script>
 const LEVEL_ID = 'cbse8_maths';
 const QUESTION_BANK = [
-  /* {id:301,year:0,qnum:301,cat:'Maths — Rational Numbers',topic:'Additive inverse',chapter:'Rational Numbers',word:'What is the additive inverse of -7/9?',opts:{'A':'-9/7','B':'7/9','C':'9/7','D':'-7/9','E':'0'},steps:['Additive inverse of a number is what you add to get 0','Additive inverse of -7/9 = +7/9','Check: -7/9 + 7/9 = ___'],eq:'(-7/9) + ? = 0 → ? = ___',answer:'B'},
+   {id:301,year:0,qnum:301,cat:'Maths — Rational Numbers',topic:'Additive inverse',chapter:'Rational Numbers',word:'What is the additive inverse of -7/9?',opts:{'A':'-9/7','B':'7/9','C':'9/7','D':'-7/9','E':'0'},steps:['Additive inverse of a number is what you add to get 0','Additive inverse of -7/9 = +7/9','Check: -7/9 + 7/9 = ___'],eq:'(-7/9) + ? = 0 → ? = ___',answer:'B'},
   {id:302,year:0,qnum:302,cat:'Maths — Rational Numbers',topic:'Multiplicative inverse',chapter:'Rational Numbers',word:'What is the multiplicative inverse (reciprocal) of -5/8?',opts:{'A':'8/5','B':'-8/5','C':'5/8','D':'-5/8','E':'1'},steps:['Multiplicative inverse of a/b = b/a','Multiplicative inverse of -5/8 = 8/(-5) = -8/5','Check: (-5/8) × (-8/5) = ___'],eq:'(-5/8) × ? = 1 → ? = ___',answer:'B'},
   {id:303,year:0,qnum:303,cat:'Maths — Rational Numbers',topic:'Properties — closure',chapter:'Rational Numbers',word:'Which of the following operations is NOT closed for rational numbers?',opts:{'A':'Addition','B':'Subtraction','C':'Multiplication','D':'Division by zero','E':'Division by non-zero'},steps:['Closure means: operation on two rationals always gives a rational','Addition: a/b + c/d = rational ✓','Subtraction and multiplication: also closed ✓','Division by non-zero: also closed ✓','Division BY ZERO is undefined — not closed'],eq:'a/b ÷ 0 = undefined → not closed',answer:'D'},
   {id:304,year:0,qnum:304,cat:'Maths — Rational Numbers',topic:'Number line',chapter:'Rational Numbers',word:'Which rational number lies exactly between 1/4 and 3/4 on the number line?',opts:{'A':'1/2','B':'1/3','C':'2/3','D':'1/8','E':'5/8'},steps:['To find the number exactly between two numbers, find their average','Average = (1/4 + 3/4) / 2 = (4/4) / 2 = 1/2','Check: is 1/4 < 1/2 < 3/4? ___'],eq:'(1/4 + 3/4) / 2 = ___',answer:'A'},
@@ -592,7 +592,7 @@ const QUESTION_BANK = [
   {id:528,year:0,qnum:528,cat:'Maths — Playing with Numbers',topic:'Test of divisibility 4',chapter:'Playing with Numbers',word:'Which of these is divisible by 4?',opts:{'A':'7,326','B':'5,134','C':'8,312','D':'3,218','E':'6,250'},steps:['Divisibility by 4: last two digits divisible by 4','Check each: 26÷4=6.5✗, 34÷4=8.5✗, 12÷4=3 ✓','8312 → last 2 digits = 12, 12÷4=3 ✓'],eq:'Last 2 digits: 12 ÷ 4 = 3 ✓ → 8312',answer:'C'},
   {id:529,year:0,qnum:529,cat:'Maths — Playing with Numbers',topic:'3-digit pattern',chapter:'Playing with Numbers',word:'What is 143 × 7?',opts:{'A':'1001','B':'1001 — and this always works for multiples of 143 up to ×7','C':'1001 because 143 = 11×13','D':'998','E':'1004'},steps:['143 × 7 = 1001','1001 = 7 × 11 × 13','So 143 = 11 × 13, and 143 × 7 = 11 × 13 × 7 = 1001'],eq:'143 × 7 = 1001 = 7 × 11 × 13',answer:'C'},
   {id:530,year:0,qnum:530,cat:'Maths — Playing with Numbers',topic:'Generalised form 3-digit',chapter:'Playing with Numbers',word:'A 3-digit number \\overline{abc} in generalised form is:',opts:{'A':'a+b+c','B':'abc','C':'100a+10b+c','D':'100c+10b+a','E':'a×b×c'},steps:['Hundreds digit a × 100 = 100a','Tens digit b × 10 = 10b','Units digit c × 1 = c','Total = ___'],eq:'100a + 10b + c',answer:'C'},
-  {id:531,year:0,qnum:531,cat:'Maths — Playing with Numbers',topic:'Test for 6',chapter:'Playing with Numbers',word:'A number is divisible by 6 if it is divisible by:',opts:{'A':'2 and 4','B':'3 and 4','C':'2 and 3','D':'6 only','E':'1 and 6'},steps:['6 = 2 × 3 (coprime factors)','A number divisible by both 2 and 3 is divisible by 6','Check: 24 ÷ 2 ✓, 24 ÷ 3 ✓, 24 ÷ 6 ✓'],eq:'Divisible by 6 = divisible by 2 AND 3',answer:'C'} */
+  {id:531,year:0,qnum:531,cat:'Maths — Playing with Numbers',topic:'Test for 6',chapter:'Playing with Numbers',word:'A number is divisible by 6 if it is divisible by:',opts:{'A':'2 and 4','B':'3 and 4','C':'2 and 3','D':'6 only','E':'1 and 6'},steps:['6 = 2 × 3 (coprime factors)','A number divisible by both 2 and 3 is divisible by 6','Check: 24 ÷ 2 ✓, 24 ÷ 3 ✓, 24 ÷ 6 ✓'],eq:'Divisible by 6 = divisible by 2 AND 3',answer:'C'} ,
 
   {id:532,year:0,qnum:532,cat:'Science',topic:'Which nutrient is supplied to crops by adding urea',chapter:'Crop Production and Management',
    word:'Which nutrient is supplied to crops by adding urea to the soil?',
@@ -2337,7 +2337,7 @@ function getImgSrc(year,qnum){ return null; }
   <div class="lock-card">
     <span class="lock-logo">📗</span>
     <div class="lock-title">CBSE Class 8 Maths</div>
-    <div class="lock-sub">Ganitha Prakash Part 1 · Chapters 1–8</div>
+    <div class="lock-sub">Ganitha Prakash Part 1 · Chapters 1–7 · v3</div>
     <div class="lock-sec">
       <span class="lock-lbl">Who is practising today?</span>
       <div class="profile-row" id="profileRow"></div>
@@ -2882,17 +2882,15 @@ function buildCatFilter(){
   const el=document.getElementById('catFilt');if(!el)return;el.innerHTML='';
   cats.forEach(cat=>{const b=document.createElement('button');b.className='cf';b.textContent=cat;b.onclick=()=>{b.classList.toggle('on');S.lockCats=Array.from(el.querySelectorAll('.cf.on')).map(x=>x.textContent);updatePoolInfo();};el.appendChild(b);});
 }
-window.addEventListener('DOMContentLoaded',async ()=>{
-  await refreshCustomQs();
-  renderProfileChips();buildQuickPicks();buildCatFilter();setNum(10);updatePoolInfo();
-  if(!loadSession()){showScreen('lockScreen');}
-});
-
-
 
 const SB_URL = 'https://ewogowpkewtrzsslfysv.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3b2dvd3BrZXd0cnpzc2xmeXN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTIzNDEsImV4cCI6MjA5NTUyODM0MX0.KYsUwS2-9B0XZWDa9V3SOW6xJ3kwZGTDH2G0b_qsOvs';
-
+const CUSTOM_Q_TABLE = SB_URL + '/rest/v1/custom_questions';
+const SB_HEADERS = {
+  'Content-Type': 'application/json',
+  'apikey': SB_KEY,
+  'Authorization': 'Bearer ' + SB_KEY,
+};
 async function saveToSupabase(result) {
   try {
     const response = await fetch(SB_URL + '/rest/v1/sessions', {
@@ -2916,11 +2914,19 @@ async function saveToSupabase(result) {
       })
     });
     if(!response.ok) console.warn('Supabase save failed:', response.status);
-    else console.log('Supabase: session saved for', result.playerName);
   } catch(e) {
-    console.warn('Supabase offline, saved locally only:', e.message);
+    console.warn('Supabase offline:', e.message);
   }
 }
+
+
+window.addEventListener('DOMContentLoaded',()=>{
+  renderProfileChips();buildQuickPicks();buildCatFilter();setNum(10);updatePoolInfo();
+  if(!loadSession()){showScreen('lockScreen');}
+  refreshCustomQs().then(()=>buildCatFilter()).catch(()=>{});
+});
+
+
 
 
 
@@ -3039,12 +3045,6 @@ async function initProfiles() {
 
 window._customQs = [];
 window._admAnswer = '';
-const CUSTOM_Q_TABLE = SB_URL + '/rest/v1/custom_questions';
-const SB_HEADERS = {
-  'Content-Type': 'application/json',
-  'apikey': SB_KEY,
-  'Authorization': 'Bearer ' + SB_KEY,
-};
 
 function buildAdmCatSelect() {
   const sel = document.getElementById('admCat');
