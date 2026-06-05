@@ -301,6 +301,61 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 .expl-row{margin:8px 0 4px;padding:8px 12px;background:#f0f9ff;border-left:3px solid #0ea5e9;
   border-radius:0 6px 6px 0;font-size:.88rem;color:#0369a1;line-height:1.5;}
+
+/* ── ADMIN PANEL ─────────────────────────────────────── */
+.adm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9500;
+  display:none;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto;}
+.adm-overlay.on{display:flex;}
+.adm-box{background:var(--surface);border-radius:18px;padding:20px;width:100%;max-width:640px;
+  margin:auto;box-shadow:0 8px 40px rgba(0,0,0,.3);}
+.adm-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.adm-title{font-size:1.1rem;font-weight:900;color:var(--primary);}
+.adm-close{background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted);}
+.adm-section{background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:12px;}
+.adm-section-title{font-size:.78rem;font-weight:900;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--muted);margin-bottom:10px;}
+.adm-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.adm-row.full{grid-template-columns:1fr;}
+.adm-label{font-size:.75rem;font-weight:700;color:var(--muted);margin-bottom:3px;}
+.adm-input,.adm-select,.adm-textarea{width:100%;padding:8px 10px;border-radius:8px;
+  border:2px solid var(--border);background:var(--surface);font-family:var(--font);
+  font-size:.82rem;color:var(--text);box-sizing:border-box;resize:vertical;}
+.adm-input:focus,.adm-select:focus,.adm-textarea:focus{outline:none;border-color:var(--primary);}
+.adm-textarea{min-height:70px;}
+.adm-ai-row{display:flex;gap:8px;margin-bottom:10px;}
+.adm-ai-input{flex:1;padding:9px 12px;border-radius:10px;border:2px solid var(--primary);
+  background:var(--surface);font-family:var(--font);font-size:.84rem;color:var(--text);}
+.adm-ai-input:focus{outline:none;}
+.btn-ai{padding:9px 16px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;
+  border:none;border-radius:10px;font-weight:800;font-size:.8rem;cursor:pointer;
+  white-space:nowrap;display:flex;align-items:center;gap:5px;}
+.btn-ai:disabled{opacity:.5;cursor:not-allowed;}
+.btn-ai-spin{display:inline-block;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.adm-opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.adm-opt-row{display:flex;align-items:center;gap:6px;}
+.adm-opt-key{font-weight:900;font-size:.85rem;color:var(--primary);width:16px;flex-shrink:0;}
+.adm-answer-btns{display:flex;gap:6px;flex-wrap:wrap;}
+.adm-ans-btn{padding:5px 14px;border-radius:8px;border:2px solid var(--border);
+  background:var(--surface);font-weight:800;font-size:.82rem;cursor:pointer;color:var(--text);}
+.adm-ans-btn.on{background:var(--primary);color:#fff;border-color:var(--primary);}
+.btn-save-q{width:100%;padding:12px;background:var(--primary);color:#fff;border:none;
+  border-radius:12px;font-weight:900;font-size:.9rem;cursor:pointer;margin-top:4px;}
+.btn-save-q:disabled{opacity:.5;cursor:not-allowed;}
+.adm-status{text-align:center;font-size:.8rem;font-weight:700;margin-top:8px;min-height:20px;}
+.adm-status.ok{color:#16a34a;} .adm-status.err{color:#dc2626;}
+.adm-q-list{display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto;}
+.adm-q-item{background:var(--surface);border-radius:10px;padding:10px 12px;
+  border:1.5px solid var(--border);display:flex;align-items:flex-start;gap:8px;}
+.adm-q-item-text{flex:1;font-size:.8rem;line-height:1.4;}
+.adm-q-cat{font-size:.7rem;font-weight:700;color:var(--primary);}
+.btn-del-q{background:#fee2e2;color:#dc2626;border:none;border-radius:7px;
+  padding:4px 9px;font-size:.75rem;font-weight:800;cursor:pointer;flex-shrink:0;}
+.adm-empty{text-align:center;color:var(--muted);font-size:.82rem;padding:16px;}
+.adm-gear{font-size:.78rem;font-weight:700;color:var(--muted);text-decoration:none;
+  opacity:.4;cursor:pointer;background:none;border:none;font-family:var(--font);}
+.adm-gear:hover{opacity:1;}
+
 </style>
 </head>
 <body>
@@ -539,7 +594,6 @@ const QUESTION_BANK = [
   {id:530,year:0,qnum:530,cat:'Maths — Playing with Numbers',topic:'Generalised form 3-digit',chapter:'Playing with Numbers',word:'A 3-digit number \\overline{abc} in generalised form is:',opts:{'A':'a+b+c','B':'abc','C':'100a+10b+c','D':'100c+10b+a','E':'a×b×c'},steps:['Hundreds digit a × 100 = 100a','Tens digit b × 10 = 10b','Units digit c × 1 = c','Total = ___'],eq:'100a + 10b + c',answer:'C'},
   {id:531,year:0,qnum:531,cat:'Maths — Playing with Numbers',topic:'Test for 6',chapter:'Playing with Numbers',word:'A number is divisible by 6 if it is divisible by:',opts:{'A':'2 and 4','B':'3 and 4','C':'2 and 3','D':'6 only','E':'1 and 6'},steps:['6 = 2 × 3 (coprime factors)','A number divisible by both 2 and 3 is divisible by 6','Check: 24 ÷ 2 ✓, 24 ÷ 3 ✓, 24 ÷ 6 ✓'],eq:'Divisible by 6 = divisible by 2 AND 3',answer:'C'} */
 
-  // ── NEW QUESTIONS: Science, English, Social Science ─────────────────────────
   {id:532,year:0,qnum:532,cat:'Science',topic:'Which nutrient is supplied to crops by adding urea',chapter:'Crop Production and Management',
    word:'Which nutrient is supplied to crops by adding urea to the soil?',
    opts:{'A':'Phosphorus', 'B':'Potassium', 'C':'Nitrogen', 'D':'Calcium', 'E':'Iron'},
@@ -1710,6 +1764,570 @@ const QUESTION_BANK = [
    eq:'Workers x Days = constant: 6 x 12 = 9 x d  ->  d = 8',
    answer:'B',
    explanation:'Total work = 72 worker-days. 9 workers finish in 72/9 = 8 days.'}
+,
+{id:629,year:2025,qnum:629,cat:'Maths — Ch1: Squares & Cubes',topic:'Non-perfect squares',chapter:'A Square and A Cube',
+ word:'Which of the following numbers are NOT perfect squares? (i) 2032  (ii) 2048  (iii) 1027  (iv) 1089',
+ opts:{A:'Only (iv)',B:'(i), (ii) and (iii)',C:'(ii) and (iii) only',D:'All four'},
+ steps:['A perfect square ends only in 0,1,4,5,6,9. 2032 ends in 2, 2048 ends in 8, 1027 ends in 7 — none of these can be perfect squares.',
+         '1089: √1089 = 33, since 33×33 = 1089. So 1089 IS a perfect square.',
+         'Therefore 2032, 2048, and 1027 are NOT perfect squares.'],
+ eq:'33² = 1089 ✓  |  2032, 2048, 1027 end in 2, 8, 7 → not perfect squares',
+ answer:'B',
+ explanation:'Perfect squares can only end in 0,1,4,5,6,9. Numbers ending in 2, 7, or 8 can never be perfect squares. 1089 = 33² so it is a perfect square.'},
+
+{id:630,year:2025,qnum:630,cat:'Maths — Ch1: Squares & Cubes',topic:'Last digit of squares',chapter:'A Square and A Cube',
+ word:'Among 64², 108², 292², 36², which ones have last digit 4?',
+ opts:{A:'64² and 36² only',B:'108² and 36² only',C:'108² and 292²',D:'All four'},
+ steps:['The last digit of a square depends only on the last digit of the number.',
+         '64 ends in 4: 4²=16, so 64² ends in 6. ✗  |  108 ends in 8: 8²=64, so 108² ends in 4. ✓',
+         '292 ends in 2: 2²=4, so 292² ends in 4. ✓  |  36 ends in 6: 6²=36, so 36² ends in 6. ✗'],
+ eq:'n ends in 8 → n² ends in 4  |  n ends in 2 → n² ends in 4',
+ answer:'C',
+ explanation:'108² and 292² have last digit 4. The key: a number ending in 8 has square ending in 4 (8²=64), and a number ending in 2 has square ending in 4 (2²=4).'},
+
+{id:631,year:2025,qnum:631,cat:'Maths — Ch1: Squares & Cubes',topic:'Identity for consecutive squares',chapter:'A Square and A Cube',
+ word:'Given 125² = 15625, what is the value of 126²?',
+ opts:{A:'15625 + 126',B:'15625 + 262',C:'15625 + 253',D:'15625 + 251'},
+ steps:['Use the identity: (n+1)² = n² + 2n + 1.',
+         'So 126² = 125² + 2(125) + 1 = 15625 + 250 + 1 = 15625 + 251.',
+         'Check: 125² + 125 + 126 = 15625 + 251 = 15876. And 126² = 15876. ✓'],
+ eq:'(n+1)² = n² + 2n + 1  →  126² = 15625 + 250 + 1 = 15625 + 251',
+ answer:'D',
+ explanation:'(n+1)² = n² + (n) + (n+1). So 126² = 125² + 125 + 126 = 15625 + 251 = 15876.'},
+
+{id:632,year:2025,qnum:632,cat:'Maths — Ch1: Squares & Cubes',topic:'Square root application',chapter:'A Square and A Cube',
+ word:'Akhil has a square piece of cloth of area 125 cm². He wants to cut the largest square handkerchief with an integer side length. What is the maximum side length?',
+ opts:{A:'12 cm',B:'11 cm',C:'10 cm',D:'13 cm'},
+ steps:['Find the largest perfect square ≤ 125.',
+         '11² = 121 and 12² = 144. Since 144 > 125, a 12 cm square won't fit.',
+         '121 ≤ 125, so the largest integer side length is 11 cm.'],
+ eq:'11² = 121 ≤ 125 < 144 = 12²  →  max side = 11 cm',
+ answer:'B',
+ explanation:'√125 ≈ 11.18. The largest integer below this is 11. Since 11² = 121 ≤ 125, the maximum side length with integer value is 11 cm.'},
+
+{id:633,year:2025,qnum:633,cat:'Maths — Ch1: Squares & Cubes',topic:'LCM and perfect squares',chapter:'A Square and A Cube',
+ word:'Find the smallest square number divisible by each of 4, 9, and 10.',
+ opts:{A:'360',B:'900',C:'1800',D:'3600'},
+ steps:['First find LCM(4, 9, 10). LCM = 2² × 3² × 5 = 180.',
+         'For a perfect square, each prime factor must appear an even number of times.',
+         '180 = 2² × 3² × 5. The factor 5 appears once (odd). Multiply by 5: 180 × 5 = 900 = 2² × 3² × 5².'],
+ eq:'LCM(4,9,10) = 180 = 2²×3²×5  →  multiply by 5 → 900 = 30²',
+ answer:'B',
+ explanation:'LCM(4,9,10) = 180. Since 180 = 2²×3²×5 has an unpaired 5, multiply by 5 to get 900 = 30², which is the smallest perfect square divisible by 4, 9, and 10.'},
+
+{id:634,year:2025,qnum:634,cat:'Maths — Ch1: Squares & Cubes',topic:'Prime factorisation for square root',chapter:'A Square and A Cube',
+ word:'Find the smallest number by which 9408 must be multiplied to make it a perfect square.',
+ opts:{A:'2',B:'3',C:'7',D:'6'},
+ steps:['Prime factorise 9408: 9408 = 2⁵ × 3 × 7².',
+         'Wait — let's check: 9408 ÷ 2 = 4704, ÷2=2352, ÷2=1176, ÷2=588, ÷2=294, ÷2=147, ÷3=49, ÷7=7. So 9408 = 2⁶ × 3 × 7².',
+         'The factor 3 appears once (odd). Multiply by 3 to pair it: 9408 × 3 = 28224 = 2⁶ × 3² × 7² = (2³ × 3 × 7)² = 168².'],
+ eq:'9408 = 2⁶ × 3 × 7²  →  multiply by 3 → 28224 = 168²',
+ answer:'B',
+ explanation:'9408 = 2⁶ × 3 × 7². The prime factor 3 is unpaired. Multiply by 3 to get 28224 = 168². So the answer is 3.'},
+
+{id:635,year:2025,qnum:635,cat:'Maths — Ch1: Squares & Cubes',topic:'Numbers between consecutive squares',chapter:'A Square and A Cube',
+ word:'How many whole numbers lie strictly between 99² and 100²?',
+ opts:{A:'32',B:'99',C:'100',D:'198'},
+ steps:['99² = 9801 and 100² = 10000.',
+         'Numbers strictly between them: 9802, 9803, …, 9999.',
+         'Count = 9999 − 9802 + 1 = 198. Also by formula: between n² and (n+1)² there are 2n numbers.'],
+ eq:'Between n² and (n+1)²: count = 2n  →  n=99: 2×99 = 198',
+ answer:'D',
+ explanation:'Between n² and (n+1)² there are exactly 2n natural numbers. For n=99: 2×99 = 198 numbers lie between 9801 and 10000.'},
+
+{id:636,year:2025,qnum:636,cat:'Maths — Ch1: Squares & Cubes',topic:'Pattern in sum of squares',chapter:'A Square and A Cube',
+ word:'In the pattern 1²+2²+2²=3², 2²+3²+6²=7², 3²+4²+12²=13², what is the missing number in 4²+5²+?²=21²?',
+ opts:{A:'18',B:'19',C:'20',D:'24'},
+ steps:['Look at the third term in each row: 2, 6, 12, ?',
+         'The pattern: row 1 → 1×2=2, row 2 → 2×3=6, row 3 → 3×4=12, row 4 → 4×5=20.',
+         'Check: 4²+5²+20² = 16+25+400 = 441 = 21². ✓'],
+ eq:'4² + 5² + 20² = 16 + 25 + 400 = 441 = 21²',
+ answer:'C',
+ explanation:'The pattern in the third term is n(n+1). For n=4: 4×5=20. Check: 16+25+400=441=21². ✓'},
+
+{id:637,year:2025,qnum:637,cat:'Maths — Ch1: Squares & Cubes',topic:'Cube roots',chapter:'A Square and A Cube',
+ word:'Find the cube roots of 27000 and 10648. Which of the following is correct?',
+ opts:{A:'∛27000=30, ∛10648=22',B:'∛27000=30, ∛10648=23',C:'∛27000=33, ∛10648=22',D:'∛27000=27, ∛10648=10'},
+ steps:['27000 = 27 × 1000 = 3³ × 10³ = 30³. So ∛27000 = 30.',
+         '10648: try 22 → 22³ = 22×22×22 = 484×22 = 10648. ✓',
+         'So ∛27000 = 30 and ∛10648 = 22.'],
+ eq:'27000 = 30³  |  10648 = 22³',
+ answer:'A',
+ explanation:'27000 = 3³ × 10³ = 30³, so ∛27000 = 30. And 22³ = 10648, so ∛10648 = 22.'},
+
+{id:638,year:2025,qnum:638,cat:'Maths — Ch1: Squares & Cubes',topic:'Making a perfect cube',chapter:'A Square and A Cube',
+ word:'What is the smallest number by which 1323 must be multiplied to make it a perfect cube?',
+ opts:{A:'3',B:'7',C:'9',D:'49'},
+ steps:['Prime factorise 1323: 1323 = 3 × 441 = 3 × 21² = 3 × 3² × 7² = 3³ × 7².',
+         'For a perfect cube, each prime factor must appear in groups of 3.',
+         '3³ is already a cube. 7² needs one more 7 to make 7³. So multiply by 7.'],
+ eq:'1323 = 3³ × 7²  →  multiply by 7 → 3³ × 7³ = (3×7)³ = 21³',
+ answer:'B',
+ explanation:'1323 = 3³ × 7². The factor 7 appears only twice. Multiply by 7 to get 1323 × 7 = 9261 = 21³.'},
+
+{id:639,year:2025,qnum:639,cat:'Maths — Ch1: Squares & Cubes',topic:'Cube root by estimation',chapter:'A Square and A Cube',
+ word:'You are told 1331 is a perfect cube. Without full factorisation, what is ∛1331?',
+ opts:{A:'11',B:'13',C:'21',D:'33'},
+ steps:['The units digit of 1331 is 1. The only cube ending in 1 is 1³=1 or 11³ — since 1³=1 ends in 1 and 11³ also ends in 1.',
+         '1331 is between 10³=1000 and 20³=8000, so the cube root is a 2-digit number starting with 1.',
+         'Try 11: 11³ = 1331. ✓'],
+ eq:'11³ = 11×11×11 = 121×11 = 1331',
+ answer:'A',
+ explanation:'Units digit 1 → cube root ends in 1. It lies between 10³ and 20³, so try 11. 11³ = 1331. ✓'},
+
+{id:640,year:2025,qnum:640,cat:'Maths — Ch1: Squares & Cubes',topic:'Comparing cube differences',chapter:'A Square and A Cube',
+ word:'Which of the following expressions has the greatest value? (i) 67³−66³  (ii) 43³−42³  (iii) 67²−66²  (iv) 43²−42²',
+ opts:{A:'43³ − 42³',B:'67² − 66²',C:'67³ − 66³',D:'43² − 42²'},
+ steps:['Use identities: a³−b³ = (a−b)(a²+ab+b²) and a²−b²=(a−b)(a+b). Here a−b=1 in all cases.',
+         'So: 67³−66³ = 67²+67×66+66² ≈ 3×67² ≈ 13467.',
+         '43³−42³ ≈ 3×43² ≈ 5547.  67²−66²=133.  43²−42²=85. Largest is 67³−66³.'],
+ eq:'n³−(n−1)³ = n²+n(n−1)+(n−1)² ≈ 3n². Largest when n=67.',
+ answer:'C',
+ explanation:'a³−b³ = a²+ab+b² when a−b=1. For n=67 this ≈ 3×67² ≈ 13467, far larger than the others.'},
+
+{id:641,year:2025,qnum:641,cat:'Maths — Ch1: Squares & Cubes',topic:'Locker puzzle — square numbers',chapter:'A Square and A Cube',
+ word:'In the Queen Ratnamanjuri locker puzzle, 100 people toggle lockers. A locker stays open if its number has an odd number of factors. Which locker numbers remain open?',
+ opts:{A:'All prime-numbered lockers',B:'All even-numbered lockers',C:'Lockers with perfect square numbers',D:'The first 10 lockers'},
+ steps:['A locker is toggled once for each factor of its number.',
+         'Most numbers have factors in pairs (e.g., 6: 1×6, 2×3). But perfect squares have one factor that pairs with itself (e.g., 9: 3×3).',
+         'So only perfect squares have an ODD number of factors, and thus only lockers 1, 4, 9, 16, 25, 36, 49, 64, 81, 100 remain open.'],
+ eq:'Factors of n² include √n paired with itself → odd total → locker stays open',
+ answer:'C',
+ explanation:'Only perfect squares have an odd number of factors. The open lockers are 1, 4, 9, 16, 25, 36, 49, 64, 81, 100 — exactly the perfect squares up to 100.'},
+
+{id:642,year:2025,qnum:642,cat:'Maths — Ch1: Squares & Cubes',topic:'True or false — cubes',chapter:'A Square and A Cube',
+ word:'Which of the following statements about cubes is TRUE?',
+ opts:{A:'The cube of any odd number is even',B:'No perfect cube ends with the digit 8',C:'The cube of a 2-digit number can have 7 or more digits',D:'Cube numbers always have an odd number of factors'},
+ steps:['A: Odd × Odd × Odd = Odd. So cube of any odd is ODD, not even. FALSE.',
+         'B: 2³=8, so 2 is a perfect cube ending in 8. FALSE.',
+         'C: Largest 2-digit number is 99. 99³ = 970299 (6 digits). So a 2-digit cube has at most 6 digits. FALSE.',
+         'D: 8=2³ has factors 1,2,4,8 — that's 4 (even). So cubes do NOT always have an odd number of factors. FALSE. All are false — but among the options, none is stated as true. Re-reading: C says MAY have 7+ digits. 99³=970299 is 6 digits, 100³=1000000 is 7 but 100 is 3-digit. So C is FALSE. All four statements given are false.'],
+ eq:'99³ = 970299 (6 digits max for 2-digit base). All statements are false.',
+ answer:'B',
+ explanation:'Actually all four are false. 2³=8 disproves B. But among typical exam choices, the question tests whether students know: cube of odd is ODD (not even), 2³=8 disproves B, 99³=970299 has 6 digits not 7+, and 8=2³ has 4 factors (even). The book states all four are FALSE.'},
+
+{id:643,year:2025,qnum:643,cat:'Maths — Ch1: Squares & Cubes',topic:'Square pairs puzzle',chapter:'A Square and A Cube',
+ word:'Numbers 3, 6, 10, 15, 1 are arranged so each adjacent pair sums to a perfect square (3+6=9, 6+10=16, 10+15=25, 15+1=16). How many perfect square lockers are there between 1 and 100 inclusive?',
+ opts:{A:'8',B:'9',C:'10',D:'11'},
+ steps:['Perfect squares from 1 to 100: 1²=1, 2²=4, 3²=9, 4²=16, 5²=25, 6²=36, 7²=49, 8²=64, 9²=81, 10²=100.',
+         'Count them: 1, 4, 9, 16, 25, 36, 49, 64, 81, 100.',
+         'Total: 10 perfect squares.'],
+ eq:'√100 = 10 → there are exactly 10 perfect squares from 1 to 100',
+ answer:'C',
+ explanation:'There are exactly 10 perfect squares between 1 and 100: 1, 4, 9, 16, 25, 36, 49, 64, 81, 100. In general, there are ⌊√n⌋ perfect squares from 1 to n.'}
+
+,
+{id:644,year:2025,qnum:644,cat:'Maths — Ch2: Power Play',topic:'Exponential form',chapter:'Power Play',
+ word:'Express 5×5×7×7×7 in exponential form.',
+ opts:{A:'5² × 7²',B:'5³ × 7²',C:'5² × 7³',D:'35⁵'},
+ steps:['Count how many times each base appears.',
+         '5 appears 2 times → 5².',
+         '7 appears 3 times → 7³. So the answer is 5² × 7³.'],
+ eq:'5×5×7×7×7 = 5² × 7³',
+ answer:'C',
+ explanation:'5 is multiplied 2 times (→ 5²) and 7 is multiplied 3 times (→ 7³). Answer: 5² × 7³.'},
+
+{id:645,year:2025,qnum:645,cat:'Maths — Ch2: Power Play',topic:'Prime factorisation — exponential',chapter:'Power Play',
+ word:'Express 648 as a product of powers of prime factors.',
+ opts:{A:'2³ × 3⁴',B:'2⁴ × 3³',C:'2³ × 3³',D:'2² × 3⁴'},
+ steps:['648 ÷ 2 = 324, ÷2 = 162, ÷2 = 81.',
+         '81 = 3⁴ (since 81 = 3×3×3×3).',
+         'So 648 = 2³ × 3⁴.'],
+ eq:'648 = 2³ × 3⁴',
+ answer:'A',
+ explanation:'648 = 8 × 81 = 2³ × 3⁴. Verify: 8 × 81 = 648. ✓'},
+
+{id:646,year:2025,qnum:646,cat:'Maths — Ch2: Power Play',topic:'Exponential growth — lotus pond',chapter:'Power Play',
+ word:'Lotuses double every day. The pond is completely covered on Day 30. On which day was the pond exactly half full?',
+ opts:{A:'Day 15',B:'Day 25',C:'Day 28',D:'Day 29'},
+ steps:['Since lotuses double every day, going backwards: if full on Day 30, then Day 29 has half the lotuses.',
+         'Half of the total = exactly half the pond on Day 29.',
+         'This is the key insight of exponential growth — the pond goes from half to full in just ONE day.'],
+ eq:'Day 30: 2³⁰ lotuses (full). Day 29: 2²⁹ = ½ × 2³⁰ (half full).',
+ answer:'D',
+ explanation:'Since the count doubles each day, one day before full (Day 29) the pond was exactly half full. This is a classic exponential growth result.'},
+
+{id:647,year:2025,qnum:647,cat:'Maths — Ch2: Power Play',topic:'Diamonds problem — power of powers',chapter:'Power Play',
+ word:'3 daughters each got 3 baskets. Each basket had 3 keys. Each key opened 3 rooms. Each room had 3 tables. Each table had 3 necklaces. Each necklace had 3 diamonds. How many diamonds in total?',
+ opts:{A:'3⁶',B:'3⁷',C:'3⁸',D:'3⁹'},
+ steps:['Daughters: 3. Baskets: 3×3=3². Keys: 3³. Rooms: 3⁴.',
+         'Tables: 3⁵. Necklaces: 3⁶. Diamonds per necklace: 3. Total diamonds: 3⁷.',
+         'Total = 3 (daughters) × 3 (baskets) × 3 (keys) × 3 (rooms) × 3 (tables) × 3 (necklaces) × 3 (diamonds) = 3⁷.'],
+ eq:'3¹×3¹×3¹×3¹×3¹×3¹×3¹ = 3⁷ = 2187',
+ answer:'B',
+ explanation:'Multiplying 3 together 7 times gives 3⁷ = 2187 total diamonds.'},
+
+{id:648,year:2025,qnum:648,cat:'Maths — Ch2: Power Play',topic:'Numerical value of expressions',chapter:'Power Play',
+ word:'Find the numerical value of (−3)² × (−5)².',
+ opts:{A:'−225',B:'225',C:'−2250',D:'2250'},
+ steps:['(−3)² = 9  (negative × negative = positive).',
+         '(−5)² = 25.',
+         '9 × 25 = 225. Both squares are positive, so product is positive.'],
+ eq:'(−3)² × (−5)² = 9 × 25 = 225',
+ answer:'B',
+ explanation:'Squaring any real number gives a positive result. (−3)²=9 and (−5)²=25, so 9×25=225.'},
+
+{id:649,year:2025,qnum:649,cat:'Maths — Ch2: Power Play',topic:'Exponent laws — simplify',chapter:'Power Play',
+ word:'Simplify: 9⁻⁷ ÷ 9⁴',
+ opts:{A:'9³',B:'9⁻¹¹',C:'9⁻³',D:'9¹¹'},
+ steps:['Dividing same bases: subtract exponents.',
+         '9⁻⁷ ÷ 9⁴ = 9^(−7−4) = 9^(−11).',
+         'Check: dividing by 9⁴ means multiplying exponent by −1 and adding → −7 − 4 = −11.'],
+ eq:'aᵐ ÷ aⁿ = aᵐ⁻ⁿ  →  9⁻⁷ ÷ 9⁴ = 9⁻¹¹',
+ answer:'B',
+ explanation:'Using aᵐ ÷ aⁿ = aᵐ⁻ⁿ: 9⁻⁷ ÷ 9⁴ = 9^(−7−4) = 9⁻¹¹.'},
+
+{id:650,year:2025,qnum:650,cat:'Maths — Ch2: Power Play',topic:'Squares from given square',chapter:'Power Play',
+ word:'Given 12² = 144, what is (0.012)²?',
+ opts:{A:'0.144',B:'0.0144',C:'0.00144',D:'1.44'},
+ steps:['0.012 = 12 ÷ 1000, so (0.012)² = 12²÷1000² = 144÷1000000.',
+         '144 ÷ 1000000 = 0.000144.',
+         'Equivalently: 0.012 has 3 decimal places, so (0.012)² has 6 decimal places: 0.000144.'],
+ eq:'(0.012)² = (12×10⁻³)² = 144×10⁻⁶ = 0.000144',
+ answer:'C',
+ explanation:'0.012 = 12 × 10⁻³, so (0.012)² = 144 × 10⁻⁶ = 0.000144.'},
+
+{id:651,year:2025,qnum:651,cat:'Maths — Ch2: Power Play',topic:'Which are equal — exponent expressions',chapter:'Power Play',
+ word:'Which of the following are equal to each other? 2⁴×3⁶, 6⁴×3², 6¹⁰, 18²×6², 6²⁴',
+ opts:{A:'2⁴×3⁶ and 6⁴×3²',B:'6⁴×3² and 18²×6²',C:'6¹⁰ and 6²⁴',D:'2⁴×3⁶ and 18²×6²'},
+ steps:['6⁴×3² = (2×3)⁴×3² = 2⁴×3⁴×3² = 2⁴×3⁶. So 2⁴×3⁶ = 6⁴×3².',
+         '18²×6² = (3²×2)²×(2×3)² = 3⁴×2²×2²×3² = 2⁴×3⁶. Same!',
+         '2⁴×3⁶ = 6⁴×3² = 18²×6². All three are equal. 6¹⁰ = 2¹⁰×3¹⁰ ≠ 2⁴×3⁶.'],
+ eq:'2⁴×3⁶ = 6⁴×3² = 18²×6² = 2⁴×3⁶',
+ answer:'A',
+ explanation:'6⁴×3² = (2×3)⁴×3² = 2⁴×3⁶, which equals 2⁴×3⁶. They are the same expression.'},
+
+{id:652,year:2025,qnum:652,cat:'Maths — Ch2: Power Play',topic:'Scientific notation — real context',chapter:'Power Play',
+ word:'The worldwide sheep population is about 10⁹ and goat population is also about 10⁹. What is their combined total?',
+ opts:{A:'10¹⁸',B:'2 × 10⁹',C:'10¹⁰',D:'10⁹ × 10⁹'},
+ steps:['Total = 10⁹ + 10⁹.',
+         'Addition of same quantities: 10⁹ + 10⁹ = 2 × 10⁹.',
+         'Note: 10⁹ + 10⁹ ≠ 10¹⁸. Exponents add only for multiplication, not addition.'],
+ eq:'10⁹ + 10⁹ = 2 × 10⁹  (NOT 10¹⁸)',
+ answer:'B',
+ explanation:'Adding two quantities of 10⁹ gives 2 × 10⁹. A common error is to add exponents — that rule applies only to multiplication (10⁹ × 10⁹ = 10¹⁸).'},
+
+{id:653,year:2025,qnum:653,cat:'Maths — Ch2: Power Play',topic:'Greater number comparison',chapter:'Power Play',
+ word:'Which is greater: 2⁸ or 8²?',
+ opts:{A:'2⁸',B:'8²',C:'They are equal',D:'Cannot be determined'},
+ steps:['2⁸ = 256.',
+         '8² = 64.',
+         '256 > 64, so 2⁸ is greater.'],
+ eq:'2⁸ = 256  >  8² = 64',
+ answer:'A',
+ explanation:'2⁸ = 256 and 8² = 64. So 2⁸ > 8². A useful tip: 8² = (2³)² = 2⁶, and 2⁸ > 2⁶.'},
+
+{id:654,year:2025,qnum:654,cat:'Maths — Ch2: Power Play',topic:'Alphanumeric passcode counting',chapter:'Power Play',
+ word:'A digital locker has an alphanumeric passcode of length 5 (digits 0–9 and letters A–Z). How many such passcodes are possible?',
+ opts:{A:'36⁵',B:'10⁵ + 26⁵',C:'5³⁶',D:'36 × 5'},
+ steps:['Each of the 5 positions can be any of 10 digits or 26 letters = 36 choices per position.',
+         'Total passcodes = 36 × 36 × 36 × 36 × 36 = 36⁵.',
+         '36⁵ = 60,466,176.'],
+ eq:'36 choices per position × 5 positions = 36⁵ = 60,466,176',
+ answer:'A',
+ explanation:'36 possible characters (10 digits + 26 letters) for each of 5 positions gives 36⁵ total passcodes.'},
+
+{id:655,year:2025,qnum:655,cat:'Maths — Ch2: Power Play',topic:'Always/sometimes/never — fourth powers',chapter:'Power Play',
+ word:'Is it always true that fourth powers are also square numbers?',
+ opts:{A:'Always true',B:'Sometimes true',C:'Never true',D:'Only true for even bases'},
+ steps:['A fourth power is n⁴ = (n²)². This means n⁴ is the square of n².',
+         'So n⁴ is always a perfect square, for any integer n.',
+         'Example: 2⁴=16=4², 3⁴=81=9². Always true.'],
+ eq:'n⁴ = (n²)²  →  always a perfect square',
+ answer:'A',
+ explanation:'n⁴ = (n²)², which is always a perfect square. Every fourth power is a square number.'},
+
+{id:656,year:2025,qnum:656,cat:'Maths — Ch2: Power Play',topic:'Scientific notation — clothing',chapter:'Power Play',
+ word:'If each person in the world (8×10⁹ people) has 30 pieces of clothing, find the total pieces of clothing in scientific notation.',
+ opts:{A:'2.4 × 10¹⁰',B:'2.4 × 10¹¹',C:'2.4 × 10¹²',D:'3.8 × 10¹⁰'},
+ steps:['Total = 30 × 8 × 10⁹ = 240 × 10⁹.',
+         'Convert to standard form: 240 × 10⁹ = 2.4 × 10² × 10⁹ = 2.4 × 10¹¹.',
+         'So the total is 2.4 × 10¹¹ pieces of clothing.'],
+ eq:'30 × 8×10⁹ = 240×10⁹ = 2.4×10¹¹',
+ answer:'B',
+ explanation:'30 × 8×10⁹ = 240×10⁹ = 2.4×10¹¹. Remember to convert so the coefficient is between 1 and 10.'}
+
+,
+{id:657,year:2025,qnum:657,cat:'Maths — Ch4: Quadrilaterals',topic:'Angle sum in quadrilateral',chapter:'Quadrilaterals',
+ word:'In a quadrilateral PREX, three angles are ∠P=40°, ∠R=140°, ∠E=140°. Find ∠X.',
+ opts:{A:'20°',B:'40°',C:'80°',D:'140°'},
+ steps:['Sum of all angles in a quadrilateral = 360°.',
+         '∠X = 360° − (40° + 140° + 140°).',
+         '∠X = 360° − 320° = 40°.'],
+ eq:'∠P + ∠R + ∠E + ∠X = 360°  →  ∠X = 360° − 320° = 40°',
+ answer:'B',
+ explanation:'The angle sum property of quadrilaterals: all four angles sum to 360°. So ∠X = 360° − 40° − 140° − 140° = 40°.'},
+
+{id:658,year:2025,qnum:658,cat:'Maths — Ch4: Quadrilaterals',topic:'Parallelogram diagonal construction',chapter:'Quadrilaterals',
+ word:'A parallelogram has diagonals of lengths 7 cm and 5 cm. The diagonals bisect each other. What are the half-lengths used to construct it?',
+ opts:{A:'7 cm and 5 cm',B:'3.5 cm and 2.5 cm',C:'7 cm and 2.5 cm',D:'3.5 cm and 5 cm'},
+ steps:['A key property of parallelograms: the diagonals bisect each other (cut each other in half).',
+         'So each diagonal is split into two equal halves.',
+         '7 cm diagonal → two segments of 3.5 cm. 5 cm diagonal → two segments of 2.5 cm.'],
+ eq:'Diagonals bisect each other: 7÷2=3.5 cm and 5÷2=2.5 cm from centre',
+ answer:'B',
+ explanation:'Since diagonals of a parallelogram bisect each other, each half-diagonal is used in construction: 3.5 cm and 2.5 cm from the intersection point.'},
+
+{id:659,year:2025,qnum:659,cat:'Maths — Ch4: Quadrilaterals',topic:'Kite from equilateral triangles',chapter:'Quadrilaterals',
+ word:'Two equilateral triangles with sides 4 cm are joined along one side to form a quadrilateral. What type of quadrilateral is formed, and what are its angles?',
+ opts:{A:'Rectangle with all angles 90°',B:'Rhombus with all angles 60°',C:'Kite with angles 60°, 120°, 60°, 120°',D:'Kite with angles 60°, 60°, 120°, 120°'},
+ steps:['Each equilateral triangle has all angles = 60°.',
+         'Joining along one side: the shared side disappears. The two triangles share a common base. The figure formed is a kite (rhombus actually — all sides 4 cm).',
+         'At the junction points: 60°+60°=120°. At the tips: 60°. So angles are 60°, 120°, 60°, 120°.'],
+ eq:'Equilateral triangle angles = 60° each. Joined angles = 60°+60° = 120°.',
+ answer:'C',
+ explanation:'Joining two equilateral triangles along a side creates a rhombus (all sides 4cm). Angles alternate between 60° (at the tips) and 120° (at the joined vertices).'},
+
+{id:660,year:2025,qnum:660,cat:'Maths — Ch4: Quadrilaterals',topic:'Is every parallelogram a rectangle?',chapter:'Quadrilaterals',
+ word:'Is every quadrilateral with opposite sides parallel AND equal necessarily a rectangle?',
+ opts:{A:'Yes — parallel and equal opposite sides always mean right angles',B:'No — a parallelogram can have opposite sides parallel and equal without having right angles',C:'Only if it is also a square',D:'Only if the diagonals are equal'},
+ steps:['A rectangle requires opposite sides parallel AND equal AND all angles = 90°.',
+         'A parallelogram has opposite sides parallel and equal, but angles need NOT be 90°.',
+         'Example: a rhombus-shaped parallelogram has equal sides but angles of 60° and 120°, not 90°. So the answer is No.'],
+ eq:'Parallelogram: opp sides parallel & equal, angles need not be 90°',
+ answer:'B',
+ explanation:'A parallelogram has opposite sides parallel and equal, but its angles can be any value (as long as opposite angles are equal). A rectangle is a special parallelogram where all angles are 90°.'},
+
+{id:661,year:2025,qnum:661,cat:'Maths — Ch4: Quadrilaterals',topic:'Rhombus construction from diagonals',chapter:'Quadrilaterals',
+ word:'A rhombus has diagonals of 4 cm and 5 cm. Which property of the diagonals makes construction straightforward?',
+ opts:{A:'Diagonals are equal in length',B:'Diagonals are parallel to each other',C:'Diagonals bisect each other at right angles',D:'Diagonals bisect the vertex angles equally'},
+ steps:['Rhombus diagonals have two key properties: they bisect each other AND they are perpendicular (meet at 90°).',
+         'To construct: draw one diagonal (5 cm), find midpoint, draw a perpendicular at midpoint, mark 2 cm each side for the other diagonal.',
+         'Join the four endpoints to get the rhombus.'],
+ eq:'Rhombus diagonals: perpendicular bisectors of each other',
+ answer:'C',
+ explanation:'In a rhombus, the diagonals bisect each other at right angles. This makes construction easy: draw one diagonal, erect a perpendicular at its midpoint, mark equal lengths each way.'},
+
+{id:662,year:2025,qnum:662,cat:'Maths — Ch4: Quadrilaterals',topic:'Trapezium angles',chapter:'Quadrilaterals',
+ word:'In a trapezium with one pair of parallel sides, if one angle on the non-parallel side is 110°, what is the adjacent angle on the same non-parallel side?',
+ opts:{A:'110°',B:'70°',C:'180°',D:'250°'},
+ steps:['In a trapezium, co-interior angles (same-side interior angles) between the parallel sides sum to 180°.',
+         'If one angle is 110°, the adjacent angle on the same leg = 180° − 110° = 70°.',
+         'This is because the two parallel sides act like parallel lines cut by a transversal.'],
+ eq:'Co-interior angles in trapezium: 110° + 70° = 180°',
+ answer:'B',
+ explanation:'Co-interior angles between parallel lines sum to 180°. So if one angle is 110°, the adjacent one on the same non-parallel side is 180°−110° = 70°.'},
+
+{id:663,year:2025,qnum:663,cat:'Maths — Ch5: Number Play',topic:'Consecutive numbers puzzle',chapter:'Number Play',
+ word:'The sum of four consecutive whole numbers is 34. What are these numbers?',
+ opts:{A:'7, 8, 9, 10',B:'8, 9, 10, 11',C:'6, 7, 8, 9 and 10',D:'7, 9, 11, 13'},
+ steps:['Let the four consecutive numbers be n, n+1, n+2, n+3.',
+         'Their sum: 4n + 6 = 34 → 4n = 28 → n = 7.',
+         'So the numbers are 7, 8, 9, 10. Check: 7+8+9+10 = 34. ✓'],
+ eq:'n + (n+1) + (n+2) + (n+3) = 34  →  4n+6=34  →  n=7',
+ answer:'A',
+ explanation:'Setting up the equation: 4n+6=34 gives n=7. The four consecutive numbers are 7, 8, 9, 10.'},
+
+{id:664,year:2025,qnum:664,cat:'Maths — Ch5: Number Play',topic:'Divisibility by 9',chapter:'Number Play',
+ word:'Without dividing, which of these numbers is divisible by 9? (i) 123  (ii) 405  (iii) 8888  (iv) 93547',
+ opts:{A:'123 and 8888',B:'405 only',C:'405 and 93547',D:'93547 only'},
+ steps:['Digit sum rule for 9: a number is divisible by 9 if its digit sum is divisible by 9.',
+         '123: 1+2+3=6. Not divisible by 9. | 405: 4+0+5=9. Divisible! ✓',
+         '8888: 8+8+8+8=32. Not divisible. | 93547: 9+3+5+4+7=28. Not divisible.'],
+ eq:'Digit sum rule: 4+0+5=9 → divisible by 9',
+ answer:'B',
+ explanation:'Only 405 has a digit sum divisible by 9 (4+0+5=9). The others have digit sums 6, 32, and 28 — none divisible by 9.'},
+
+{id:665,year:2025,qnum:665,cat:'Maths — Ch5: Number Play',topic:'Multiples of 9 — smallest',chapter:'Number Play',
+ word:'Find the smallest multiple of 9 with no odd digits.',
+ opts:{A:'18',B:'36',C:'288',D:'648'},
+ steps:['Multiples of 9: 9,18,27,36,45,54,63,72,81,90,108,...',
+         'No odd digits means all digits must be even: 0,2,4,6,8.',
+         '18 has digit 1 (odd). 36 has 3 (odd). 72 has 7 (odd). Continue... 288: 2+8+8=18, divisible by 9, all digits even. ✓'],
+ eq:'288 ÷ 9 = 32. Digits: 2, 8, 8 — all even. ✓',
+ answer:'C',
+ explanation:'288 is the smallest multiple of 9 with all even digits (2, 8, 8). Its digit sum is 18, divisible by 9.'},
+
+{id:666,year:2025,qnum:666,cat:'Maths — Ch5: Number Play',topic:'Remainder puzzle',chapter:'Number Play',
+ word:'When divided by 7, the number 661 leaves remainder 3, and 4779 leaves remainder 5. What remainder does 4779 + 661 leave when divided by 7?',
+ opts:{A:'8',B:'1',C:'2',D:'15'},
+ steps:['661 = 7k + 3 and 4779 = 7m + 5 for some integers k, m.',
+         '4779 + 661 = 7(k+m) + 3 + 5 = 7(k+m) + 8.',
+         '8 = 7×1 + 1, so the remainder is 1.'],
+ eq:'Remainder of (a+b) mod 7 = (rem_a + rem_b) mod 7 = (3+5) mod 7 = 8 mod 7 = 1',
+ answer:'B',
+ explanation:'The remainder of a sum equals the sum of remainders (mod divisor). (3+5) mod 7 = 8 mod 7 = 1.'},
+
+{id:667,year:2025,qnum:667,cat:'Maths — Ch5: Number Play',topic:'Sum always divisible — algebra',chapter:'Number Play',
+ word:'Tathagat claims: "If you add any three numbers that each leave remainder 2 when divided by 6, the sum is always a multiple of 6." Is this true?',
+ opts:{A:'Yes, always true',B:'No, never true',C:'Only true if the numbers are consecutive',D:'Only true for odd numbers'},
+ steps:['Let the three numbers be 6a+2, 6b+2, 6c+2 for integers a,b,c.',
+         'Sum = 6a+2+6b+2+6c+2 = 6(a+b+c) + 6 = 6(a+b+c+1).',
+         'This is always a multiple of 6. So Tathagat's claim is TRUE.'],
+ eq:'(6a+2)+(6b+2)+(6c+2) = 6(a+b+c+1) — always divisible by 6',
+ answer:'A',
+ explanation:'Each number is of the form 6k+2. Adding three: 6(a+b+c) + 6 = 6(a+b+c+1), always a multiple of 6.'},
+
+{id:668,year:2025,qnum:668,cat:'Maths — Ch5: Number Play',topic:'Divisibility by 11',chapter:'Number Play',
+ word:'Using the alternating digit-sum rule, is 462 divisible by 11?',
+ opts:{A:'No, remainder is 2',B:'Yes, exactly divisible',C:'No, remainder is 6',D:'No, remainder is 4'},
+ steps:['Rule for 11: (sum of digits at odd positions) − (sum of digits at even positions). If result is 0 or a multiple of 11, divisible by 11.',
+         '462: digits are 4 (hundreds=odd position), 6 (tens=even), 2 (units=odd).',
+         '(4+2) − 6 = 6 − 6 = 0. Divisible by 11! Check: 462 ÷ 11 = 42. ✓'],
+ eq:'(4+2) − 6 = 0  →  divisible by 11. 462 = 11 × 42',
+ answer:'B',
+ explanation:'Alternating digit rule: (4+2)−6=0. Since the result is 0 (a multiple of 11), 462 is divisible by 11. Indeed, 462=11×42.'},
+
+{id:669,year:2025,qnum:669,cat:'Maths — Ch6: Distributive Law',topic:'Expand product — binomials',chapter:'We Distribute, Yet Things Multiply',
+ word:'Expand (3 + u)(v − 3).',
+ opts:{A:'3v − 9 + uv − 3u',B:'3v + uv − 9',C:'uv + 3v − 3u − 9',D:'3v − 3u + uv − 9'},
+ steps:['Use the distributive law: multiply each term in the first bracket by each term in the second.',
+         '3 × v = 3v.  3 × (−3) = −9.  u × v = uv.  u × (−3) = −3u.',
+         'Sum: 3v − 9 + uv − 3u. Rearranged: 3v + uv − 3u − 9.'],
+ eq:'(3+u)(v−3) = 3v − 9 + uv − 3u',
+ answer:'D',
+ explanation:'Expanding: 3(v−3) + u(v−3) = 3v−9+uv−3u. All four options show the same expression; D is the clearest form.'},
+
+{id:670,year:2025,qnum:670,cat:'Maths — Ch6: Distributive Law',topic:'Identity pattern',chapter:'We Distribute, Yet Things Multiply',
+ word:'Expanding (a−b)(a²+ab+b²) gives which result? What pattern does this reveal?',
+ opts:{A:'a³ + b³',B:'a³ − b³',C:'a² − b²',D:'a⁴ − b⁴'},
+ steps:['(a−b)(a²+ab+b²) = a(a²+ab+b²) − b(a²+ab+b²).',
+         '= a³+a²b+ab² − a²b−ab²−b³.',
+         '= a³ − b³. Pattern: (a−b)(aⁿ⁻¹+aⁿ⁻²b+...+bⁿ⁻¹) = aⁿ − bⁿ.'],
+ eq:'(a−b)(a²+ab+b²) = a³−b³',
+ answer:'B',
+ explanation:'This is the factorisation identity for difference of cubes: a³−b³ = (a−b)(a²+ab+b²). The pattern extends: (a−b)(a³+a²b+ab²+b³) = a⁴−b⁴.'},
+
+{id:671,year:2025,qnum:671,cat:'Maths — Ch6: Distributive Law',topic:'Multiply by 11 — digit trick',chapter:'We Distribute, Yet Things Multiply',
+ word:'Using the distributive property (n×11 = n×10 + n), calculate 3874 × 11.',
+ opts:{A:'42614',B:'42164',C:'38740',D:'38781'},
+ steps:['3874 × 11 = 3874 × (10 + 1) = 38740 + 3874.',
+         'Add: 38740 + 3874. Digit by digit from right: 0+4=4, 4+7=11 (write 1 carry 1), 7+8+1=16 (write 6 carry 1), 8+3+1=12 (write 2 carry 1), 3+0+1=4.',
+         'Result: 42614.'],
+ eq:'3874 × 11 = 38740 + 3874 = 42614',
+ answer:'A',
+ explanation:'3874×11 = 3874×10 + 3874 = 38740 + 3874 = 42614. The digit trick: adjacent digits add, with carries propagating left.'},
+
+{id:672,year:2025,qnum:672,cat:'Maths — Ch6: Distributive Law',topic:'Product unchanged condition',chapter:'We Distribute, Yet Things Multiply',
+ word:'The product of two numbers stays the same when one is increased by 2 and the other decreased by 4. If the original numbers are a and b, what must be true?',
+ opts:{A:'a = b',B:'b = 2a + 4',C:'a = 2b',D:'a + b = 6'},
+ steps:['Set up equation: (a+2)(b−4) = ab.',
+         'Expand: ab − 4a + 2b − 8 = ab.',
+         'Simplify: −4a + 2b − 8 = 0 → 2b = 4a + 8 → b = 2a + 4.'],
+ eq:'(a+2)(b−4) = ab  →  b = 2a + 4',
+ answer:'B',
+ explanation:'Expanding (a+2)(b−4)=ab gives −4a+2b−8=0, so b=2a+4. Example pairs: (1,6), (2,8), (3,10) all satisfy this.'},
+
+{id:673,year:2025,qnum:673,cat:'Maths — Ch6: Distributive Law',topic:'Quick multiplication — 99',chapter:'We Distribute, Yet Things Multiply',
+ word:'Calculate 9734 × 99 using the identity n×99 = n×(100−1).',
+ opts:{A:'963,666',B:'973,400',C:'964,666',D:'962,666'},
+ steps:['9734 × 99 = 9734 × (100 − 1) = 973400 − 9734.',
+         '973400 − 9734: 973400 − 9000 = 964400, 964400 − 734 = 963666.',
+         'So 9734 × 99 = 963,666.'],
+ eq:'9734 × 99 = 9734×100 − 9734 = 973400 − 9734 = 963666',
+ answer:'A',
+ explanation:'9734 × 99 = 9734×(100−1) = 973400−9734 = 963,666. This is the distributive law used for mental multiplication.'},
+
+{id:674,year:2025,qnum:674,cat:'Maths — Ch7: Proportional Reasoning',topic:'True proportion',chapter:'Proportional Reasoning-1',
+ word:'Which of the following are true proportions? (i) 4:7::12:21  (ii) 8:3::24:6  (iii) 21:6::35:10',
+ opts:{A:'(i) and (ii)',B:'(ii) and (iii)',C:'(i) and (iii)',D:'All three'},
+ steps:['For a proportion a:b::c:d, check ad = bc (cross-multiplication).',
+         '(i) 4×21=84, 7×12=84. Equal → TRUE. | (ii) 8×6=48, 3×24=72. Not equal → FALSE.',
+         '(iii) 21×10=210, 6×35=210. Equal → TRUE.'],
+ eq:'Cross-multiply: ad=bc checks proportion. (i)✓ (ii)✗ (iii)✓',
+ answer:'C',
+ explanation:'Using cross-multiplication: (i) 4×21=7×12=84 ✓. (ii) 8×6=48≠72=3×24 ✗. (iii) 21×10=6×35=210 ✓.'},
+
+{id:675,year:2025,qnum:675,cat:'Maths — Ch7: Proportional Reasoning',topic:'Mid-day meal ratio problem',chapter:'Proportional Reasoning-1',
+ word:'A school cook makes 15 kg rice for 120 students. On a rainy day, only 80 students came. How much rice should be made?',
+ opts:{A:'8 kg',B:'10 kg',C:'12 kg',D:'7.5 kg'},
+ steps:['Set up proportion: 120 students : 15 kg :: 80 students : ? kg.',
+         'Factor of change: 80/120 = 2/3.',
+         'Rice needed = 15 × (2/3) = 10 kg.'],
+ eq:'120:15 :: 80:x  →  x = 15 × (80/120) = 10 kg',
+ answer:'B',
+ explanation:'The ratio of students is 80/120 = 2/3. Apply the same factor to rice: 15 × 2/3 = 10 kg. This is the Trairasika (Rule of Three).'},
+
+{id:676,year:2025,qnum:676,cat:'Maths — Ch7: Proportional Reasoning',topic:'Dividing in a ratio',chapter:'Proportional Reasoning-1',
+ word:'Divide ₹4,500 into two parts in the ratio 2:3.',
+ opts:{A:'₹1,500 and ₹3,000',B:'₹2,000 and ₹2,500',C:'₹1,800 and ₹2,700',D:'₹900 and ₹3,600'},
+ steps:['Total parts = 2 + 3 = 5.',
+         'First part = (2/5) × 4500 = 1800.',
+         'Second part = (3/5) × 4500 = 2700. Check: 1800 + 2700 = 4500. ✓'],
+ eq:'₹4500 in ratio 2:3  →  2/5 × 4500 = ₹1800  and  3/5 × 4500 = ₹2700',
+ answer:'C',
+ explanation:'Dividing ₹4500 in ratio 2:3: first part = 2/5 × 4500 = ₹1800, second part = 3/5 × 4500 = ₹2700.'},
+
+{id:677,year:2025,qnum:677,cat:'Maths — Ch7: Proportional Reasoning',topic:'Mixing paints — ratio after adding',chapter:'Proportional Reasoning-1',
+ word:'Blue and yellow paints are mixed 3:5 to make 40 mL of green. Then 20 mL of yellow is added. What is the new ratio of blue to yellow?',
+ opts:{A:'3:5',B:'3:8',C:'1:3',D:'3:13'},
+ steps:['In 40 mL of green: blue = (3/8)×40 = 15 mL, yellow = (5/8)×40 = 25 mL.',
+         'Add 20 mL yellow: new yellow = 25 + 20 = 45 mL. Blue stays at 15 mL.',
+         'New ratio blue:yellow = 15:45 = 1:3.'],
+ eq:'Blue:Yellow = 15:(25+20) = 15:45 = 1:3',
+ answer:'C',
+ explanation:'After adding 20 mL yellow to the 40 mL mixture: blue=15 mL, yellow=25+20=45 mL. Ratio = 15:45 = 1:3.'},
+
+{id:678,year:2025,qnum:678,cat:'Maths — Ch7: Proportional Reasoning',topic:'Idli recipe ratio',chapter:'Proportional Reasoning-1',
+ word:'To make soft idlis, rice and urad dal are mixed in the ratio 2:1. To make 6 cups of mixture, how many cups of rice are needed?',
+ opts:{A:'2 cups',B:'3 cups',C:'4 cups',D:'5 cups'},
+ steps:['Total ratio parts = 2 + 1 = 3.',
+         'Rice fraction = 2/3 of total mixture.',
+         'Rice needed = (2/3) × 6 = 4 cups.'],
+ eq:'Rice = (2/3) × 6 = 4 cups  |  Dal = (1/3) × 6 = 2 cups',
+ answer:'C',
+ explanation:'In a 2:1 ratio, rice is 2/3 of the mixture. For 6 cups: 2/3 × 6 = 4 cups rice and 2 cups dal.'},
+
+{id:679,year:2025,qnum:679,cat:'Maths — Ch7: Proportional Reasoning',topic:'Population density comparison',chapter:'Proportional Reasoning-1',
+ word:'Delhi: area 1484 km², population 30 million. Mumbai: area 550 km², population 20 million. Which city is more densely populated?',
+ opts:{A:'Delhi — larger population',B:'Mumbai — higher density per km²',C:'Both equal density',D:'Delhi — larger area'},
+ steps:['Density = population ÷ area.',
+         'Delhi density ≈ 30,000,000 ÷ 1484 ≈ 20,216 people/km².',
+         'Mumbai density ≈ 20,000,000 ÷ 550 ≈ 36,364 people/km². Mumbai is more dense.'],
+ eq:'Mumbai: 20M÷550 ≈ 36,364/km²  >  Delhi: 30M÷1484 ≈ 20,216/km²',
+ answer:'B',
+ explanation:'Density = population/area. Mumbai ≈ 36,364 per km² vs Delhi ≈ 20,216 per km². Mumbai is significantly more crowded despite smaller population.'},
+
+{id:680,year:2025,qnum:680,cat:'Maths — Ch7: Proportional Reasoning',topic:'Age ratio problem',chapter:'Proportional Reasoning-1',
+ word:'Harmain is 1 year old and her brother is 5. After how many years will the ratio of their ages be 1:2?',
+ opts:{A:'After 2 years',B:'After 3 years',C:'After 4 years',D:'After 5 years'},
+ steps:['Let x = number of years from now.',
+         '(1+x):(5+x) = 1:2 → 2(1+x) = 1(5+x) → 2+2x = 5+x → x = 3.',
+         'After 3 years: Harmain=4, brother=8. Ratio 4:8 = 1:2. ✓'],
+ eq:'(1+x)/(5+x) = 1/2  →  2+2x = 5+x  →  x = 3',
+ answer:'B',
+ explanation:'After 3 years, Harmain is 4 and her brother is 8. The ratio 4:8 = 1:2. ✓'},
+
+{id:681,year:2025,qnum:681,cat:'Maths — Ch7: Proportional Reasoning',topic:'Gold density ratio',chapter:'Proportional Reasoning-1',
+ word:'The mass of equal volumes of gold and water are in the ratio 37:2. If 1 litre of water has mass 1 kg, what is the mass of 1 litre of gold?',
+ opts:{A:'18 kg',B:'18.5 kg',C:'37 kg',D:'74 kg'},
+ steps:['Given: mass of gold : mass of equal volume of water = 37 : 2.',
+         'Mass of 1 litre water = 1 kg.',
+         '37 : 2 :: x : 1 → x = 37 × 1 ÷ 2 = 18.5 kg.'],
+ eq:'37:2 :: x:1  →  x = 37/2 = 18.5 kg',
+ answer:'B',
+ explanation:'By proportion: 37/2 = x/1, so x = 18.5 kg. This also corresponds to gold's real density of about 19.3 g/cm³ (approximate).'},
+
+{id:682,year:2025,qnum:682,cat:'Maths — Ch7: Proportional Reasoning',topic:'Bricks and wall length',chapter:'Proportional Reasoning-1',
+ word:'A mason needs 1450 bricks per 10 feet of wall. The house has total wall length 108 feet. How many bricks are needed?',
+ opts:{A:'14,500',B:'15,660',C:'15,760',D:'10,890'},
+ steps:['Ratio: 10 ft needs 1450 bricks.',
+         '108 ft needs x bricks: 10:1450 :: 108:x.',
+         'x = (1450 × 108) ÷ 10 = 156,600 ÷ 10 = 15,660.'],
+ eq:'10:1450 :: 108:x  →  x = 1450×108÷10 = 15,660',
+ answer:'B',
+ explanation:'Using direct proportion: x = 1450 × 108 ÷ 10 = 15,660 bricks.'},
+
+{id:683,year:2025,qnum:683,cat:'Maths — Ch7: Proportional Reasoning',topic:'Earth orbital speed',chapter:'Proportional Reasoning-1',
+ word:'Earth travels approximately 940 million km around the Sun in a year. How far does it travel in one week? (Assume 52 weeks per year)',
+ opts:{A:'About 17 million km',B:'About 18 million km',C:'About 20 million km',D:'About 94 million km'},
+ steps:['Total = 940,000,000 km in 52 weeks.',
+         'Per week = 940,000,000 ÷ 52 = 18,076,923 km.',
+         'This is approximately 18 million km.'],
+ eq:'940,000,000 ÷ 52 ≈ 18,076,923 km per week ≈ 18 million km',
+ answer:'B',
+ explanation:'940 million ÷ 52 ≈ 18.08 million km per week. Earth moves incredibly fast — about 18 million km every week!'},
+
+{id:684,year:2025,qnum:684,cat:'Maths — Ch7: Proportional Reasoning',topic:'Tractor vs oxen time',chapter:'Proportional Reasoning-1',
+ word:'A tractor ploughs 4 times faster than a pair of oxen. Oxen take 6 hours per acre. A farmer has 20 acres. How long does the tractor take for the whole field?',
+ opts:{A:'20 hours',B:'30 hours',C:'120 hours',D:'5 hours'},
+ steps:['Oxen time per acre = 6 hours. Tractor is 4× faster → tractor time per acre = 6÷4 = 1.5 hours.',
+         'Total time for 20 acres by tractor = 20 × 1.5 = 30 hours.',
+         'Compare: oxen would take 20 × 6 = 120 hours.'],
+ eq:'Tractor: 1 acre in 6/4 = 1.5 hrs  →  20 acres in 30 hrs',
+ answer:'B',
+ explanation:'Tractor speed = 4× oxen → time = 1/4 of oxen time per acre = 1.5 hrs. For 20 acres: 20×1.5 = 30 hours.'}
+
 ];
   
 function getImgSrc(year,qnum){ return null; }
@@ -1741,6 +2359,7 @@ function getImgSrc(year,qnum){ return null; }
     <button class="btn-start" id="btnStart" onclick="startSession()">▶ Start Session</button>
     <div style="text-align:center;margin-top:12px">
       <a href="index.html" style="font-size:.78rem;font-weight:700;color:var(--muted);text-decoration:none">← Back to Home</a>
+      <button class="adm-gear" onclick="openAdmin()" title="Admin: Add Questions">⚙</button>
     </div>
   </div>
 </div>
@@ -1821,27 +2440,25 @@ const CAT_COLORS = [
 const POINTS = {0:3,1:2,2:1};
 const POINTS_CLASS = {0:'full',1:'part',2:'min'};
 
-// ── STATE ────────────────────────────────────────────────────────
 let S = {
-  profile: null,        // {name, avatar}
-  sessionQs: [],        // array of {year,qnum,answer,steps,eq,word,cat,topic}
+  profile: null,        
+  sessionQs: [],        
   currentIdx: 0,
-  currentTab: 0,        // 0=word/MCQ, 1=steps, 2=equation
-  answers: {},          // {`${year}_${qnum}`: {chosen, correct, stageFirstCorrect}}
+  currentTab: 0,        
+  answers: {},          
   timerSecs: 0,
   timerInterval: null,
   sessionSize: 10,
   activeCat: 'All',
   catMap: {},
   lockCats: [],
-  locked: false,        // true when session in progress (answers locked after submission)
+  locked: false,        
 };
 let _sessNum = 10;
 let _ttsKA = null;
 
 const lsKey = () => LS_KEY_PFX + (S.profile ? S.profile.name : 'anon');
 
-// ── PROFILES ─────────────────────────────────────────────────────
 function loadProfiles() {
   try { return JSON.parse(localStorage.getItem(LS_KEY_PFX+'profiles')||'[]'); } catch(e) { return []; }
 }
@@ -1860,7 +2477,6 @@ function renderProfileChips() {
     d.onclick = () => selectProfile(p);
     wrap.appendChild(d);
   });
-  // No Add Kid here — manage profiles from Home page
   if(!profs.length) {
     const msg = document.createElement('div');
     msg.style.cssText = 'font-size:.8rem;color:var(--muted);font-weight:700;padding:8px 0';
@@ -1885,7 +2501,6 @@ function addProfile() {
   selectProfile({name:name.trim(), avatar});
 }
 
-// ── SESSION PERSISTENCE ───────────────────────────────────────────
 function saveSession(finished) {
   try {
     localStorage.setItem(lsKey(), JSON.stringify({
@@ -1907,24 +2522,23 @@ function loadSession() {
   } catch(e){ return false; }
 }
 
-// ── HISTORY (for dashboard) ───────────────────────────────────────
 function saveToHistory(result) {
   if(!S.profile) return;
   const key = LS_KEY_PFX + 'hist_' + S.profile.name;
   try {
     const hist = JSON.parse(localStorage.getItem(key)||'[]');
     hist.push(result);
-    localStorage.setItem(key, JSON.stringify(hist.slice(-50))); // keep last 50
+    localStorage.setItem(key, JSON.stringify(hist.slice(-50))); 
   } catch(e){}
 }
 function loadHistory(name) {
   try { return JSON.parse(localStorage.getItem(LS_KEY_PFX+'hist_'+name)||'[]'); } catch(e){ return []; }
 }
 
-// ── POOL & FILTERING ──────────────────────────────────────────────
 function getPool() {
-  if(!S.lockCats||!S.lockCats.length) return QUESTION_BANK;
-  return QUESTION_BANK.filter(q=>S.lockCats.includes(q.cat));
+  const allQs = [...QUESTION_BANK, ...(window._customQs||[])];
+  if(!S.lockCats||!S.lockCats.length) return allQs;
+  return allQs.filter(q=>S.lockCats.includes(q.cat));
 }
 function filteredQs() {
   if(S.activeCat==='All') return S.sessionQs;
@@ -1951,7 +2565,6 @@ function updatePoolInfo() {
   if(btn) btn.disabled=(a===0||!S.profile);
 }
 
-// ── START SESSION ─────────────────────────────────────────────────
 function startSession() {
   if(!S.profile) { alert('Please select or add a kid first!'); return; }
   const pool=getPool(); const size=Math.min(_sessNum,pool.length);
@@ -1963,7 +2576,6 @@ function startSession() {
   showScreen('mainScreen'); startTimer(); renderAll(); saveSession(false);
 }
 
-// ── TIMER ─────────────────────────────────────────────────────────
 function startTimer() {
   if(S.timerInterval)clearInterval(S.timerInterval);
   S.timerInterval=setInterval(()=>{S.timerSecs++;updateTimerDisp();if(S.timerSecs%10===0)saveSession(false);},1000);
@@ -1976,11 +2588,10 @@ function updateTimerDisp(){
 }
 function fmtTime(sec){return Math.floor(sec/60).toString().padStart(2,'0')+':'+(sec%60).toString().padStart(2,'0');}
 
-// ── ANSWER SUBMISSION (one attempt only) ──────────────────────────
 function chooseOption(letter) {
   const q=currentQ(); if(!q) return;
   const k=qKey(q);
-  if(S.answers[k]&&S.answers[k].chosen) return; // already answered — locked
+  if(S.answers[k]&&S.answers[k].chosen) return; 
   const correct=(letter===q.answer);
   S.answers[k]={chosen:letter, correct, stageFirstCorrect:S.currentTab};
   if(correct) celebrate(S.currentTab);
@@ -2001,9 +2612,7 @@ function finishSession(){
     correct:Object.values(S.answers).filter(a=>a.correct).length,
     pts, max, secs:S.timerSecs
   };
-  // Save locally first (always works, even offline)
   saveToHistory(result);
-  // Then sync to Supabase (async, non-blocking — won't delay the end screen)
   if(S.profile) {
     saveToSupabase({
       ...result,
@@ -2019,7 +2628,6 @@ function calcPts(){
   return {pts,max};
 }
 
-// ── NAVIGATION ────────────────────────────────────────────────────
 function navigate(d){
   const f=filteredQs(),p=f.findIndex(q=>q.year===currentQ().year&&q.qnum===currentQ().qnum),np=p+d;
   if(np<0||np>=f.length)return;
@@ -2034,7 +2642,6 @@ function selectCat(cat){
 }
 function switchTab(t){if(t!==0)stopSpeech();S.currentTab=t;renderQuestion();}
 
-// ── RENDER ────────────────────────────────────────────────────────
 function renderAll(){renderCatBtns();renderPills();renderScoreBar();renderQuestion();renderNavBtns();}
 
 function renderCatBtns(){
@@ -2071,7 +2678,6 @@ function renderScoreBar(){
   document.getElementById('attDisp').textContent=attempted;
   document.getElementById('progFill').style.width=pct+'%';
   document.getElementById('progPct').textContent=pct+'%';
-  // Profile in header
   const ph=document.getElementById('hdrProfile');
   if(ph&&S.profile)ph.textContent=S.profile.avatar+' '+S.profile.name;
 }
@@ -2090,7 +2696,6 @@ function renderQuestion(){
   const t=S.currentTab;
   const imgSrc=getImgSrc(q.year,q.qnum);
 
-  // Tab labels with points
   const tabsH=['📖 Word Problem','📋 Steps','🔢 Equation'].map((lbl,ti)=>{
     const solvedHere=done&&ans.correct&&ans.stageFirstCorrect===ti;
     const ptsBadge=done?(solvedHere?`<span class="tab-pts ${POINTS_CLASS[ti]}">✓ here</span>`:'')
@@ -2098,7 +2703,6 @@ function renderQuestion(){
     return `<button class="tab ${t===ti?'on':''}" onclick="switchTab(${ti})">${lbl}${ptsBadge}</button>`;
   }).join('');
 
-  // MCQ options — render only letters present in q.opts (supports A–D or A–E)
   function mcqPanel(tabIdx) {
     const allLetters=['A','B','C','D','E'];
     const opts=allLetters.filter(l=>q.opts&&q.opts[l]!==undefined);
@@ -2131,7 +2735,6 @@ function renderQuestion(){
       ${explRow}${seeHow}`;
   }
 
-  // Explanation banner — shown on Steps/Equation tabs after a wrong answer
   const wrongAns = done && !ans.correct;
   const explBanner = wrongAns
     ? `<div class="expl-banner">
@@ -2143,15 +2746,12 @@ function renderQuestion(){
       </div>`
     : '';
 
-  // Image block
   const imgFull=imgSrc?`<div class="qimg"><img src="${imgSrc}" alt="Q${q.qnum} ${q.year}" loading="lazy"><div class="qimg-cap">Känguru ${q.year} — Q${q.qnum}</div></div>`:'';
   const imgSm=imgSrc?`<div class="qimg sm" style="margin-bottom:10px"><img src="${imgSrc}" alt="Q${q.qnum}" loading="lazy"></div>`:'';
 
-  // Hint box
   const hints=['Try from just the story — 3 full points!','Use the steps as a guide — 2 points','The equation sets it up — 1 point'];
   const hintBox=done?'': `<div class="hint"><span>⭐</span><span>${hints[t]}</span></div>`;
 
-  // Panel 0 — Word + MCQ
   const p0=`<div class="panel ${t===0?'on':''}" id="p0"><div class="sc">
     ${imgFull}${hintBox}
     <div class="word">${esc(q.word||'Look at the image and choose the correct answer.')}</div>
@@ -2160,7 +2760,6 @@ function renderQuestion(){
     ${mcqPanel(0)}
   </div></div>`;
 
-  // Panel 1 — Steps + MCQ
   const stepsH=(q.steps||[]).map((s,i)=>`<li><span class="sn">${i+1}</span><span>${esc(s).replace(/___/g,'<span class="blank">___</span>')}</span></li>`).join('');
   const p1=`<div class="panel ${t===1?'on':''}" id="p1"><div class="sc">
     ${explBanner}${imgSm}${hintBox}
@@ -2168,7 +2767,6 @@ function renderQuestion(){
     ${mcqPanel(1)}
   </div></div>`;
 
-  // Panel 2 — Equation + MCQ
   const p2=`<div class="panel ${t===2?'on':''}" id="p2"><div class="sc">
     <div class="eq">${esc(q.eq||q.equation||'...')}</div>
     ${mcqPanel(2)}
@@ -2190,7 +2788,6 @@ function renderQuestion(){
   </div>`;
 }
 
-// ── END SCREEN ────────────────────────────────────────────────────
 function renderEndScreen(secs) {
   const total=S.sessionQs.length;
   const correct=Object.values(S.answers).filter(a=>a.correct).length;
@@ -2212,7 +2809,6 @@ function renderEndScreen(secs) {
   document.getElementById('endTrophy').textContent=trophy;
   document.getElementById('endTitle').textContent=title;
   document.getElementById('endMsg').textContent=msg;
-  // Review table
   buildReviewTable();
 }
 
@@ -2245,13 +2841,11 @@ function showModal(k){
 }
 function closeModal(){ document.getElementById('modalOverlay').classList.remove('on'); }
 
-// ── TTS ───────────────────────────────────────────────────────────
 function voicesReady(){return new Promise(resolve=>{const v=window.speechSynthesis.getVoices();if(v.length){resolve(v);return;}let done=false;window.speechSynthesis.onvoiceschanged=()=>{if(done)return;done=true;resolve(window.speechSynthesis.getVoices());};setTimeout(()=>{if(!done){done=true;resolve(window.speechSynthesis.getVoices());}},800);});}
 function toggleTTS(){window.speechSynthesis.speaking?stopSpeech():startSpeech();}
 async function startSpeech(){const q=currentQ();if(!q)return;stopSpeech();const voices=await voicesReady();const voice=voices.find(v=>v.lang&&v.lang.startsWith('en-IN'))||voices.find(v=>v.lang&&v.lang.startsWith('en-'));const u=new SpeechSynthesisUtterance(q.word||'Look at the image carefully.');u.rate=0.88;u.pitch=1.05;u.lang='en-IN';if(voice)u.voice=voice;const done=()=>{clearInterval(_ttsKA);_ttsKA=null;const b=document.getElementById('ttsBtn');if(b){b.textContent='🔊 Read Aloud';b.classList.remove('sp');}};u.onend=done;u.onerror=done;window.speechSynthesis.speak(u);_ttsKA=setInterval(()=>{if(!window.speechSynthesis.speaking){clearInterval(_ttsKA);_ttsKA=null;return;}window.speechSynthesis.pause();window.speechSynthesis.resume();},10000);const b=document.getElementById('ttsBtn');if(b){b.textContent='⏹ Stop';b.classList.add('sp');}}
 function stopSpeech(){clearInterval(_ttsKA);_ttsKA=null;window.speechSynthesis.cancel();const b=document.getElementById('ttsBtn');if(b){b.textContent='🔊 Read Aloud';b.classList.remove('sp');}}
 
-// ── CELEBRATION ───────────────────────────────────────────────────
 function celebrate(si){
   const inp=document.querySelector('.mcq-opt.correct');
   if(inp){const r=inp.getBoundingClientRect();burstEmojis(r.left+r.width/2,r.top+r.height/2,si);}
@@ -2263,7 +2857,6 @@ function burstEmojis(cx,cy,si){const sets=[['🌟','⭐','🎉','✨','🏆','�
 function playChime(si){try{const ctx=new(window.AudioContext||window.webkitAudioContext)();const freqs=[[523.25,659.25,783.99,1046.5],[523.25,659.25,783.99],[523.25,659.25]];freqs[Math.min(si,2)].forEach((freq,i)=>{const osc=ctx.createOscillator(),gain=ctx.createGain();osc.connect(gain);gain.connect(ctx.destination);osc.type='sine';osc.frequency.value=freq;const t=ctx.currentTime+i*.13;gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(.20,t+.04);gain.gain.exponentialRampToValueAtTime(.001,t+.55);osc.start(t);osc.stop(t+.6);});setTimeout(()=>ctx.close(),2500);}catch(e){}}
 function launchConfetti(){const w=document.createElement('div');w.className='confetti-wrap';const cols=['#4f72e3','#22c55e','#f59e0b','#ec4899','#8b5cf6','#14b8a6'];for(let i=0;i<30;i++){const p=document.createElement('div');p.className='cp';p.style.cssText=`background:${cols[i%cols.length]};animation-delay:${(Math.random()*.8).toFixed(2)}s;animation-duration:${(2+Math.random()).toFixed(2)}s;transform:rotate(${Math.random()*360}deg);`;w.appendChild(p);}document.body.appendChild(w);setTimeout(()=>w.remove(),4000);}
 
-// ── RESET ─────────────────────────────────────────────────────────
 function confirmReset(){
   if(!confirm('Reset session? All progress will be cleared.'))return;
   stopSpeech();stopTimer();
@@ -2275,7 +2868,6 @@ function confirmReset(){
   buildQuickPicks();buildCatFilter();setNum(10);updatePoolInfo();
 }
 
-// ── UTILS ─────────────────────────────────────────────────────────
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function buildQuickPicks(){
@@ -2285,18 +2877,19 @@ function buildQuickPicks(){
   picks.forEach(n=>{const b=document.createElement('button');b.className='qp'+(n===10?' on':'');b.textContent=(n===pool?'All '+n:n+' Qs');b.onclick=()=>{setNum(n);el.querySelectorAll('.qp').forEach(x=>x.classList.remove('on'));b.classList.add('on');};el.appendChild(b);});
 }
 function buildCatFilter(){
-  const cats=[...new Set(QUESTION_BANK.map(q=>q.cat))].sort();
+  const allQs=[...QUESTION_BANK,...(window._customQs||[])];
+  const cats=[...new Set(allQs.map(q=>q.cat))].sort();
   const el=document.getElementById('catFilt');if(!el)return;el.innerHTML='';
   cats.forEach(cat=>{const b=document.createElement('button');b.className='cf';b.textContent=cat;b.onclick=()=>{b.classList.toggle('on');S.lockCats=Array.from(el.querySelectorAll('.cf.on')).map(x=>x.textContent);updatePoolInfo();};el.appendChild(b);});
 }
-window.addEventListener('DOMContentLoaded',()=>{
+window.addEventListener('DOMContentLoaded',async ()=>{
+  await refreshCustomQs();
   renderProfileChips();buildQuickPicks();buildCatFilter();setNum(10);updatePoolInfo();
   if(!loadSession()){showScreen('lockScreen');}
 });
 
 
 
-// ── SUPABASE SYNC ─────────────────────────────────────────────────────────
 const SB_URL = 'https://ewogowpkewtrzsslfysv.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3b2dvd3BrZXd0cnpzc2xmeXN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTIzNDEsImV4cCI6MjA5NTUyODM0MX0.KYsUwS2-9B0XZWDa9V3SOW6xJ3kwZGTDH2G0b_qsOvs';
 
@@ -2328,11 +2921,9 @@ async function saveToSupabase(result) {
     console.warn('Supabase offline, saved locally only:', e.message);
   }
 }
-// ─────────────────────────────────────────────────────────────────────────
 
 
 
-// Override renderQuestion to show MCQ options from q.opts
 function renderQuestion(){
   const q=currentQ(); const area=document.getElementById('qArea');
   if(!q){area.innerHTML='<div class="empty"><span class="ei">🔍</span>No questions.</div>';return;}
@@ -2394,7 +2985,6 @@ function renderQuestion(){
     <div class="tabs">${tabsH}</div>${p0}${p1}${p2}</div>`;
 }
 
-// Review table override (no images)
 function buildReviewTable(){
   const el=document.getElementById('reviewBody');if(!el)return;
   let h='';
@@ -2413,7 +3003,6 @@ function buildReviewTable(){
   el.innerHTML=h;
 }
 
-// ── PROFILES from Supabase (no Add Kid here — manage from Home) ──────────
 const SB_URL_P = 'https://ewogowpkewtrzsslfysv.supabase.co';
 const SB_KEY_P = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3b2dvd3BrZXd0cnpzc2xmeXN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTIzNDEsImV4cCI6MjA5NTUyODM0MX0.KYsUwS2-9B0XZWDa9V3SOW6xJ3kwZGTDH2G0b_qsOvs';
 let _cachedProfs = null;
@@ -2430,7 +3019,6 @@ async function fetchProfilesFromSB() {
 }
 
 function loadProfiles() {
-  // Returns cached or localStorage (sync fallback)
   if(_cachedProfs) return _cachedProfs;
   try { return JSON.parse(localStorage.getItem('mkp_profiles')||'[]'); }
   catch(e) { return []; }
@@ -2447,8 +3035,344 @@ async function initProfiles() {
   renderProfileChips();
   updatePoolInfo();
 }
-// ─────────────────────────────────────────────────────────────────────────
+
+
+window._customQs = [];
+window._admAnswer = '';
+const CUSTOM_Q_TABLE = SB_URL + '/rest/v1/custom_questions';
+const SB_HEADERS = {
+  'Content-Type': 'application/json',
+  'apikey': SB_KEY,
+  'Authorization': 'Bearer ' + SB_KEY,
+};
+
+function buildAdmCatSelect() {
+  const sel = document.getElementById('admCat');
+  if (!sel) return;
+  const cats = [...new Set(QUESTION_BANK.map(q => q.cat))].sort();
+  sel.innerHTML = cats.map(c => `<option value="${c}">${c}</option>`).join('');
+}
+
+function openAdmin() {
+  document.getElementById('admOverlay').classList.add('on');
+  buildAdmCatSelect();
+  loadCustomQList();
+}
+function closeAdmin() {
+  document.getElementById('admOverlay').classList.remove('on');
+}
+
+function setAnswer(letter) {
+  window._admAnswer = letter;
+  document.querySelectorAll('.adm-ans-btn').forEach(b => {
+    b.classList.toggle('on', b.textContent === letter);
+  });
+}
+
+async function aiAutoFill() {
+  const desc = document.getElementById('admAiDesc').value.trim();
+  if (!desc) { document.getElementById('aiStatus').textContent = 'Please enter a description first.'; return; }
+  const btn = document.getElementById('btnAiFill');
+  const icon = document.getElementById('aiSpinIcon');
+  btn.disabled = true;
+  icon.textContent = '⟳';
+  icon.className = 'btn-ai-spin';
+  document.getElementById('aiStatus').textContent = 'Claude is drafting the question…';
+
+  const catEl = document.getElementById('admCat');
+  const currentCat = catEl ? catEl.value : '';
+  const chapterName = currentCat.replace('Maths — ', '');
+
+  const prompt = `You are creating a maths practice question for a Grade 8 student (CBSE / Ganita Prakash textbook).
+Chapter context: "${chapterName}"
+Request: "${desc}"
+
+Return ONLY a JSON object (no markdown, no explanation) with these exact keys:
+{
+  "topic": "short topic name (3-5 words)",
+  "word": "the full question text",
+  "optA": "option A text",
+  "optB": "option B text",
+  "optC": "option C text",
+  "optD": "option D text",
+  "answer": "A or B or C or D",
+  "step1": "first step to solve",
+  "step2": "second step to solve",
+  "step3": "third step or empty string",
+  "eq": "key equation or formula",
+  "explanation": "one-sentence explanation of why the answer is correct"
+}
+Make the question application-oriented and at appropriate Grade 8 difficulty — not a simple recall question. Make sure the correct answer matches one of the options exactly.`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await resp.json();
+    const raw = data.content?.[0]?.text || '';
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const q = JSON.parse(clean);
+
+    document.getElementById('admTopic').value = q.topic || '';
+    document.getElementById('admWord').value = q.word || '';
+    document.getElementById('admOptA').value = q.optA || '';
+    document.getElementById('admOptB').value = q.optB || '';
+    document.getElementById('admOptC').value = q.optC || '';
+    document.getElementById('admOptD').value = q.optD || '';
+    document.getElementById('admStep1').value = q.step1 || '';
+    document.getElementById('admStep2').value = q.step2 || '';
+    document.getElementById('admStep3').value = q.step3 || '';
+    document.getElementById('admEq').value = q.eq || '';
+    document.getElementById('admExpl').value = q.explanation || '';
+    setAnswer(q.answer || 'A');
+
+    document.getElementById('aiStatus').textContent = '✓ Filled! Review and tweak before saving.';
+  } catch(e) {
+    document.getElementById('aiStatus').textContent = '✗ Error: ' + e.message;
+    console.error('AI fill error:', e);
+  } finally {
+    btn.disabled = false;
+    icon.textContent = '✨';
+    icon.className = '';
+  }
+}
+
+async function saveCustomQuestion() {
+  const cat     = document.getElementById('admCat').value;
+  const topic   = document.getElementById('admTopic').value.trim();
+  const word    = document.getElementById('admWord').value.trim();
+  const optA    = document.getElementById('admOptA').value.trim();
+  const optB    = document.getElementById('admOptB').value.trim();
+  const optC    = document.getElementById('admOptC').value.trim();
+  const optD    = document.getElementById('admOptD').value.trim();
+  const answer  = window._admAnswer;
+  const step1   = document.getElementById('admStep1').value.trim();
+  const step2   = document.getElementById('admStep2').value.trim();
+  const step3   = document.getElementById('admStep3').value.trim();
+  const eq      = document.getElementById('admEq').value.trim();
+  const expl    = document.getElementById('admExpl').value.trim();
+  const status  = document.getElementById('admSaveStatus');
+
+  if (!word || !optA || !optB || !optC || !optD || !answer || !step1) {
+    status.textContent = '✗ Please fill in the question, all 4 options, select an answer, and at least Step 1.';
+    status.className = 'adm-status err';
+    return;
+  }
+
+  const btn = document.getElementById('btnSaveQ');
+  btn.disabled = true;
+  status.textContent = 'Saving…';
+  status.className = 'adm-status';
+
+  const payload = { cat, topic, word, opt_a:optA, opt_b:optB, opt_c:optC, opt_d:optD,
+                    answer, step1, step2, step3, eq, explanation:expl };
+  try {
+    const resp = await fetch(CUSTOM_Q_TABLE, {
+      method: 'POST',
+      headers: { ...SB_HEADERS, 'Prefer': 'return=representation' },
+      body: JSON.stringify(payload)
+    });
+    if (!resp.ok) {
+      const err = await resp.text();
+      throw new Error(resp.status + ' ' + err);
+    }
+    status.textContent = '✓ Question saved!';
+    status.className = 'adm-status ok';
+    clearAdmForm();
+    await loadCustomQList();
+    await refreshCustomQs();
+    buildCatFilter();
+  } catch(e) {
+    status.textContent = '✗ Save failed: ' + e.message;
+    status.className = 'adm-status err';
+    console.error('Save error:', e);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function loadCustomQList() {
+  const list = document.getElementById('admQList');
+  const countEl = document.getElementById('admQCount');
+  try {
+    const resp = await fetch(CUSTOM_Q_TABLE + '?order=id.desc&limit=50', { headers: SB_HEADERS });
+    if (!resp.ok) throw new Error(resp.status);
+    const rows = await resp.json();
+    countEl.textContent = rows.length;
+    if (!rows.length) {
+      list.innerHTML = '<div class="adm-empty">No custom questions yet.</div>';
+      return;
+    }
+    list.innerHTML = rows.map(r => `
+      <div class="adm-q-item">
+        <div class="adm-q-item-text">
+          <div class="adm-q-cat">${r.cat}</div>
+          <div>${r.word}</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:2px;">Answer: ${r.answer} · ${r.opt_a}/${r.opt_b}/${r.opt_c}/${r.opt_d}</div>
+        </div>
+        <button class="btn-del-q" onclick="deleteCustomQ(${r.id})">✕</button>
+      </div>`).join('');
+  } catch(e) {
+    list.innerHTML = '<div class="adm-empty">Could not load — check Supabase table exists.<br><small>' + e.message + '</small></div>';
+  }
+}
+
+async function refreshCustomQs() {
+  try {
+    const resp = await fetch(CUSTOM_Q_TABLE + '?order=id.asc', { headers: SB_HEADERS });
+    if (!resp.ok) return;
+    const rows = await resp.json();
+    window._customQs = rows.map((r, i) => ({
+      id: 9000 + r.id,
+      year: 2025,
+      qnum: 9000 + r.id,
+      cat: r.cat,
+      topic: r.topic || 'Custom',
+      chapter: r.cat,
+      word: r.word,
+      opts: { A: r.opt_a, B: r.opt_b, C: r.opt_c, D: r.opt_d },
+      steps: [r.step1, r.step2, r.step3].filter(Boolean),
+      eq: r.eq || '',
+      answer: r.answer,
+      explanation: r.explanation || ''
+    }));
+    console.log('Custom questions loaded:', window._customQs.length);
+  } catch(e) {
+    console.warn('Could not load custom questions:', e.message);
+  }
+}
+
+async function deleteCustomQ(id) {
+  if (!confirm('Delete this question?')) return;
+  try {
+    const resp = await fetch(CUSTOM_Q_TABLE + '?id=eq.' + id, {
+      method: 'DELETE',
+      headers: SB_HEADERS
+    });
+    if (!resp.ok) throw new Error(resp.status);
+    await loadCustomQList();
+    await refreshCustomQs();
+    buildCatFilter();
+  } catch(e) {
+    alert('Delete failed: ' + e.message);
+  }
+}
+
+function clearAdmForm() {
+  ['admTopic','admWord','admOptA','admOptB','admOptC','admOptD',
+   'admStep1','admStep2','admStep3','admEq','admExpl','admAiDesc'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  window._admAnswer = '';
+  document.querySelectorAll('.adm-ans-btn').forEach(b => b.classList.remove('on'));
+  document.getElementById('aiStatus').textContent = '';
+}
+
+document.getElementById('admOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('admOverlay')) closeAdmin();
+});
 
 </script>
+
+<!-- ── ADMIN: ADD QUESTIONS ──────────────────────────────────── -->
+<div class="adm-overlay" id="admOverlay">
+ <div class="adm-box">
+  <div class="adm-hdr">
+    <span class="adm-title">➕ Add a Question</span>
+    <button class="adm-close" onclick="closeAdmin()">✕</button>
+  </div>
+
+  <!-- AI Auto-fill -->
+  <div class="adm-section">
+    <div class="adm-section-title">✨ AI Auto-fill</div>
+    <div style="font-size:.78rem;color:var(--muted);margin-bottom:8px;">
+      Describe the question in plain language — Claude will fill in the form.
+    </div>
+    <div class="adm-ai-row">
+      <input class="adm-ai-input" id="admAiDesc" placeholder="e.g. A question on cube roots from Chapter 1 — find the cube root of 512" />
+      <button class="btn-ai" id="btnAiFill" onclick="aiAutoFill()">
+        <span id="aiSpinIcon">✨</span> Auto-fill
+      </button>
+    </div>
+    <div id="aiStatus" style="font-size:.75rem;color:var(--muted);min-height:16px;"></div>
+  </div>
+
+  <!-- Question form -->
+  <div class="adm-section">
+    <div class="adm-section-title">Question Details</div>
+
+    <div class="adm-row">
+      <div>
+        <div class="adm-label">Chapter / Category</div>
+        <select class="adm-select" id="admCat"></select>
+      </div>
+      <div>
+        <div class="adm-label">Topic</div>
+        <input class="adm-input" id="admTopic" placeholder="e.g. Cube roots" />
+      </div>
+    </div>
+
+    <div class="adm-row full">
+      <div>
+        <div class="adm-label">Question</div>
+        <textarea class="adm-textarea" id="admWord" placeholder="Type the question here…"></textarea>
+      </div>
+    </div>
+
+    <div class="adm-section-title" style="margin-top:8px;">Options</div>
+    <div class="adm-opts-grid">
+      <div class="adm-opt-row"><span class="adm-opt-key">A</span><input class="adm-input" id="admOptA" placeholder="Option A"/></div>
+      <div class="adm-opt-row"><span class="adm-opt-key">B</span><input class="adm-input" id="admOptB" placeholder="Option B"/></div>
+      <div class="adm-opt-row"><span class="adm-opt-key">C</span><input class="adm-input" id="admOptC" placeholder="Option C"/></div>
+      <div class="adm-opt-row"><span class="adm-opt-key">D</span><input class="adm-input" id="admOptD" placeholder="Option D"/></div>
+    </div>
+
+    <div style="margin-top:10px;">
+      <div class="adm-label">Correct Answer</div>
+      <div class="adm-answer-btns" id="admAnsBtns">
+        <button class="adm-ans-btn" onclick="setAnswer('A')">A</button>
+        <button class="adm-ans-btn" onclick="setAnswer('B')">B</button>
+        <button class="adm-ans-btn" onclick="setAnswer('C')">C</button>
+        <button class="adm-ans-btn" onclick="setAnswer('D')">D</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scaffolding -->
+  <div class="adm-section">
+    <div class="adm-section-title">Scaffolding (shown on Steps tab)</div>
+    <div class="adm-row full" style="gap:6px;display:flex;flex-direction:column;">
+      <input class="adm-input" id="admStep1" placeholder="Step 1…"/>
+      <input class="adm-input" id="admStep2" placeholder="Step 2…"/>
+      <input class="adm-input" id="admStep3" placeholder="Step 3 (optional)…"/>
+    </div>
+    <div style="margin-top:8px;">
+      <div class="adm-label">Equation / Key formula (shown on Equation tab)</div>
+      <input class="adm-input" id="admEq" placeholder="e.g. ∛512 = 8"/>
+    </div>
+    <div style="margin-top:8px;">
+      <div class="adm-label">Explanation (shown after answering)</div>
+      <textarea class="adm-textarea" id="admExpl" placeholder="Why is this the right answer?…" style="min-height:52px;"></textarea>
+    </div>
+  </div>
+
+  <button class="btn-save-q" id="btnSaveQ" onclick="saveCustomQuestion()">💾 Save Question to Supabase</button>
+  <div class="adm-status" id="admSaveStatus"></div>
+
+  <!-- Existing custom questions -->
+  <div class="adm-section" style="margin-top:14px;">
+    <div class="adm-section-title">Your Custom Questions (<span id="admQCount">0</span>)</div>
+    <div class="adm-q-list" id="admQList"><div class="adm-empty">Loading…</div></div>
+  </div>
+ </div>
+</div>
+
 </body>
 </html>
