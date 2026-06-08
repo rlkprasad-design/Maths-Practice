@@ -51,8 +51,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   background:var(--surface2);font-family:var(--font);font-size:1.2rem;font-weight:900;
   cursor:pointer;color:var(--accent);transition:var(--tr);display:flex;align-items:center;justify-content:center}
 .num-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
-.num-disp{font-size:1.9rem;font-weight:900;color:var(--accent);min-width:54px;
-  text-align:center;padding:6px 12px;background:var(--accent-l);border-radius:var(--rs)}
+.num-disp{font-size:1.6rem;font-weight:900;color:var(--accent);
+  text-align:center;background:var(--accent-l);border-radius:var(--rs)}
+/* hide native number spinners */
+input.num-disp::-webkit-inner-spin-button,
+input.num-disp::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+input.num-disp[type=number]{-moz-appearance:textfield}
 .qp-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
 .qp{padding:4px 11px;border-radius:50px;border:2px solid var(--border);background:var(--surface2);
   font-family:var(--font);font-size:.76rem;font-weight:800;cursor:pointer;color:var(--muted);transition:var(--tr)}
@@ -677,10 +681,17 @@ function getImgSrc(year,qnum){ return null; }  // no images for CBSE
     </div>
     <div class="lock-sec">
       <span class="lock-lbl">How many questions?</span>
-      <div class="num-wrap">
-        <button class="num-btn" onclick="changeNum(-1)">−</button>
-        <span class="num-disp" id="numDisp">10</span>
-        <button class="num-btn" onclick="changeNum(1)">+</button>
+     <div class="num-wrap">
+        <button class="num-btn" onclick="changeNum(-5)" title="−5">−</button>
+        <input type="number" id="numDisp" class="num-disp" value="10" min="1"
+               oninput="setNum(parseInt(this.value)||1)"
+               onblur="this.value=_sessNum"
+               onkeydown="if(event.key==='Enter')this.blur()"
+               style="width:72px;border:2.5px solid var(--accent);border-radius:var(--rs);
+                      text-align:center;font-family:var(--font);font-size:1.6rem;
+                      font-weight:900;color:var(--accent);background:var(--accent-l);
+                      padding:4px 6px;outline:none;-moz-appearance:textfield;" />
+        <button class="num-btn" onclick="changeNum(5)" title="+5">+</button>
       </div>
       <div class="qp-row" id="qpRow"></div>
     </div>
@@ -885,13 +896,16 @@ function currentQ() { return S.sessionQs[S.currentIdx]; }
 function qKey(q) { return `${q.year}_${q.qnum}`; }
 
 function setNum(n) {
-  const a=getPool().length; n=Math.max(1,Math.min(n,a)); _sessNum=n;
-  const el=document.getElementById('numDisp'); if(el) el.textContent=n;
+  const a=getPool().length; n=Math.max(1,Math.min(Math.round(n)||1,a)); _sessNum=n;
+  const el=document.getElementById('numDisp');
+  if(el){ el.value!==undefined ? el.value=n : el.textContent=n; }
+  document.querySelectorAll('.qp').forEach(b=>{
+    b.classList.toggle('on', parseInt(b.dataset.n)===n);
+  });
   updatePoolInfo();
 }
 function changeNum(d) {
   setNum(_sessNum+d);
-  document.querySelectorAll('.qp').forEach(x=>x.classList.remove('on'));
 }
 function updatePoolInfo() {
   const a=getPool().length; const n=Math.min(_sessNum,a);
@@ -1227,12 +1241,23 @@ function confirmReset(){
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function buildQuickPicks(){
-  const pool=QUESTION_BANK.length;
-  const picks=[5,10,15,20,30,pool].filter((v,i,a)=>v<=pool&&a.indexOf(v)===i);
+  const pool=getPool().length||QUESTION_BANK.length;
+  // Fixed anchors + smart 25/50/75/100% percentages of current pool
+  const anchors=[5,10,15,20,25,30,50];
+  const pcts=[Math.round(pool*0.25),Math.round(pool*0.5),Math.round(pool*0.75),pool];
+  const raw=[...anchors,...pcts].filter(v=>v>=1&&v<=pool);
+  const picks=[...new Set(raw)].sort((a,b)=>a-b);
   const el=document.getElementById('qpRow');if(!el)return;el.innerHTML='';
-  picks.forEach(n=>{const b=document.createElement('button');b.className='qp'+(n===10?' on':'');b.textContent=(n===pool?'All '+n:n+' Qs');b.onclick=()=>{setNum(n);el.querySelectorAll('.qp').forEach(x=>x.classList.remove('on'));b.classList.add('on');};el.appendChild(b);});
+  picks.forEach(n=>{
+    const b=document.createElement('button');
+    b.className='qp'+(n===_sessNum?' on':'');
+    b.dataset.n=n;
+    b.textContent=(n===pool?'All '+n:n+' Qs');
+    b.onclick=()=>{ setNum(n); };
+    el.appendChild(b);
+  });
 }
-function buildCatFilter(){
+  function buildCatFilter(){
   const cats=[...new Set(QUESTION_BANK.map(q=>q.cat))].sort();
   const el=document.getElementById('catFilt');if(!el)return;el.innerHTML='';
   cats.forEach(cat=>{const b=document.createElement('button');b.className='cf';b.textContent=cat;b.onclick=()=>{b.classList.toggle('on');S.lockCats=Array.from(el.querySelectorAll('.cf.on')).map(x=>x.textContent);updatePoolInfo();};el.appendChild(b);});
